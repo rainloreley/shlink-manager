@@ -27,6 +27,12 @@ class ServerManager {
     return (_server_url != null);
   }
 
+  Future<void> logOut() async {
+    const storage = FlutterSecureStorage();
+    await storage.delete(key: "shlink_url");
+    await storage.delete(key: "shlink_apikey");
+  }
+
   Future<void> _loadCredentials() async {
     const storage = FlutterSecureStorage();
     _server_url = await storage.read(key: "shlink_url");

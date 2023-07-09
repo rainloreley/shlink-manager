@@ -62,7 +62,7 @@ class _LoginViewState extends State<LoginView> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.medium(
-              title: const Text("Add server")
+              title: const Text("Add server", style: TextStyle(fontWeight: FontWeight.bold))
           ),
           SliverFillRemaining(
             child: Padding(
@@ -73,26 +73,38 @@ class _LoginViewState extends State<LoginView> {
                 children: [
                   const Padding(padding: EdgeInsets.only(bottom: 8),
                       child: Text("Server URL", style: TextStyle(fontWeight: FontWeight.bold),)),
-                  TextField(
-                    controller: _server_url_controller,
-                    keyboardType: TextInputType.url,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: "https://shlink.example.com"
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.dns_outlined),
+                      SizedBox(width: 8),
+                      Expanded(child: TextField(
+                        controller: _server_url_controller,
+                        keyboardType: TextInputType.url,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "https://shlink.example.com"
+                        ),
+                      ))
+                    ],
                   ),
                   const Padding(
                     padding: EdgeInsets.only(top: 8, bottom: 8),
                     child: Text("API Key", style: TextStyle(fontWeight: FontWeight.bold)),
                   ),
-                  TextField(
-                    controller: _apikey_controller,
-                    keyboardType: TextInputType.text,
-                      obscureText: true,
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "..."
-                    ),
+                  Row(
+                    children: [
+                      Icon(Icons.key),
+                      SizedBox(width: 8),
+                      Expanded(child: TextField(
+                        controller: _apikey_controller,
+                        keyboardType: TextInputType.text,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: "..."
+                        ),
+                      ))
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 16),

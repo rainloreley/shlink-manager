@@ -169,7 +169,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                               });
 
                             },
-                            icon: Icon(randomSlug ? Icons.casino : Icons.casino_outlined, color: randomSlug ? Colors.green : Theme.of(context).primaryColor,)
+                            icon: Icon(randomSlug ? Icons.casino : Icons.casino_outlined, color: randomSlug ? Colors.green : Colors.grey)
                         ),
                       )
                     ],

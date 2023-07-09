@@ -160,7 +160,7 @@ class _ListCellState extends State<_ListCell> {
                       padding: EdgeInsets.only(right: 4),
                       child: SizedBox(
                         width: 20,
-                        height: 8,
+                        height: 6,
                         child: Container(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
@@ -182,7 +182,7 @@ class _ListCellState extends State<_ListCell> {
               else if (widget.content is DateTime)
                 Text(DateFormat('yyyy-MM-dd - HH:mm').format(widget.content))
               else
-                Text("N/A")
+                const Text("N/A")
             ],
           ),
         ),

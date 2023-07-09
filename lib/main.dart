@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.white,
               elevation: 0,
             ),
-            colorScheme: darkColorScheme?.copyWith(background: Colors.black, primary: Colors.blue) ?? _defaultDarkColorScheme,
+            colorScheme: darkColorScheme?.copyWith(background: Colors.black) ?? _defaultDarkColorScheme,
             useMaterial3: true,
           ),
           /*theme: ThemeData(

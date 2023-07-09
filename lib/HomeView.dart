@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats.dart';
 import 'package:shlink_app/API/ServerManager.dart';
+import 'package:shlink_app/LoginView.dart';
 import 'package:shlink_app/ShortURLEditView.dart';
 import 'globals.dart' as globals;
 
@@ -57,6 +58,25 @@ class _HomeViewState extends State<HomeView> {
                 Text(globals.serverManager.getServerUrl(), style: TextStyle(fontSize: 16, color: Colors.grey[600]))
               ],
             ),
+            actions: [
+              PopupMenuButton(
+                itemBuilder: (context) {
+                  return [
+                    PopupMenuItem(
+                      value: 0,
+                      child: Text("Log out...", style: TextStyle(color: Colors.red)),
+                    )
+                  ];
+                },
+                onSelected: (value) {
+                  if (value == 0) {
+                    globals.serverManager.logOut().then((value) => Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => const LoginView())
+                    ));
+                  }
+                },
+              )
+            ],
           ),
           SliverToBoxAdapter(
             child: Wrap(
