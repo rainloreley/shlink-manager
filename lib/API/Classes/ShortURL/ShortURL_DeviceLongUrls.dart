@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class ShortURL_DeviceLongUrls {
   final String? android;
   final String? ios;
@@ -11,4 +9,10 @@ class ShortURL_DeviceLongUrls {
     : android = json["android"],
       ios = json["ios"],
       desktop = json["desktop"];
+
+  Map<String, dynamic> toJson() => {
+    "android": android,
+    "ios": ios,
+    "desktop": desktop
+  };
 }

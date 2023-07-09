@@ -1,9 +1,15 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:shlink_app/API/Classes/ShortURL.dart';
+import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats.dart';
+import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
+import 'package:shlink_app/API/Classes/ShortURLSubmission/ShortURLSubmission.dart';
+import 'package:shlink_app/API/Methods/connect.dart';
+import 'package:shlink_app/API/Methods/getShlinkStats.dart';
+import 'package:shlink_app/API/Methods/getShortUrls.dart';
+
+import 'Methods/deleteShortUrl.dart';
+import 'Methods/submitShortUrl.dart';
 
 class ServerManager {
 
@@ -53,80 +59,23 @@ class ServerManager {
 
   FutureOr<Either<String, Failure>> connect() async {
     _loadCredentials();
-    try {
-      final response = await http.get(Uri.parse("${_server_url}/rest/v${apiVersion}/short-urls"), headers: {
-        "X-Api-Key": _api_key ?? "",
-      });
-      if (response.statusCode == 200) {
-        return left("");
-      }
-      else {
-        try {
-          var jsonBody = jsonDecode(response.body);
-          return right(ApiFailure(jsonBody["type"], jsonBody["detail"], jsonBody["title"], jsonBody["status"]));
-        }
-        catch(resErr) {
-          return right(RequestFailure(response.statusCode, resErr.toString()));
-        }
-      }
-    }
-    catch(reqErr) {
-      return right(RequestFailure(0, reqErr.toString()));
-    }
+    return API_connect(_api_key, _server_url, apiVersion);
   }
 
   FutureOr<Either<List<ShortURL>, Failure>> getShortUrls() async {
-    var _currentPage = 1;
-    var _maxPages = 2;
-    List<ShortURL> _allUrls = [];
-
-    Failure? error;
-
-    while (_currentPage <= _maxPages) {
-      final response = await _getShortUrlPage(_currentPage);
-      response.fold((l) {
-        _allUrls.addAll(l.urls);
-        _maxPages = l.totalPages;
-        _currentPage++;
-      }, (r) {
-        _maxPages = 0;
-        error = r;
-      });
-    }
-    if (error == null) {
-      return left(_allUrls);
-    }
-    else {
-      return right(error!);
-    }
+    return API_getShortUrls(_api_key, _server_url, apiVersion);
   }
 
-  FutureOr<Either<ShortURLPageResponse, Failure>> _getShortUrlPage(int page) async {
-    try {
-      final response = await http.get(Uri.parse("${_server_url}/rest/v${apiVersion}/short-urls?page=${page}"), headers: {
-        "X-Api-Key": _api_key ?? "",
-      });
-      if (response.statusCode == 200) {
-        var jsonResponse = jsonDecode(response.body);
-        var pagesCount = jsonResponse["shortUrls"]["pagination"]["pagesCount"] as int;
-        List<ShortURL> shortURLs = (jsonResponse["shortUrls"]["data"] as List<dynamic>).map((e) {
-          return ShortURL.fromJson(e);
-        }).toList();
-        return left(ShortURLPageResponse(shortURLs, pagesCount));
-      }
-      else {
-        try {
-          var jsonBody = jsonDecode(response.body);
-          return right(ApiFailure(jsonBody["type"], jsonBody["detail"], jsonBody["title"], jsonBody["status"]));
-        }
-        catch(resErr) {
-          return right(RequestFailure(response.statusCode, resErr.toString()));
-        }
-      }
-    }
-    catch(reqErr) {
-      return right(RequestFailure(0, reqErr.toString()));
-    }
+  FutureOr<Either<ShlinkStats, Failure>> getShlinkStats() async {
+    return API_getShlinkStats(_api_key, _server_url, apiVersion);
+  }
+
+  FutureOr<Either<String, Failure>> submitShortUrl(ShortURLSubmission shortUrl) async {
+    return API_submitShortUrl(shortUrl, _api_key, _server_url, apiVersion);
+  }
+
+  FutureOr<Either<String, Failure>> deleteShortUrl(String shortCode) async {
+    return API_deleteShortUrl(shortCode, _api_key, _server_url, apiVersion);
   }
 }
 
@@ -151,6 +100,7 @@ class ApiFailure extends Failure {
   String detail;
   String title;
   int status;
+  List<dynamic>? invalidElements;
 
-  ApiFailure(this.type, this.detail, this.title, this.status);
+  ApiFailure({required this.type, required this.detail, required this.title, required this.status, this.invalidElements});
 }

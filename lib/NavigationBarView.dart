@@ -17,9 +17,7 @@ class _NavigationBarViewState extends State<NavigationBarView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: views.elementAt(_selectedView),
-      ),
+      body: views.elementAt(_selectedView),
       bottomNavigationBar: NavigationBar(
         destinations: [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),

@@ -1,6 +1,6 @@
-import 'package:shlink_app/API/Classes/ShortURL_DeviceLongUrls.dart';
-import 'package:shlink_app/API/Classes/ShortURL_Meta.dart';
-import 'package:shlink_app/API/Classes/ShortURL_VisitsSummary.dart';
+import 'package:shlink_app/API/Classes/ShortURL/ShortURL_DeviceLongUrls.dart';
+import 'package:shlink_app/API/Classes/ShortURL/ShortURL_Meta.dart';
+import 'package:shlink_app/API/Classes/ShortURL/ShortURL_VisitsSummary.dart';
 
 class ShortURL {
   String shortCode;
