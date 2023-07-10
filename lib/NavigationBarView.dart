@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shlink_app/SettingsView.dart';
 import 'package:shlink_app/HomeView.dart';
 import 'package:shlink_app/URLListView.dart';
 
@@ -11,7 +12,7 @@ class NavigationBarView extends StatefulWidget {
 
 class _NavigationBarViewState extends State<NavigationBarView> {
 
-  final List<Widget> views = [HomeView(), URLListView()];
+  final List<Widget> views = [HomeView(), URLListView(), SettingsView()];
   int _selectedView = 0;
 
   @override
@@ -21,7 +22,8 @@ class _NavigationBarViewState extends State<NavigationBarView> {
       bottomNavigationBar: NavigationBar(
         destinations: [
           NavigationDestination(icon: Icon(Icons.home), label: "Home"),
-          NavigationDestination(icon: Icon(Icons.link), label: "Short URLs")
+          NavigationDestination(icon: Icon(Icons.link), label: "Short URLs"),
+          NavigationDestination(icon: Icon(Icons.settings), label: "Settings")
         ],
         selectedIndex: _selectedView,
         onDestinationSelected: (int index) {

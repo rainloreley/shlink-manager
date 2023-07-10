@@ -2,6 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="dev.abmgrt.shlink_app">
     <uses-permission android:name="android.permission.INTERNET" />
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
     <application
         android:label="shlink_app"
         android:name="${applicationName}"

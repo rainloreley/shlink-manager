@@ -5,6 +5,8 @@ import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats.dart';
 import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/ShortURLSubmission.dart';
 import 'package:shlink_app/API/Methods/connect.dart';
+import 'package:shlink_app/API/Methods/getRecentShortUrls.dart';
+import 'package:shlink_app/API/Methods/getServerHealth.dart';
 import 'package:shlink_app/API/Methods/getShlinkStats.dart';
 import 'package:shlink_app/API/Methods/getShortUrls.dart';
 
@@ -20,6 +22,10 @@ class ServerManager {
 
   String getServerUrl() {
     return _server_url ?? "";
+  }
+
+  String getApiVersion() {
+    return apiVersion;
   }
 
   Future<bool> checkLogin() async {
@@ -83,6 +89,14 @@ class ServerManager {
   FutureOr<Either<String, Failure>> deleteShortUrl(String shortCode) async {
     return API_deleteShortUrl(shortCode, _api_key, _server_url, apiVersion);
   }
+
+  FutureOr<Either<ServerHealthResponse, Failure>> getServerHealth() async {
+    return API_getServerHealth(_api_key, _server_url, apiVersion);
+  }
+
+  FutureOr<Either<List<ShortURL>, Failure>> getRecentShortUrls() async {
+    return API_getRecentShortUrls(_api_key, _server_url, apiVersion);
+  }
 }
 
 class ShortURLPageResponse {
@@ -90,6 +104,13 @@ class ShortURLPageResponse {
   int totalPages;
 
   ShortURLPageResponse(this.urls, this.totalPages);
+}
+
+class ServerHealthResponse {
+  String status;
+  String version;
+
+  ServerHealthResponse({required this.status, required this.version});
 }
 
 abstract class Failure {}
