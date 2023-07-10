@@ -10,7 +10,7 @@
         </intent>
     </queries>
     <application
-        android:label="shlink_app"
+        android:label="Shlink Manager"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
