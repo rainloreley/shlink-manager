@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   static final _defaultLightColorScheme =
-  ColorScheme.fromSwatch(primarySwatch: Colors.blue);
+  ColorScheme.light();//.fromSwatch(primarySwatch: Colors.blue, backgroundColor: Colors.white);
 
   static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
       primarySwatch: Colors.blue, brightness: Brightness.dark);
