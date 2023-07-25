@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shlink_app/API/ServerManager.dart';
 import 'package:shlink_app/LoginView.dart';
 import 'package:shlink_app/OpenSourceLicensesView.dart';
@@ -22,6 +23,7 @@ class _SettingsViewState extends State<SettingsView> {
 
   var _server_version = "---";
   ServerStatus _server_status = ServerStatus.connecting;
+  var packageInfo = null;
 
   @override
   void initState() {
@@ -32,6 +34,10 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void getServerHealth() async {
+    var _packageInfo = await PackageInfo.fromPlatform();
+    setState(() {
+      packageInfo = _packageInfo;
+    });
     final response = await globals.serverManager.getServerHealth();
     response.fold((l) {
       setState(() {
@@ -191,7 +197,45 @@ class _SettingsViewState extends State<SettingsView> {
                         ),
                       ),
                     ),
-                  )
+                  ),
+                  SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () async {
+                      var url = Uri.parse("https://abmgrt.dev/shlink-manager/privacy");
+                      if (await canLaunchUrl(url)) {
+                        launchUrl(url, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.lock),
+                                  SizedBox(width: 8),
+                                  Text("Privacy Policy", style: TextStyle(fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                              Icon(Icons.chevron_right)
+                            ]
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 16),
+                  if (packageInfo != null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text("${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})", style: TextStyle(color: Colors.grey),),],
+                    )
                 ],
               )
             ),
