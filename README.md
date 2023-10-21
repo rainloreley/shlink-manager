@@ -1,8 +1,18 @@
+<div align="center">
+
+  <img src="https://raw.githubusercontent.com/rainloreley/shlink-manager/main/assets/icon/icon.png" alt="Shlink Manager logo" width="100px" style="border-radius: 50%"/>
+  
 # Shlink Manager
 
-This is a mobile app for Android to see and manage all shortened URLs created with [Shlink](https://shlink.io/).
+</div>
 
-## Current Features
+Shlink Manager is an app for Android to see and manage all shortened URLs created with [Shlink](https://shlink.io/)
+
+<a href="https://play.google.com/store/apps/details?id=dev.abmgrt.shlink_app" target="_blank">
+<img src="https://raw.githubusercontent.com/steverichey/google-play-badge-svg/master/img/en_get.svg" alt="Play Store download" width="30%"/>
+</a>
+
+## 📱 Current Features
 
 ✅ List all short URLs<br/>
 ✅ Create new short URLs<br/>
@@ -13,7 +23,7 @@ This is a mobile app for Android to see and manage all shortened URLs created wi
 ✅ Display QR code<br/>
 ✅ Dark mode support<br/>
 
-## To Do
+## 🔨 To Do
 - [ ] Edit existing short URLs
 - [ ] Add support for iOS (maybe in the future)
 - [ ] add tags
@@ -21,6 +31,17 @@ This is a mobile app for Android to see and manage all shortened URLs created wi
 - [ ] improve app icon
 - [ ] ...and more
 
-## License
+# 💻 Development
+
+First make sure you've installed [Flutter](https://flutter.dev/) and the necessary tools to build for Android/iOS (Android Studio/Xcode).
+
+```bash
+$ git clone https://github.com/rainloreley/shlink-manager.git
+$ cd shlink-manager
+$ flutter pub get
+$ flutter run
+```
+
+##📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
