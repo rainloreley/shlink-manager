@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats.dart';
 import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/ShortURLSubmission.dart';
@@ -41,6 +42,15 @@ class ServerManager {
 
   Future<void> _loadCredentials() async {
     const storage = FlutterSecureStorage();
+    final prefs = await SharedPreferences.getInstance();
+
+    if (prefs.getBool('first_run') ?? true) {
+      FlutterSecureStorage storage = FlutterSecureStorage();
+
+      await storage.deleteAll();
+
+      prefs.setBool('first_run', false);
+    }
     _server_url = await storage.read(key: "shlink_url");
     _api_key = await storage.read(key: "shlink_apikey");
   }
