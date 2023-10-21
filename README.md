@@ -31,7 +31,7 @@ Shlink Manager is an app for Android to see and manage all shortened URLs create
 - [ ] improve app icon
 - [ ] ...and more
 
-# 💻 Development
+## 💻 Development
 
 First make sure you've installed [Flutter](https://flutter.dev/) and the necessary tools to build for Android/iOS (Android Studio/Xcode).
 
@@ -42,6 +42,6 @@ $ flutter pub get
 $ flutter run
 ```
 
-##📄 License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
