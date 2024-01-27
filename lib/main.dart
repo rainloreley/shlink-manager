@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:shlink_app/LoginView.dart';
-import 'package:shlink_app/NavigationBarView.dart';
+import 'package:shlink_app/views/login_view.dart';
+import 'package:shlink_app/views/navigationbar_view.dart';
 import 'globals.dart' as globals;
 import 'package:dynamic_color/dynamic_color.dart';
 
@@ -11,7 +11,7 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static final _defaultLightColorScheme =
+  static const _defaultLightColorScheme =
   ColorScheme.light();//.fromSwatch(primarySwatch: Colors.blue, backgroundColor: Colors.white);
 
   static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
@@ -25,14 +25,14 @@ class MyApp extends StatelessWidget {
           title: 'Shlink',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xfffafafa),
             ),
               colorScheme: lightColorScheme ?? _defaultLightColorScheme,
               useMaterial3: true
           ),
           darkTheme: ThemeData(
-            appBarTheme: AppBarTheme(
+            appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xff0d0d0d),
               foregroundColor: Colors.white,
               elevation: 0,
@@ -40,26 +40,8 @@ class MyApp extends StatelessWidget {
             colorScheme: darkColorScheme?.copyWith(background: Colors.black) ?? _defaultDarkColorScheme,
             useMaterial3: true,
           ),
-          /*theme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.light,
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSwatch().copyWith(
-          secondary: Colors.orange
-        )
-      ),*/
-          /*darkTheme: ThemeData(
-        primarySwatch: Colors.blue,
-        brightness: Brightness.dark,
-        useMaterial3: true,
-        colorScheme: ColorScheme.dark(
-          background: Colors.black,
-          surface: Color(0xff0d0d0d),
-          secondaryContainer: Colors.grey[300]
-        )
-      ),*/
           themeMode: ThemeMode.system,
-          home: InitialPage()
+          home: const InitialPage()
       );
     });
   }
@@ -97,7 +79,7 @@ class _InitialPageState extends State<InitialPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Center(
         child: Text("")
       ),

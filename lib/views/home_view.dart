@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats.dart';
-import 'package:shlink_app/API/ServerManager.dart';
-import 'package:shlink_app/LoginView.dart';
-import 'package:shlink_app/ShortURLEditView.dart';
-import 'package:shlink_app/URLListView.dart';
-import 'API/Classes/ShortURL/ShortURL.dart';
-import 'globals.dart' as globals;
+import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
+import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/views/short_url_edit_view.dart';
+import 'package:shlink_app/views/url_list_view.dart';
+import '../API/Classes/ShortURL/short_url.dart';
+import '../globals.dart' as globals;
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -35,8 +34,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> loadAllData() async {
-    var resultStats = await loadShlinkStats();
-    var resultShortUrls = await loadRecentShortUrls();
+    await loadShlinkStats();
+    await loadRecentShortUrls();
     return;
   }
 
@@ -99,7 +98,7 @@ class _HomeViewState extends State<HomeView> {
                       title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Shlink", style: TextStyle(fontWeight: FontWeight.bold)),
+                          const Text("Shlink", style: TextStyle(fontWeight: FontWeight.bold)),
                           Text(globals.serverManager.getServerUrl(), style: TextStyle(fontSize: 16, color: Colors.grey[600]))
                         ],
                       )
@@ -119,12 +118,12 @@ class _HomeViewState extends State<HomeView> {
                     SliverToBoxAdapter(
                         child: Center(
                             child: Padding(
-                                padding: EdgeInsets.only(top: 50),
+                                padding: const EdgeInsets.only(top: 50),
                                 child: Column(
                                   children: [
-                                    Text("No Short URLs", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                                    const Text("No Short URLs", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 8),
+                                      padding: const EdgeInsets.only(top: 8),
                                       child: Text('Create one by tapping the "+" button below', style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
                                     )
                                   ],
@@ -134,9 +133,9 @@ class _HomeViewState extends State<HomeView> {
                     )
                   else
                     SliverList(delegate: SliverChildBuilderDelegate(
-                            (BuildContext _context, int index) {
+                            (BuildContext context, int index) {
                               if (index == 0) {
-                                return Padding(
+                                return const Padding(
                                   padding: EdgeInsets.only(top: 16, left: 12, right: 12),
                                   child: Text("Recent Short URLs", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                                 );
@@ -200,10 +199,10 @@ class _HomeViewState extends State<HomeView> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ShortURLEditView()));
+          await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ShortURLEditView()));
           loadRecentShortUrls();
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       )
     );
   }
@@ -211,11 +210,11 @@ class _HomeViewState extends State<HomeView> {
 
 // stats card widget
 class _ShlinkStatsCardWidget extends StatefulWidget {
-  const _ShlinkStatsCardWidget({this.text, this.icon, this.borderColor});
+  const _ShlinkStatsCardWidget({required this.text, required this.icon, this.borderColor});
 
-  final icon;
-  final borderColor;
-  final text;
+  final IconData icon;
+  final Color? borderColor;
+  final String text;
 
   @override
   State<_ShlinkStatsCardWidget> createState() => _ShlinkStatsCardWidgetState();
@@ -226,9 +225,9 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
   Widget build(BuildContext context) {
     var randomColor = ([...Colors.primaries]..shuffle()).first;
     return Padding(
-      padding: EdgeInsets.all(4),
+      padding: const EdgeInsets.all(4),
       child: Container(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
               border: Border.all(color: widget.borderColor ?? randomColor),
               borderRadius: BorderRadius.circular(8)
@@ -238,8 +237,8 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
               children: [
                 Icon(widget.icon),
                 Padding(
-                  padding: EdgeInsets.only(left: 4),
-                  child: Text(widget.text, style: TextStyle(fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.only(left: 4),
+                  child: Text(widget.text, style: const TextStyle(fontWeight: FontWeight.bold)),
                 )
               ],
             ),

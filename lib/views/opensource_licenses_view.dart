@@ -15,9 +15,9 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.medium(
+          const SliverAppBar.medium(
             expandedHeight: 120,
-            title: const Text("Open Source Licenses", style: TextStyle(fontWeight: FontWeight.bold),)
+            title: Text("Open Source Licenses", style: TextStyle(fontWeight: FontWeight.bold),)
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate(
@@ -32,23 +32,23 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
                       }
                     },
                     child: Padding(
-                      padding: EdgeInsets.all(12),
+                      padding: const EdgeInsets.all(12),
                       child: Container(
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
                         ),
                         child: Padding(
-                          padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+                          padding: const EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("${currentLicense.name}", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                              Text("Version: ${currentLicense.version ?? "N/A"}", style: TextStyle(color: Colors.grey)),
-                              SizedBox(height: 8),
-                              Divider(),
-                              SizedBox(height: 8),
-                              Text("${currentLicense.license}", textAlign: TextAlign.justify, style: TextStyle(color: Colors.grey)),
+                              Text(currentLicense.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                              Text("Version: ${currentLicense.version ?? "N/A"}", style: const TextStyle(color: Colors.grey)),
+                              const SizedBox(height: 8),
+                              const Divider(),
+                              const SizedBox(height: 8),
+                              Text(currentLicense.license, textAlign: TextAlign.justify, style: const TextStyle(color: Colors.grey)),
                             ],
                           ),
                         ),
@@ -59,7 +59,7 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
               childCount: LicenseUtil.getLicenses().length
             ),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: Padding(
               padding: EdgeInsets.only(top: 8, bottom: 20),
               child: Text("Thank you to all maintainers of these repositories 💝", style: TextStyle(color: Colors.grey), textAlign: TextAlign.center,),

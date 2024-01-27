@@ -2,16 +2,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
-import '../ServerManager.dart';
+import '../server_manager.dart';
 
-FutureOr<Either<String, Failure>> API_deleteShortUrl(String shortCode, String? api_key, String? server_url, String apiVersion) async {
+/// Gets the status of the server and health information
+FutureOr<Either<ServerHealthResponse, Failure>> apiGetServerHealth(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.delete(Uri.parse("${server_url}/rest/v${apiVersion}/short-urls/${shortCode}"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/health"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
-    if (response.statusCode == 204) {
-      // get returned short url
-      return left("");
+    if (response.statusCode == 200) {
+      var jsonData = jsonDecode(response.body);
+      return left(ServerHealthResponse(status: jsonData["status"], version: jsonData["version"]));
     }
     else {
       try {

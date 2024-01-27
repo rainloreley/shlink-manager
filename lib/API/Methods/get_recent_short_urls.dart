@@ -2,13 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
-import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
-import '../ServerManager.dart';
+import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
+import '../server_manager.dart';
 
-FutureOr<Either<List<ShortURL>, Failure>> API_getRecentShortUrls(String? api_key, String? server_url, String apiVersion) async {
+/// Gets recently created short URLs from the server
+FutureOr<Either<List<ShortURL>, Failure>> apiGetRecentShortUrls(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("${server_url}/rest/v${apiVersion}/short-urls?itemsPerPage=5&orderBy=dateCreated-DESC"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls?itemsPerPage=5&orderBy=dateCreated-DESC"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);

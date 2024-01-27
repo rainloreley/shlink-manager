@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
-import '../ServerManager.dart';
+import '../server_manager.dart';
 
-FutureOr<Either<String, Failure>> API_connect(String? api_key, String? server_url, String apiVersion) async {
+/// Tries to connect to the Shlink server
+FutureOr<Either<String, Failure>> apiConnect(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("${server_url}/rest/v${apiVersion}/short-urls"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       return left("");

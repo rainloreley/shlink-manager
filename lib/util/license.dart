@@ -26,7 +26,7 @@ class LicenseUtil {
 
   static List<License> getLicenses() {
     return [
-      License(
+      const License(
         name: r'cupertino_icons',
         license: r'''The MIT License (MIT)
 
@@ -52,7 +52,7 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
         homepage: null,
         repository: r'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
       ),
-      License(
+      const License(
         name: r'dartz',
         license: r'''The MIT License (MIT)
 
@@ -80,7 +80,7 @@ SOFTWARE.
         homepage: r'https://github.com/spebbe/dartz',
         repository: null,
       ),
-      License(
+      const License(
         name: r'dynamic_color',
         license: r'''                                 Apache License
                            Version 2.0, January 2004
@@ -288,7 +288,7 @@ SOFTWARE.
         homepage: null,
         repository: r'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
       ),
-      License(
+      const License(
         name: r'flutter',
         license: r'''Copyright 2014 The Flutter Authors. All rights reserved.
 
@@ -320,7 +320,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: r'https://flutter.dev/',
         repository: r'https://github.com/flutter/flutter',
       ),
-      License(
+      const License(
         name: r'flutter_launcher_icons',
         license: r'''MIT License
 
@@ -348,7 +348,7 @@ SOFTWARE.
         homepage: r'https://github.com/fluttercommunity/flutter_launcher_icons',
         repository: r'https://github.com/fluttercommunity/flutter_launcher_icons/',
       ),
-      License(
+      const License(
         name: r'flutter_lints',
         license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
 
@@ -380,7 +380,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: null,
         repository: r'https://github.com/flutter/packages/tree/main/packages/flutter_lints',
       ),
-      License(
+      const License(
         name: r'flutter_process_text',
         license: r'''BSD 3-Clause License
 
@@ -413,7 +413,7 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         homepage: null,
         repository: r'https://github.com/DevsOnFlutter/flutter_process_text',
       ),
-      License(
+      const License(
         name: r'flutter_secure_storage',
         license: r'''BSD 3-Clause License
 
@@ -448,7 +448,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         homepage: null,
         repository: r'https://github.com/mogol/flutter_secure_storage/tree/develop/flutter_secure_storage',
       ),
-      License(
+      const License(
         name: r'flutter_test',
         license: r'''Copyright 2014 The Flutter Authors. All rights reserved.
 
@@ -480,7 +480,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: r'https://flutter.dev/',
         repository: r'https://github.com/flutter/flutter',
       ),
-      License(
+      const License(
         name: r'http',
         license: r'''Copyright 2014, the Dart project authors. 
 
@@ -514,7 +514,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: null,
         repository: r'https://github.com/dart-lang/http/tree/master/pkgs/http',
       ),
-      License(
+      const License(
         name: r'intl',
         license: r'''Copyright 2013, the Dart project authors.
 
@@ -548,7 +548,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: null,
         repository: r'https://github.com/dart-lang/i18n/tree/main/pkgs/intl',
       ),
-      License(
+      const License(
         name: r'license_generator',
         license: r'''MIT License
 
@@ -576,7 +576,7 @@ SOFTWARE.
         homepage: r'https://github.com/icapps/flutter-icapps-license',
         repository: null,
       ),
-      License(
+      const License(
         name: r'package_info_plus',
         license: r'''Copyright 2017 The Chromium Authors. All rights reserved.
 
@@ -610,7 +610,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: r'https://plus.fluttercommunity.dev/',
         repository: r'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
       ),
-      License(
+      const License(
         name: r'qr_flutter',
         license: r'''BSD 3-Clause License
 
@@ -646,7 +646,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: r'https://github.com/theyakka/qr.flutter',
         repository: null,
       ),
-      License(
+      const License(
         name: r'shared_preferences',
         license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
 
@@ -678,7 +678,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
         homepage: null,
         repository: r'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
       ),
-      License(
+      const License(
         name: r'tuple',
         license: r'''Copyright (c) 2014, the tuple project authors.
 All rights reserved.
@@ -706,7 +706,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         homepage: null,
         repository: r'https://github.com/google/tuple.dart',
       ),
-      License(
+      const License(
         name: r'url_launcher',
         license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
 

@@ -1,11 +1,11 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
-import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
-import 'package:shlink_app/API/ServerManager.dart';
-import 'package:shlink_app/ShortURLEditView.dart';
-import 'package:shlink_app/URLDetailView.dart';
-import 'globals.dart' as globals;
+import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
+import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/views/short_url_edit_view.dart';
+import 'package:shlink_app/views/url_detail_view.dart';
+import '../globals.dart' as globals;
 import 'package:flutter/services.dart';
 
 class URLListView extends StatefulWidget {
@@ -59,10 +59,10 @@ class _URLListViewState extends State<URLListView> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          final result = await Navigator.of(context).push(MaterialPageRoute(builder: (context) => ShortURLEditView()));
+          await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ShortURLEditView()));
           loadAllShortUrls();
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       body: Stack(
         children: [
@@ -74,19 +74,19 @@ class _URLListViewState extends State<URLListView> {
               },
               child: CustomScrollView(
                 slivers: [
-                  SliverAppBar.medium(
+                  const SliverAppBar.medium(
                       title: Text("Short URLs", style: TextStyle(fontWeight: FontWeight.bold))
                   ),
-                  if (shortUrlsLoaded && shortUrls.length == 0)
+                  if (shortUrlsLoaded && shortUrls.isEmpty)
                     SliverToBoxAdapter(
                         child: Center(
                             child: Padding(
-                                padding: EdgeInsets.only(top: 50),
+                                padding: const EdgeInsets.only(top: 50),
                                 child: Column(
                                   children: [
-                                    Text("No Short URLs", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
+                                    const Text("No Short URLs", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
                                     Padding(
-                                      padding: EdgeInsets.only(top: 8),
+                                      padding: const EdgeInsets.only(top: 8),
                                       child: Text('Create one by tapping the "+" button below', style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
                                     )
                                   ],
@@ -96,7 +96,7 @@ class _URLListViewState extends State<URLListView> {
                     )
                   else
                     SliverList(delegate: SliverChildBuilderDelegate(
-                            (BuildContext _context, int index) {
+                            (BuildContext context, int index) {
                           final shortURL = shortUrls[index];
                           return ShortURLCell(shortURL: shortURL, reload: () {
                             loadAllShortUrls();
@@ -181,7 +181,7 @@ class _ShortURLCellState extends State<ShortURLCell> {
         child: Padding(
           padding: EdgeInsets.only(left: 8, right: 8, bottom: widget.isLast ? 90 : 0),
           child: Container(
-            padding: EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 16),
+            padding: const EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 16),
             decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: MediaQuery.of(context).platformBrightness == Brightness.dark ? Colors.grey[800]! : Colors.grey[300]!)),
             ),
@@ -193,16 +193,16 @@ class _ShortURLCellState extends State<ShortURLCell> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text("${widget.shortURL.title ?? widget.shortURL.shortCode}", textScaleFactor: 1.4, style: TextStyle(fontWeight: FontWeight.bold),),
-                      Text("${widget.shortURL.longUrl}",maxLines: 1, overflow: TextOverflow.ellipsis, textScaleFactor: 0.9, style: TextStyle(color: Colors.grey[600]),),
+                      Text(widget.shortURL.title ?? widget.shortURL.shortCode, textScaleFactor: 1.4, style: const TextStyle(fontWeight: FontWeight.bold),),
+                      Text(widget.shortURL.longUrl,maxLines: 1, overflow: TextOverflow.ellipsis, textScaleFactor: 0.9, style: TextStyle(color: Colors.grey[600]),),
                       // List tags in a row
                       Wrap(
                           children: widget.shortURL.tags.map((tag) {
                             var randomColor = ([...Colors.primaries]..shuffle()).first.harmonizeWith(Theme.of(context).colorScheme.primary);
                             return Padding(
-                              padding: EdgeInsets.only(right: 4, top: 4),
+                              padding: const EdgeInsets.only(right: 4, top: 4),
                               child: Container(
-                                padding: EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+                                padding: const EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(4),
                                   color: randomColor,
@@ -218,12 +218,12 @@ class _ShortURLCellState extends State<ShortURLCell> {
                 ),
                 IconButton(onPressed: () async {
                   await Clipboard.setData(ClipboardData(text: widget.shortURL.shortUrl));
-                  final snackBar = SnackBar(content: Text("Copied to clipboard!"), behavior: SnackBarBehavior.floating, backgroundColor: Colors.green[400]);
+                  final snackBar = SnackBar(content: const Text("Copied to clipboard!"), behavior: SnackBarBehavior.floating, backgroundColor: Colors.green[400]);
                   ScaffoldMessenger.of(context).showSnackBar(snackBar);
-                }, icon: Icon(Icons.copy)),
+                }, icon: const Icon(Icons.copy)),
                 IconButton(onPressed: () {
                   widget.showQRCode(widget.shortURL.shortUrl);
-                }, icon: Icon(Icons.qr_code))
+                }, icon: const Icon(Icons.qr_code))
               ],
             )
           ),

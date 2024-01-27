@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shlink_app/API/ServerManager.dart';
+import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/main.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -11,8 +11,8 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  late TextEditingController _server_url_controller;
-  late TextEditingController _apikey_controller;
+  late TextEditingController _serverUrlController;
+  late TextEditingController _apiKeyController;
 
   bool _isLoggingIn = false;
   String _errorMessage = "";
@@ -21,8 +21,8 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _server_url_controller = TextEditingController();
-    _apikey_controller = TextEditingController();
+    _serverUrlController = TextEditingController();
+    _apiKeyController = TextEditingController();
   }
 
   void _connect() async {
@@ -30,7 +30,7 @@ class _LoginViewState extends State<LoginView> {
       _isLoggingIn = true;
       _errorMessage = "";
     });
-    final connectResult = await globals.serverManager.initAndConnect(_server_url_controller.text, _apikey_controller.text);
+    final connectResult = await globals.serverManager.initAndConnect(_serverUrlController.text, _apiKeyController.text);
     connectResult.fold((l) {
       Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => const InitialPage())
@@ -61,8 +61,8 @@ class _LoginViewState extends State<LoginView> {
       extendBody: true,
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.medium(
-              title: const Text("Add server", style: TextStyle(fontWeight: FontWeight.bold))
+          const SliverAppBar.medium(
+              title: Text("Add server", style: TextStyle(fontWeight: FontWeight.bold))
           ),
           SliverFillRemaining(
             child: Padding(
@@ -75,10 +75,10 @@ class _LoginViewState extends State<LoginView> {
                       child: Text("Server URL", style: TextStyle(fontWeight: FontWeight.bold),)),
                   Row(
                     children: [
-                      Icon(Icons.dns_outlined),
-                      SizedBox(width: 8),
+                      const Icon(Icons.dns_outlined),
+                      const SizedBox(width: 8),
                       Expanded(child: TextField(
-                        controller: _server_url_controller,
+                        controller: _serverUrlController,
                         keyboardType: TextInputType.url,
                         decoration: const InputDecoration(
                             border: OutlineInputBorder(),
@@ -93,10 +93,10 @@ class _LoginViewState extends State<LoginView> {
                   ),
                   Row(
                     children: [
-                      Icon(Icons.key),
-                      SizedBox(width: 8),
+                      const Icon(Icons.key),
+                      const SizedBox(width: 8),
                       Expanded(child: TextField(
-                        controller: _apikey_controller,
+                        controller: _apiKeyController,
                         keyboardType: TextInputType.text,
                         obscureText: true,
                         decoration: const InputDecoration(
@@ -130,7 +130,7 @@ class _LoginViewState extends State<LoginView> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Flexible(child: Text(_errorMessage, style: TextStyle(color: Colors.red), textAlign: TextAlign.center))
+                        Flexible(child: Text(_errorMessage, style: const TextStyle(color: Colors.red), textAlign: TextAlign.center))
                       ],
                     ),
                   )

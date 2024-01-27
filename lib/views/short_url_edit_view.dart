@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shlink_app/API/Classes/ShortURLSubmission/ShortURLSubmission.dart';
-import 'package:shlink_app/API/ServerManager.dart';
-import 'globals.dart' as globals;
+import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
+import 'package:shlink_app/API/server_manager.dart';
+import '../globals.dart' as globals;
 
 class ShortURLEditView extends StatefulWidget {
   const ShortURLEditView({super.key});
@@ -34,7 +34,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
   void initState() {
     _customSlugDiceAnimationController = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
     );
     super.initState();
   }
@@ -67,11 +67,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
 
       if (copyToClipboard) {
         await Clipboard.setData(ClipboardData(text: l));
-        final snackBar = SnackBar(content: Text("Copied to clipboard!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
+        final snackBar = SnackBar(content: const Text("Copied to clipboard!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
       else {
-        final snackBar = SnackBar(content: Text("Short URL created!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
+        final snackBar = SnackBar(content: const Text("Short URL created!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
       Navigator.pop(context);
@@ -89,8 +89,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
       }
       else {
         text = (r as ApiFailure).detail;
-        if ((r as ApiFailure).invalidElements != null) {
-          text = text + ": " + (r as ApiFailure).invalidElements.toString();
+        if ((r).invalidElements != null) {
+          text = "$text: ${(r).invalidElements}";
         }
       }
 
@@ -106,12 +106,12 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          SliverAppBar.medium(
+          const SliverAppBar.medium(
             title: Text("New Short URL", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(left: 16, right: 16, top: 16),
+              padding: const EdgeInsets.only(left: 16, right: 16, top: 16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -119,8 +119,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                     controller: longUrlController,
                     decoration: InputDecoration(
                       errorText: longUrlError != "" ? longUrlError : null,
-                      border: OutlineInputBorder(),
-                      label: Row(
+                      border: const OutlineInputBorder(),
+                      label: const Row(
                         children: [
                           Icon(Icons.public),
                           SizedBox(width: 8),
@@ -129,7 +129,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                       )
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     children: [
                       Expanded(
@@ -137,23 +137,25 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                           controller: customSlugController,
                           style: TextStyle(color: randomSlug ? Colors.grey : Theme.of(context).brightness == Brightness.light ? Colors.black : Colors.white),
                           onChanged: (_) {
-                            if (randomSlug) setState(() {
+                            if (randomSlug) {
+                              setState(() {
                               randomSlug = false;
                             });
+                            }
                           },
                           decoration: InputDecoration(
-                            border: OutlineInputBorder(),
+                            border: const OutlineInputBorder(),
                             label: Row(
                               children: [
-                                Icon(Icons.link),
-                                SizedBox(width: 8),
+                                const Icon(Icons.link),
+                                const SizedBox(width: 8),
                                 Text("${randomSlug ? "Random" : "Custom"} slug", style: TextStyle(fontStyle: randomSlug ? FontStyle.italic : FontStyle.normal),)
                               ],
                             )
                           ),
                         ),
                       ),
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       RotationTransition(
                         turns: Tween(begin: 0.0, end: 3.0).animate(CurvedAnimation(parent: _customSlugDiceAnimationController, curve: Curves.easeInOutExpo)),
                         child: IconButton(
@@ -175,13 +177,13 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                     ],
                   ),
                   if (randomSlug)
-                    SizedBox(height: 16),
+                    const SizedBox(height: 16),
 
                   if (randomSlug)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text("Random slug length"),
+                        const Text("Random slug length"),
                         SizedBox(
                             width: 100,
                             child: TextField(
@@ -189,8 +191,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             errorText: randomSlugLengthError != "" ? "" : null,
-                              border: OutlineInputBorder(),
-                              label: Row(
+                              border: const OutlineInputBorder(),
+                              label: const Row(
                                 children: [
                                   Icon(Icons.tag),
                                   SizedBox(width: 8),
@@ -201,10 +203,10 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                         ))
                       ],
                     ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   TextField(
                     controller: titleController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       border: OutlineInputBorder(),
                       label: Row(
                         children: [
@@ -215,11 +217,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                       )
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Crawlable"),
+                      const Text("Crawlable"),
                       Switch(
                         value: isCrawlable,
                         onChanged: (_) {
@@ -230,11 +232,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                       )
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Forward query params"),
+                      const Text("Forward query params"),
                       Switch(
                         value: forwardQuery,
                         onChanged: (_) {
@@ -245,11 +247,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
                       )
                     ],
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Copy to clipboard"),
+                      const Text("Copy to clipboard"),
                       Switch(
                         value: copyToClipboard,
                         onChanged: (_) {
@@ -293,7 +295,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView> with SingleTickerPr
             }
           }
         },
-        child: isSaving ? Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator(strokeWidth: 3)) : Icon(Icons.save)
+        child: isSaving ? const Padding(padding: EdgeInsets.all(16), child: CircularProgressIndicator(strokeWidth: 3)) : const Icon(Icons.save)
       ),
     );
   }

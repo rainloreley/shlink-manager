@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shlink_app/API/ServerManager.dart';
-import 'package:shlink_app/LoginView.dart';
-import 'package:shlink_app/OpenSourceLicensesView.dart';
+import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/views/login_view.dart';
+import 'package:shlink_app/views/opensource_licenses_view.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'globals.dart' as globals;
+import '../globals.dart' as globals;
 
 class SettingsView extends StatefulWidget {
   const SettingsView({super.key});
@@ -21,9 +21,9 @@ enum ServerStatus {
 
 class _SettingsViewState extends State<SettingsView> {
 
-  var _server_version = "---";
-  ServerStatus _server_status = ServerStatus.connecting;
-  var packageInfo = null;
+  var _serverVersion = "---";
+  ServerStatus _serverStatus = ServerStatus.connecting;
+  PackageInfo packageInfo = PackageInfo(appName: "", packageName: "", version: "", buildNumber: "");
 
   @override
   void initState() {
@@ -34,19 +34,19 @@ class _SettingsViewState extends State<SettingsView> {
   }
 
   void getServerHealth() async {
-    var _packageInfo = await PackageInfo.fromPlatform();
+    var packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      packageInfo = _packageInfo;
+      packageInfo = packageInfo;
     });
     final response = await globals.serverManager.getServerHealth();
     response.fold((l) {
       setState(() {
-        _server_version = l.version;
-        _server_status = ServerStatus.connected;
+        _serverVersion = l.version;
+        _serverStatus = ServerStatus.connected;
       });
     }, (r) {
       setState(() {
-        _server_status = ServerStatus.disconnected;
+        _serverStatus = ServerStatus.disconnected;
       });
 
       var text = "";
@@ -74,7 +74,7 @@ class _SettingsViewState extends State<SettingsView> {
               PopupMenuButton(
                 itemBuilder: (context) {
                   return [
-                    PopupMenuItem(
+                    const PopupMenuItem(
                       value: 0,
                       child: Text("Log out...", style: TextStyle(color: Colors.red)),
                     )
@@ -105,7 +105,7 @@ class _SettingsViewState extends State<SettingsView> {
                       child: Row(
                         children: [
                           Icon(Icons.dns_outlined, color: (() {
-                            switch (_server_status) {
+                            switch (_serverStatus) {
                               case ServerStatus.connected:
                                 return Colors.green;
                               case ServerStatus.connecting:
@@ -114,19 +114,19 @@ class _SettingsViewState extends State<SettingsView> {
                                 return Colors.red;
                             }
                           }())),
-                          SizedBox(width: 8),
+                          const SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Connected to", style: TextStyle(color: Colors.grey)),
-                              Text(globals.serverManager.getServerUrl(), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              const Text("Connected to", style: TextStyle(color: Colors.grey)),
+                              Text(globals.serverManager.getServerUrl(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                               Row(
                                 children: [
-                                  Text("API Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
-                                  Text("${globals.serverManager.getApiVersion()}", style: TextStyle(color: Colors.grey)),
-                                  SizedBox(width: 16),
-                                  Text("Server Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
-                                  Text("${_server_version}", style: TextStyle(color: Colors.grey))
+                                  const Text("API Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
+                                  Text(globals.serverManager.getApiVersion(), style: const TextStyle(color: Colors.grey)),
+                                  const SizedBox(width: 16),
+                                  const Text("Server Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
+                                  Text(_serverVersion, style: const TextStyle(color: Colors.grey))
                                 ],
                               ),
                             ],
@@ -135,9 +135,9 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Divider(),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
+                  const Divider(),
+                  const SizedBox(height: 8),
                   GestureDetector(
                     onTap: () {
                       Navigator.of(context).push(
@@ -149,7 +149,7 @@ class _SettingsViewState extends State<SettingsView> {
                         borderRadius: BorderRadius.circular(8),
                         color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
                       ),
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -167,7 +167,7 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () async {
                       var url = Uri.parse("https://github.com/rainloreley/shlink-mobile-app");
@@ -180,7 +180,7 @@ class _SettingsViewState extends State<SettingsView> {
                         borderRadius: BorderRadius.circular(8),
                         color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
                       ),
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -198,7 +198,7 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
+                  const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () async {
                       var url = Uri.parse("https://abmgrt.dev/shlink-manager/privacy");
@@ -211,7 +211,7 @@ class _SettingsViewState extends State<SettingsView> {
                         borderRadius: BorderRadius.circular(8),
                         color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
                       ),
-                      child: Padding(
+                      child: const Padding(
                         padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -229,12 +229,12 @@ class _SettingsViewState extends State<SettingsView> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 16),
-                  if (packageInfo != null)
+                  const SizedBox(height: 16),
+                  if (packageInfo.appName != "")
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text("${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})", style: TextStyle(color: Colors.grey),),],
+                        Text("${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})", style: const TextStyle(color: Colors.grey),),],
                     )
                 ],
               )

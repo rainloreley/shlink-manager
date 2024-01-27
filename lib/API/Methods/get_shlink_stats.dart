@@ -2,11 +2,12 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:http/http.dart' as http;
-import 'package:shlink_app/API/Classes/ShlinkStats/ShlinkStats_Visits.dart';
-import '../Classes/ShlinkStats/ShlinkStats.dart';
-import '../ServerManager.dart';
+import 'package:shlink_app/API/Classes/ShortURL/visits_summary.dart';
+import '../Classes/ShlinkStats/shlink_stats.dart';
+import '../server_manager.dart';
 
-FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, String? server_url, String apiVersion) async {
+/// Gets statistics about the Shlink server
+FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(String? apiKey, String? serverUrl, String apiVersion) async {
 
   var nonOrphanVisits;
   var orphanVisits;
@@ -14,7 +15,7 @@ FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, Strin
   var tagsCount;
   var failure;
   
-  var visitStatsResponse = await _getVisitStats(api_key, server_url, apiVersion);
+  var visitStatsResponse = await _getVisitStats(apiKey, serverUrl, apiVersion);
   visitStatsResponse.fold((l) {
     nonOrphanVisits = l.nonOrphanVisits;
     orphanVisits = l.orphanVisits;
@@ -23,7 +24,7 @@ FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, Strin
     return right(r);
   });
 
-  var shortUrlsCountResponse = await _getShortUrlsCount(api_key, server_url, apiVersion);
+  var shortUrlsCountResponse = await _getShortUrlsCount(apiKey, serverUrl, apiVersion);
   shortUrlsCountResponse.fold((l) {
     shortUrlsCount = l;
   }, (r) {
@@ -31,7 +32,7 @@ FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, Strin
     return right(r);
   });
 
-  var tagsCountResponse = await _getTagsCount(api_key, server_url, apiVersion);
+  var tagsCountResponse = await _getTagsCount(apiKey, serverUrl, apiVersion);
   tagsCountResponse.fold((l) {
     tagsCount = l;
   }, (r) {
@@ -40,7 +41,7 @@ FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, Strin
   });
 
   while(failure == null && (nonOrphanVisits == null || orphanVisits == null || shortUrlsCount == null || tagsCount == null)) {
-    await Future.delayed(Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 100));
   }
 
   if (failure != null) {
@@ -49,37 +50,23 @@ FutureOr<Either<ShlinkStats, Failure>> API_getShlinkStats(String? api_key, Strin
   return left(ShlinkStats(nonOrphanVisits, orphanVisits, shortUrlsCount, tagsCount));
 }
 
-/*Future<tuple.Tuple3<FutureOr<Either<_ShlinkVisitStats, Failure>>, FutureOr<Either<int, Failure>>, FutureOr<Either<int, Failure>>>> waiterFunction(String? api_key, String? server_url, String apiVersion) async {
-  late FutureOr<Either<_ShlinkVisitStats, Failure>> visits;
-  late FutureOr<Either<int, Failure>> shortUrlsCount;
-  late FutureOr<Either<int, Failure>> tagsCount;
-
-  await Future.wait([
-    _getVisitStats(api_key, server_url, apiVersion).then((value) => visits = value),
-    _getShortUrlsCount(api_key, server_url, apiVersion).then((value) => shortUrlsCount = value),
-    _getTagsCount(api_key, server_url, apiVersion).then((value) => tagsCount = value),
-  ]);
-
-  return Future.value(tuple.Tuple3(visits, shortUrlsCount, tagsCount));
-
-}*/
-
 class _ShlinkVisitStats {
-  ShlinkStats_Visits nonOrphanVisits;
-  ShlinkStats_Visits orphanVisits;
+  VisitsSummary nonOrphanVisits;
+  VisitsSummary orphanVisits;
 
   _ShlinkVisitStats(this.nonOrphanVisits, this.orphanVisits);
 }
 
-FutureOr<Either<_ShlinkVisitStats, Failure>> _getVisitStats(String? api_key, String? server_url, String apiVersion) async {
+/// Gets visitor statistics about the entire server
+FutureOr<Either<_ShlinkVisitStats, Failure>> _getVisitStats(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("${server_url}/rest/v${apiVersion}/visits"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/visits"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
-      var nonOrphanVisits = ShlinkStats_Visits.fromJson(jsonResponse["visits"]["nonOrphanVisits"]);
-      var orphanVisits = ShlinkStats_Visits.fromJson(jsonResponse["visits"]["orphanVisits"]);
+      var nonOrphanVisits = VisitsSummary.fromJson(jsonResponse["visits"]["nonOrphanVisits"]);
+      var orphanVisits = VisitsSummary.fromJson(jsonResponse["visits"]["orphanVisits"]);
       return left(_ShlinkVisitStats(nonOrphanVisits, orphanVisits));
 
     }
@@ -98,11 +85,11 @@ FutureOr<Either<_ShlinkVisitStats, Failure>> _getVisitStats(String? api_key, Str
   }
 }
 
-// get short urls count
-FutureOr<Either<int, Failure>> _getShortUrlsCount(String? api_key, String? server_url, String apiVersion) async {
+/// Gets amount of short URLs
+FutureOr<Either<int, Failure>> _getShortUrlsCount(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("${server_url}/rest/v${apiVersion}/short-urls"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
@@ -123,11 +110,11 @@ FutureOr<Either<int, Failure>> _getShortUrlsCount(String? api_key, String? serve
   }
 }
 
-// get tags count
-FutureOr<Either<int, Failure>> _getTagsCount(String? api_key, String? server_url, String apiVersion) async {
+/// Gets amount of tags
+FutureOr<Either<int, Failure>> _getTagsCount(String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("${server_url}/rest/v${apiVersion}/tags"), headers: {
-      "X-Api-Key": api_key ?? "",
+    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/tags"), headers: {
+      "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);

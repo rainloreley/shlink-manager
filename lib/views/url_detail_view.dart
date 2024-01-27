@@ -1,9 +1,9 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
-import 'package:shlink_app/API/Classes/ShortURL/ShortURL.dart';
+import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:intl/intl.dart';
-import 'package:shlink_app/API/ServerManager.dart';
-import 'globals.dart' as globals;
+import 'package:shlink_app/API/server_manager.dart';
+import '../globals.dart' as globals;
 
 class URLDetailView extends StatefulWidget {
   const URLDetailView({super.key, required this.shortURL});
@@ -26,9 +26,9 @@ class _URLDetailViewState extends State<URLDetailView> {
               child: ListBody(
                 children: [
                   const Text("You're about to delete"),
-                  SizedBox(height: 4),
-                  Text("${widget.shortURL.title ?? widget.shortURL.shortCode}", style: TextStyle(fontStyle: FontStyle.italic),),
-                  SizedBox(height: 4),
+                  const SizedBox(height: 4),
+                  Text(widget.shortURL.title ?? widget.shortURL.shortCode, style: const TextStyle(fontStyle: FontStyle.italic),),
+                  const SizedBox(height: 4),
                   const Text("It'll be gone forever! (a very long time)")
                 ],
               ),
@@ -43,7 +43,7 @@ class _URLDetailViewState extends State<URLDetailView> {
                     Navigator.pop(context);
                     Navigator.pop(context, "reload");
 
-                    final snackBar = SnackBar(content: Text("Short URL deleted!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
+                    final snackBar = SnackBar(content: const Text("Short URL deleted!"), backgroundColor: Colors.green[400], behavior: SnackBarBehavior.floating);
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return true;
                   }, (r) {
@@ -60,7 +60,7 @@ class _URLDetailViewState extends State<URLDetailView> {
                     return false;
                   });
                 },
-                child: Text("Delete", style: TextStyle(color: Colors.red)),
+                child: const Text("Delete", style: TextStyle(color: Colors.red)),
               )
             ],
           );
@@ -74,11 +74,11 @@ class _URLDetailViewState extends State<URLDetailView> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.medium(
-            title: Text(widget.shortURL.title ?? widget.shortURL.shortCode, style: TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(widget.shortURL.title ?? widget.shortURL.shortCode, style: const TextStyle(fontWeight: FontWeight.bold)),
             actions: [
               IconButton(onPressed: () {
                 showDeletionConfirmation();
-              }, icon: Icon(Icons.delete, color: Colors.red,))
+              }, icon: const Icon(Icons.delete, color: Colors.red,))
             ],
           ),
           SliverToBoxAdapter(
@@ -88,9 +88,9 @@ class _URLDetailViewState extends State<URLDetailView> {
                   children: widget.shortURL.tags.map((tag) {
                     var randomColor = ([...Colors.primaries]..shuffle()).first.harmonizeWith(Theme.of(context).colorScheme.primary);
                     return Padding(
-                      padding: EdgeInsets.only(right: 4, top: 4),
+                      padding: const EdgeInsets.only(right: 4, top: 4),
                       child: Container(
-                        padding: EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
+                        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 12, right: 12),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: randomColor,
@@ -109,11 +109,11 @@ class _URLDetailViewState extends State<URLDetailView> {
           _ListCell(title: "Android", content: widget.shortURL.deviceLongUrls.android, sub: true),
           _ListCell(title: "Desktop", content: widget.shortURL.deviceLongUrls.desktop, sub: true),
           _ListCell(title: "Creation Date", content: widget.shortURL.dateCreated),
-          _ListCell(title: "Visits", content: ""),
+          const _ListCell(title: "Visits", content: ""),
           _ListCell(title: "Total", content: widget.shortURL.visitsSummary.total, sub: true),
           _ListCell(title: "Non-Bots", content: widget.shortURL.visitsSummary.nonBots, sub: true),
           _ListCell(title: "Bots", content: widget.shortURL.visitsSummary.bots, sub: true),
-          _ListCell(title: "Meta", content: ""),
+          const _ListCell(title: "Meta", content: ""),
           _ListCell(title: "Valid Since", content: widget.shortURL.meta.validSince, sub: true),
           _ListCell(title: "Valid Until", content: widget.shortURL.meta.validUntil, sub: true),
           _ListCell(title: "Max Visits", content: widget.shortURL.meta.maxVisits, sub: true),
@@ -146,7 +146,7 @@ class _ListCellState extends State<_ListCell> {
       child: Padding(
         padding: EdgeInsets.only(top: 16, bottom: widget.last ? 30 : 0),
         child: Container(
-          padding: EdgeInsets.only(top: 16, left: 8, right: 8),
+          padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
           decoration: BoxDecoration(
             border: Border(top: BorderSide(width: 1, color: MediaQuery.of(context).platformBrightness == Brightness.dark ? Colors.grey[800]! : Colors.grey[300]!)),
           ),
@@ -157,7 +157,7 @@ class _ListCellState extends State<_ListCell> {
                 children: [
                   if (widget.sub)
                     Padding(
-                      padding: EdgeInsets.only(right: 4),
+                      padding: const EdgeInsets.only(right: 4),
                       child: SizedBox(
                         width: 20,
                         height: 6,
@@ -169,7 +169,7 @@ class _ListCellState extends State<_ListCell> {
                         ),
                       ),
                     ),
-                  Text(widget.title, style: TextStyle(fontWeight: FontWeight.bold),)],
+                  Text(widget.title, style: const TextStyle(fontWeight: FontWeight.bold),)],
               ),
               if (widget.content is bool)
                 Icon(widget.content ? Icons.check : Icons.close, color: widget.content ? Colors.green : Colors.red)
