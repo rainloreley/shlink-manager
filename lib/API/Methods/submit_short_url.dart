@@ -6,27 +6,33 @@ import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.d
 import '../server_manager.dart';
 
 /// Submits a short URL to a server for it to be added
-FutureOr<Either<String, Failure>> apiSubmitShortUrl(ShortURLSubmission shortUrl, String? apiKey, String? serverUrl, String apiVersion) async {
+FutureOr<Either<String, Failure>> apiSubmitShortUrl(ShortURLSubmission shortUrl,
+    String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.post(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"), headers: {
-      "X-Api-Key": apiKey ?? "",
-    }, body: jsonEncode(shortUrl.toJson()));
+    final response =
+        await http.post(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"),
+            headers: {
+              "X-Api-Key": apiKey ?? "",
+            },
+            body: jsonEncode(shortUrl.toJson()));
     if (response.statusCode == 200) {
       // get returned short url
       var jsonBody = jsonDecode(response.body);
       return left(jsonBody["shortUrl"]);
-    }
-    else {
+    } else {
       try {
         var jsonBody = jsonDecode(response.body);
-        return right(ApiFailure(type: jsonBody["type"], detail: jsonBody["detail"], title: jsonBody["title"], status: jsonBody["status"], invalidElements: jsonBody["invalidElements"]));
-      }
-      catch(resErr) {
+        return right(ApiFailure(
+            type: jsonBody["type"],
+            detail: jsonBody["detail"],
+            title: jsonBody["title"],
+            status: jsonBody["status"],
+            invalidElements: jsonBody["invalidElements"]));
+      } catch (resErr) {
         return right(RequestFailure(response.statusCode, resErr.toString()));
       }
     }
-  }
-  catch(reqErr) {
+  } catch (reqErr) {
     return right(RequestFailure(0, reqErr.toString()));
   }
 }

@@ -15,7 +15,6 @@ import 'Methods/delete_short_url.dart';
 import 'Methods/submit_short_url.dart';
 
 class ServerManager {
-
   /// The URL of the Shlink server
   String? serverUrl;
 
@@ -69,9 +68,9 @@ class ServerManager {
     storage.write(key: "shlink_apikey", value: apiKey);
   }
 
-
   /// Saves provided server credentials and tries to establish a connection
-  FutureOr<Either<String, Failure>> initAndConnect(String url, String apiKey) async {
+  FutureOr<Either<String, Failure>> initAndConnect(
+      String url, String apiKey) async {
     // TODO: convert url to correct format
     serverUrl = url;
     this.apiKey = apiKey;
@@ -100,7 +99,8 @@ class ServerManager {
   }
 
   /// Saves a new short URL to the server
-  FutureOr<Either<String, Failure>> submitShortUrl(ShortURLSubmission shortUrl) async {
+  FutureOr<Either<String, Failure>> submitShortUrl(
+      ShortURLSubmission shortUrl) async {
     return apiSubmitShortUrl(shortUrl, apiKey, serverUrl, apiVersion);
   }
 
@@ -139,7 +139,8 @@ class ServerHealthResponse {
 /// Failure class, used for the API
 abstract class Failure {}
 
-/// Used when a request to a server fails (due to networking issues or an unexpected response)
+/// Used when a request to a server fails
+/// (due to networking issues or an unexpected response)
 class RequestFailure extends Failure {
   int statusCode;
   String description;
@@ -155,5 +156,10 @@ class ApiFailure extends Failure {
   int status;
   List<dynamic>? invalidElements;
 
-  ApiFailure({required this.type, required this.detail, required this.title, required this.status, this.invalidElements});
+  ApiFailure(
+      {required this.type,
+      required this.detail,
+      required this.title,
+      required this.status,
+      this.invalidElements});
 }

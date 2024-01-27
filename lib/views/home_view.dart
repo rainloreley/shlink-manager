@@ -8,14 +8,13 @@ import '../API/Classes/ShortURL/short_url.dart';
 import '../globals.dart' as globals;
 
 class HomeView extends StatefulWidget {
-  const HomeView({Key? key}) : super(key: key);
+  const HomeView({super.key});
 
   @override
   State<HomeView> createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
-
   ShlinkStats? shlinkStats;
 
   List<ShortURL> shortUrls = [];
@@ -27,9 +26,8 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) {
-          loadAllData();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      loadAllData();
     });
   }
 
@@ -49,12 +47,14 @@ class _HomeViewState extends State<HomeView> {
       var text = "";
       if (r is RequestFailure) {
         text = r.description;
-      }
-      else {
+      } else {
         text = (r as ApiFailure).detail;
       }
 
-      final snackBar = SnackBar(content: Text(text), backgroundColor: Colors.red[400], behavior: SnackBarBehavior.floating);
+      final snackBar = SnackBar(
+          content: Text(text),
+          backgroundColor: Colors.red[400],
+          behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
   }
@@ -70,12 +70,14 @@ class _HomeViewState extends State<HomeView> {
       var text = "";
       if (r is RequestFailure) {
         text = r.description;
-      }
-      else {
+      } else {
         text = (r as ApiFailure).detail;
       }
 
-      final snackBar = SnackBar(content: Text(text), backgroundColor: Colors.red[400], behavior: SnackBarBehavior.floating);
+      final snackBar = SnackBar(
+          content: Text(text),
+          backgroundColor: Colors.red[400],
+          behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
   }
@@ -83,134 +85,171 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          ColorFiltered(
-            colorFilter: ColorFilter.mode(Colors.black.withOpacity(_qrCodeShown ? 0.4 : 0), BlendMode.srcOver),
-            child: RefreshIndicator(
-              onRefresh: () async {
-                return loadAllData();
-              },
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar.medium(
-                      expandedHeight: 160,
-                      title: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text("Shlink", style: TextStyle(fontWeight: FontWeight.bold)),
-                          Text(globals.serverManager.getServerUrl(), style: TextStyle(fontSize: 16, color: Colors.grey[600]))
-                        ],
-                      )
-                  ),
-                  SliverToBoxAdapter(
-                    child: Wrap(
-                      alignment: WrapAlignment.spaceEvenly,
-                      children: [
-                        _ShlinkStatsCardWidget(icon: Icons.link, text: "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs", borderColor: Colors.blue),
-                        _ShlinkStatsCardWidget(icon: Icons.remove_red_eye, text: "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits", borderColor: Colors.green),
-                        _ShlinkStatsCardWidget(icon: Icons.warning, text: "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits", borderColor: Colors.red),
-                        _ShlinkStatsCardWidget(icon: Icons.sell, text: "${shlinkStats?.tagsCount.toString() ?? "0"} Tags", borderColor: Colors.purple),
-                      ],
-                    ),
-                  ),
-                  if (shortUrlsLoaded && shortUrls.isEmpty)
+        body: Stack(
+          children: [
+            ColorFiltered(
+              colorFilter: ColorFilter.mode(
+                  Colors.black.withOpacity(_qrCodeShown ? 0.4 : 0),
+                  BlendMode.srcOver),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                  return loadAllData();
+                },
+                child: CustomScrollView(
+                  slivers: [
+                    SliverAppBar.medium(
+                        expandedHeight: 160,
+                        title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Shlink",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            Text(globals.serverManager.getServerUrl(),
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.grey[600]))
+                          ],
+                        )),
                     SliverToBoxAdapter(
-                        child: Center(
-                            child: Padding(
-                                padding: const EdgeInsets.only(top: 50),
-                                child: Column(
-                                  children: [
-                                    const Text("No Short URLs", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),),
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 8),
-                                      child: Text('Create one by tapping the "+" button below', style: TextStyle(fontSize: 16, color: Colors.grey[600]),),
-                                    )
-                                  ],
-                                )
-                            )
-                        )
-                    )
-                  else
-                    SliverList(delegate: SliverChildBuilderDelegate(
-                            (BuildContext context, int index) {
-                              if (index == 0) {
-                                return const Padding(
-                                  padding: EdgeInsets.only(top: 16, left: 12, right: 12),
-                                  child: Text("Recent Short URLs", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                                );
-                              }
-                              else {
-                                final shortURL = shortUrls[index - 1];
-                                return ShortURLCell(shortURL: shortURL, reload: () {
-                                  loadRecentShortUrls();
-                                }, showQRCode: (String url) {
-                                  setState(() {
-                                    _qrUrl = url;
-                                    _qrCodeShown = true;
-                                  });
-                                }, isLast: index == shortUrls.length);
-                              }
-                        },
-                        childCount: shortUrls.length + 1
-                    ))
-
-                ],
-              ),
-            ),
-          ),
-          if (_qrCodeShown)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  _qrCodeShown = false;
-                });
-              },
-              child: Container(
-                color: Colors.black.withOpacity(0),
-              ),
-            ),
-          if (_qrCodeShown)
-            Center(
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width / 1.7,
-                height: MediaQuery.of(context).size.width / 1.7,
-                child: Card(
-                    child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: QrImageView(
-                          data: _qrUrl,
-                          version: QrVersions.auto,
-                          size: 200.0,
-                          eyeStyle: QrEyeStyle(
-                            eyeShape: QrEyeShape.square,
-                            color: MediaQuery.of(context).platformBrightness == Brightness.dark ? Colors.white : Colors.black,
-                          ),
-                          dataModuleStyle: QrDataModuleStyle(
-                            dataModuleShape: QrDataModuleShape.square,
-                            color: MediaQuery.of(context).platformBrightness == Brightness.dark ? Colors.white : Colors.black,
-                          ),
-                        )
-                    )
+                      child: Wrap(
+                        alignment: WrapAlignment.spaceEvenly,
+                        children: [
+                          _ShlinkStatsCardWidget(
+                              icon: Icons.link,
+                              text:
+                                  "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
+                              borderColor: Colors.blue),
+                          _ShlinkStatsCardWidget(
+                              icon: Icons.remove_red_eye,
+                              text:
+                                  "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
+                              borderColor: Colors.green),
+                          _ShlinkStatsCardWidget(
+                              icon: Icons.warning,
+                              text:
+                                  "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
+                              borderColor: Colors.red),
+                          _ShlinkStatsCardWidget(
+                              icon: Icons.sell,
+                              text:
+                                  "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
+                              borderColor: Colors.purple),
+                        ],
+                      ),
+                    ),
+                    if (shortUrlsLoaded && shortUrls.isEmpty)
+                      SliverToBoxAdapter(
+                          child: Center(
+                              child: Padding(
+                                  padding: const EdgeInsets.only(top: 50),
+                                  child: Column(
+                                    children: [
+                                      const Text(
+                                        "No Short URLs",
+                                        style: TextStyle(
+                                            fontSize: 24,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 8),
+                                        child: Text(
+                                          'Create one by tapping the "+" button below',
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Colors.grey[600]),
+                                        ),
+                                      )
+                                    ],
+                                  ))))
+                    else
+                      SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                              (BuildContext context, int index) {
+                        if (index == 0) {
+                          return const Padding(
+                            padding:
+                                EdgeInsets.only(top: 16, left: 12, right: 12),
+                            child: Text("Recent Short URLs",
+                                style: TextStyle(
+                                    fontSize: 20, fontWeight: FontWeight.bold)),
+                          );
+                        } else {
+                          final shortURL = shortUrls[index - 1];
+                          return ShortURLCell(
+                              shortURL: shortURL,
+                              reload: () {
+                                loadRecentShortUrls();
+                              },
+                              showQRCode: (String url) {
+                                setState(() {
+                                  _qrUrl = url;
+                                  _qrCodeShown = true;
+                                });
+                              },
+                              isLast: index == shortUrls.length);
+                        }
+                      }, childCount: shortUrls.length + 1))
+                  ],
                 ),
               ),
-            )
-        ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ShortURLEditView()));
-          loadRecentShortUrls();
-        },
-        child: const Icon(Icons.add),
-      )
-    );
+            ),
+            if (_qrCodeShown)
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _qrCodeShown = false;
+                  });
+                },
+                child: Container(
+                  color: Colors.black.withOpacity(0),
+                ),
+              ),
+            if (_qrCodeShown)
+              Center(
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.7,
+                  height: MediaQuery.of(context).size.width / 1.7,
+                  child: Card(
+                      child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: QrImageView(
+                            data: _qrUrl,
+                            size: 200.0,
+                            eyeStyle: QrEyeStyle(
+                              eyeShape: QrEyeShape.square,
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                            dataModuleStyle: QrDataModuleStyle(
+                              dataModuleShape: QrDataModuleShape.square,
+                              color:
+                                  MediaQuery.of(context).platformBrightness ==
+                                          Brightness.dark
+                                      ? Colors.white
+                                      : Colors.black,
+                            ),
+                          ))),
+                ),
+              )
+          ],
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () async {
+            await Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => const ShortURLEditView()));
+            loadRecentShortUrls();
+          },
+          child: const Icon(Icons.add),
+        ));
   }
 }
 
 // stats card widget
 class _ShlinkStatsCardWidget extends StatefulWidget {
-  const _ShlinkStatsCardWidget({required this.text, required this.icon, this.borderColor});
+  const _ShlinkStatsCardWidget(
+      {required this.text, required this.icon, this.borderColor});
 
   final IconData icon;
   final Color? borderColor;
@@ -230,20 +269,19 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
               border: Border.all(color: widget.borderColor ?? randomColor),
-              borderRadius: BorderRadius.circular(8)
-          ),
+              borderRadius: BorderRadius.circular(8)),
           child: SizedBox(
             child: Wrap(
               children: [
                 Icon(widget.icon),
                 Padding(
                   padding: const EdgeInsets.only(left: 4),
-                  child: Text(widget.text, style: const TextStyle(fontWeight: FontWeight.bold)),
+                  child: Text(widget.text,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 )
               ],
             ),
-          )
-      ),
+          )),
     );
   }
 }

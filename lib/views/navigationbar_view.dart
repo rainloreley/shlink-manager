@@ -4,15 +4,18 @@ import 'package:shlink_app/views/home_view.dart';
 import 'package:shlink_app/views/url_list_view.dart';
 
 class NavigationBarView extends StatefulWidget {
-  const NavigationBarView({Key? key}) : super(key: key);
+  const NavigationBarView({super.key});
 
   @override
   State<NavigationBarView> createState() => _NavigationBarViewState();
 }
 
 class _NavigationBarViewState extends State<NavigationBarView> {
-
-  final List<Widget> views = [const HomeView(), const URLListView(), const SettingsView()];
+  final List<Widget> views = [
+    const HomeView(),
+    const URLListView(),
+    const SettingsView()
+  ];
   int _selectedView = 0;
 
   @override

@@ -7,14 +7,14 @@ import '../Classes/ShlinkStats/shlink_stats.dart';
 import '../server_manager.dart';
 
 /// Gets statistics about the Shlink server
-FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(String? apiKey, String? serverUrl, String apiVersion) async {
-
+FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(
+    String? apiKey, String? serverUrl, String apiVersion) async {
   var nonOrphanVisits;
   var orphanVisits;
   var shortUrlsCount;
   var tagsCount;
   var failure;
-  
+
   var visitStatsResponse = await _getVisitStats(apiKey, serverUrl, apiVersion);
   visitStatsResponse.fold((l) {
     nonOrphanVisits = l.nonOrphanVisits;
@@ -24,7 +24,8 @@ FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(String? apiKey, String?
     return right(r);
   });
 
-  var shortUrlsCountResponse = await _getShortUrlsCount(apiKey, serverUrl, apiVersion);
+  var shortUrlsCountResponse =
+      await _getShortUrlsCount(apiKey, serverUrl, apiVersion);
   shortUrlsCountResponse.fold((l) {
     shortUrlsCount = l;
   }, (r) {
@@ -40,14 +41,15 @@ FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(String? apiKey, String?
     return right(r);
   });
 
-  while(failure == null && (nonOrphanVisits == null || orphanVisits == null || shortUrlsCount == null || tagsCount == null)) {
+  while (failure == null && (orphanVisits == null)) {
     await Future.delayed(const Duration(milliseconds: 100));
   }
 
   if (failure != null) {
     return right(failure);
   }
-  return left(ShlinkStats(nonOrphanVisits, orphanVisits, shortUrlsCount, tagsCount));
+  return left(
+      ShlinkStats(nonOrphanVisits, orphanVisits, shortUrlsCount, tagsCount));
 }
 
 class _ShlinkVisitStats {
@@ -58,79 +60,89 @@ class _ShlinkVisitStats {
 }
 
 /// Gets visitor statistics about the entire server
-FutureOr<Either<_ShlinkVisitStats, Failure>> _getVisitStats(String? apiKey, String? serverUrl, String apiVersion) async {
+FutureOr<Either<_ShlinkVisitStats, Failure>> _getVisitStats(
+    String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/visits"), headers: {
+    final response = await http
+        .get(Uri.parse("$serverUrl/rest/v$apiVersion/visits"), headers: {
       "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
-      var nonOrphanVisits = VisitsSummary.fromJson(jsonResponse["visits"]["nonOrphanVisits"]);
-      var orphanVisits = VisitsSummary.fromJson(jsonResponse["visits"]["orphanVisits"]);
+      var nonOrphanVisits =
+          VisitsSummary.fromJson(jsonResponse["visits"]["nonOrphanVisits"]);
+      var orphanVisits =
+          VisitsSummary.fromJson(jsonResponse["visits"]["orphanVisits"]);
       return left(_ShlinkVisitStats(nonOrphanVisits, orphanVisits));
-
-    }
-    else {
+    } else {
       try {
         var jsonBody = jsonDecode(response.body);
-        return right(ApiFailure(type: jsonBody["type"], detail: jsonBody["detail"], title: jsonBody["title"], status: jsonBody["status"]));
-      }
-      catch(resErr) {
+        return right(ApiFailure(
+            type: jsonBody["type"],
+            detail: jsonBody["detail"],
+            title: jsonBody["title"],
+            status: jsonBody["status"]));
+      } catch (resErr) {
         return right(RequestFailure(response.statusCode, resErr.toString()));
       }
     }
-  }
-  catch(reqErr) {
+  } catch (reqErr) {
     return right(RequestFailure(0, reqErr.toString()));
   }
 }
 
 /// Gets amount of short URLs
-FutureOr<Either<int, Failure>> _getShortUrlsCount(String? apiKey, String? serverUrl, String apiVersion) async {
+FutureOr<Either<int, Failure>> _getShortUrlsCount(
+    String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"), headers: {
+    final response = await http
+        .get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"), headers: {
       "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       return left(jsonResponse["shortUrls"]["pagination"]["totalItems"]);
-    }
-    else {
+    } else {
       try {
         var jsonBody = jsonDecode(response.body);
-        return right(ApiFailure(type: jsonBody["type"], detail: jsonBody["detail"], title: jsonBody["title"], status: jsonBody["status"]));
-      }
-      catch(resErr) {
+        return right(ApiFailure(
+            type: jsonBody["type"],
+            detail: jsonBody["detail"],
+            title: jsonBody["title"],
+            status: jsonBody["status"]));
+      } catch (resErr) {
         return right(RequestFailure(response.statusCode, resErr.toString()));
       }
     }
-  }
-  catch(reqErr) {
+  } catch (reqErr) {
     return right(RequestFailure(0, reqErr.toString()));
   }
 }
 
 /// Gets amount of tags
-FutureOr<Either<int, Failure>> _getTagsCount(String? apiKey, String? serverUrl, String apiVersion) async {
+FutureOr<Either<int, Failure>> _getTagsCount(
+    String? apiKey, String? serverUrl, String apiVersion) async {
   try {
-    final response = await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/tags"), headers: {
+    final response = await http
+        .get(Uri.parse("$serverUrl/rest/v$apiVersion/tags"), headers: {
       "X-Api-Key": apiKey ?? "",
     });
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       return left(jsonResponse["tags"]["pagination"]["totalItems"]);
-    }
-    else {
+    } else {
       try {
         var jsonBody = jsonDecode(response.body);
-        return right(ApiFailure(type: jsonBody["type"], detail: jsonBody["detail"], title: jsonBody["title"], status: jsonBody["status"]));
-      }
-      catch(resErr) {
+        return right(ApiFailure(
+            type: jsonBody["type"],
+            detail: jsonBody["detail"],
+            title: jsonBody["title"],
+            status: jsonBody["status"]));
+      } catch (resErr) {
         return right(RequestFailure(response.statusCode, resErr.toString()));
       }
     }
-  }
-  catch(reqErr) {
+  } catch (reqErr) {
     return right(RequestFailure(0, reqErr.toString()));
   }
 }

@@ -28,7 +28,8 @@ class LicenseUtil {
     return [
       const License(
         name: r'cupertino_icons',
-        license: r'''The MIT License (MIT)
+        license: r'''
+The MIT License (MIT)
 
 Copyright (c) 2016 Vladimir Kharlampidi
 
@@ -49,12 +50,13 @@ COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
 IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
         version: r'^1.0.5',
-        homepage: null,
-        repository: r'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
+        repository:
+            r'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
       ),
       const License(
         name: r'dartz',
-        license: r'''The MIT License (MIT)
+        license: r'''
+The MIT License (MIT)
 
 Copyright (c) 2016, 2017, 2018, 2019, 2020, 2021 Björn Sperber
 
@@ -78,11 +80,11 @@ SOFTWARE.
 ''',
         version: r'^0.10.1',
         homepage: r'https://github.com/spebbe/dartz',
-        repository: null,
       ),
       const License(
         name: r'dynamic_color',
-        license: r'''                                 Apache License
+        license: r'''
+                                 Apache License
                            Version 2.0, January 2004
                         http://www.apache.org/licenses/
 
@@ -285,12 +287,13 @@ SOFTWARE.
    limitations under the License.
 ''',
         version: r'^1.6.6',
-        homepage: null,
-        repository: r'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
+        repository:
+            r'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
       ),
       const License(
         name: r'flutter',
-        license: r'''Copyright 2014 The Flutter Authors. All rights reserved.
+        license: r'''
+Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -316,13 +319,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
-        version: null,
         homepage: r'https://flutter.dev/',
         repository: r'https://github.com/flutter/flutter',
       ),
       const License(
         name: r'flutter_launcher_icons',
-        license: r'''MIT License
+        license: r'''
+MIT License
 
 Copyright (c) 2019 Mark O'Sullivan
 
@@ -346,11 +349,13 @@ SOFTWARE.
 ''',
         version: r'0.13.1',
         homepage: r'https://github.com/fluttercommunity/flutter_launcher_icons',
-        repository: r'https://github.com/fluttercommunity/flutter_launcher_icons/',
+        repository:
+            r'https://github.com/fluttercommunity/flutter_launcher_icons/',
       ),
       const License(
         name: r'flutter_lints',
-        license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
+        license: r'''
+Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -377,12 +382,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^2.0.2',
-        homepage: null,
-        repository: r'https://github.com/flutter/packages/tree/main/packages/flutter_lints',
+        repository:
+            r'https://github.com/flutter/packages/tree/main/packages/flutter_lints',
       ),
       const License(
         name: r'flutter_process_text',
-        license: r'''BSD 3-Clause License
+        license: r'''
+BSD 3-Clause License
 
 (c) Copyright 2021 divshekhar (Divyanshu Shekhar)
 
@@ -410,12 +416,12 @@ HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABI
 TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
 EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         version: r'^1.1.2',
-        homepage: null,
         repository: r'https://github.com/DevsOnFlutter/flutter_process_text',
       ),
       const License(
         name: r'flutter_secure_storage',
-        license: r'''BSD 3-Clause License
+        license: r'''
+BSD 3-Clause License
 
 Copyright 2017 German Saprykin
 All rights reserved.
@@ -445,12 +451,13 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         version: r'^8.0.0',
-        homepage: null,
-        repository: r'https://github.com/mogol/flutter_secure_storage/tree/develop/flutter_secure_storage',
+        repository:
+            r'https://github.com/mogol/flutter_secure_storage/tree/develop/flutter_secure_storage',
       ),
       const License(
         name: r'flutter_test',
-        license: r'''Copyright 2014 The Flutter Authors. All rights reserved.
+        license: r'''
+Copyright 2014 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -476,13 +483,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
-        version: null,
         homepage: r'https://flutter.dev/',
         repository: r'https://github.com/flutter/flutter',
       ),
       const License(
         name: r'http',
-        license: r'''Copyright 2014, the Dart project authors. 
+        license: r'''
+Copyright 2014, the Dart project authors. 
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -511,12 +518,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^0.13.6',
-        homepage: null,
         repository: r'https://github.com/dart-lang/http/tree/master/pkgs/http',
       ),
       const License(
         name: r'intl',
-        license: r'''Copyright 2013, the Dart project authors.
+        license: r'''
+Copyright 2013, the Dart project authors.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -545,12 +552,12 @@ THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^0.18.1',
-        homepage: null,
         repository: r'https://github.com/dart-lang/i18n/tree/main/pkgs/intl',
       ),
       const License(
         name: r'license_generator',
-        license: r'''MIT License
+        license: r'''
+MIT License
 
 Copyright (c) 2022 icapps
 
@@ -574,11 +581,11 @@ SOFTWARE.
 ''',
         version: r'^1.0.5',
         homepage: r'https://github.com/icapps/flutter-icapps-license',
-        repository: null,
       ),
       const License(
         name: r'package_info_plus',
-        license: r'''Copyright 2017 The Chromium Authors. All rights reserved.
+        license: r'''
+Copyright 2017 The Chromium Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, are permitted provided that the following conditions are
@@ -608,11 +615,13 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^4.0.2',
         homepage: r'https://plus.fluttercommunity.dev/',
-        repository: r'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
+        repository:
+            r'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/',
       ),
       const License(
         name: r'qr_flutter',
-        license: r'''BSD 3-Clause License
+        license: r'''
+BSD 3-Clause License
 
 Copyright (c) 2020, Luke Freeman.
 All rights reserved.
@@ -644,11 +653,11 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^4.1.0',
         homepage: r'https://github.com/theyakka/qr.flutter',
-        repository: null,
       ),
       const License(
         name: r'shared_preferences',
-        license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
+        license: r'''
+Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -675,12 +684,13 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^2.2.2',
-        homepage: null,
-        repository: r'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
+        repository:
+            r'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
       ),
       const License(
         name: r'tuple',
-        license: r'''Copyright (c) 2014, the tuple project authors.
+        license: r'''
+Copyright (c) 2014, the tuple project authors.
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -703,12 +713,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         version: r'^2.0.2',
-        homepage: null,
         repository: r'https://github.com/google/tuple.dart',
       ),
       const License(
         name: r'url_launcher',
-        license: r'''Copyright 2013 The Flutter Authors. All rights reserved.
+        license: r'''
+Copyright 2013 The Flutter Authors. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -735,8 +745,8 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'6.1.9',
-        homepage: null,
-        repository: r'https://github.com/flutter/plugins/tree/main/packages/url_launcher/url_launcher',
+        repository:
+            r'https://github.com/flutter/plugins/tree/main/packages/url_launcher/url_launcher',
       ),
     ];
   }

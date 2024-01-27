@@ -13,24 +13,19 @@ class SettingsView extends StatefulWidget {
   State<SettingsView> createState() => _SettingsViewState();
 }
 
-enum ServerStatus {
-  connected,
-  connecting,
-  disconnected
-}
+enum ServerStatus { connected, connecting, disconnected }
 
 class _SettingsViewState extends State<SettingsView> {
-
   var _serverVersion = "---";
   ServerStatus _serverStatus = ServerStatus.connecting;
-  PackageInfo packageInfo = PackageInfo(appName: "", packageName: "", version: "", buildNumber: "");
+  PackageInfo packageInfo =
+      PackageInfo(appName: "", packageName: "", version: "", buildNumber: "");
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    WidgetsBinding.instance
-        .addPostFrameCallback((_) => getServerHealth());
+    WidgetsBinding.instance.addPostFrameCallback((_) => getServerHealth());
   }
 
   void getServerHealth() async {
@@ -52,12 +47,14 @@ class _SettingsViewState extends State<SettingsView> {
       var text = "";
       if (r is RequestFailure) {
         text = r.description;
-      }
-      else {
+      } else {
         text = (r as ApiFailure).detail;
       }
 
-      final snackBar = SnackBar(content: Text(text), backgroundColor: Colors.red[400], behavior: SnackBarBehavior.floating);
+      final snackBar = SnackBar(
+          content: Text(text),
+          backgroundColor: Colors.red[400],
+          behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
   }
@@ -65,68 +62,89 @@ class _SettingsViewState extends State<SettingsView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.medium(
-            expandedHeight: 120,
-            title: const Text("Settings", style: TextStyle(fontWeight: FontWeight.bold),),
-            actions: [
-              PopupMenuButton(
-                itemBuilder: (context) {
-                  return [
-                    const PopupMenuItem(
-                      value: 0,
-                      child: Text("Log out...", style: TextStyle(color: Colors.red)),
-                    )
-                  ];
-                },
-                onSelected: (value) {
-                  if (value == 0) {
-                    globals.serverManager.logOut().then((value) => Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(builder: (context) => const LoginView())
-                    ));
-                  }
-                },
-              )
-            ],
+        body: CustomScrollView(
+      slivers: [
+        SliverAppBar.medium(
+          expandedHeight: 120,
+          title: const Text(
+            "Settings",
+            style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          SliverToBoxAdapter(
-            child: Padding(
+          actions: [
+            PopupMenuButton(
+              itemBuilder: (context) {
+                return [
+                  const PopupMenuItem(
+                    value: 0,
+                    child:
+                        Text("Log out...", style: TextStyle(color: Colors.red)),
+                  )
+                ];
+              },
+              onSelected: (value) {
+                if (value == 0) {
+                  globals.serverManager.logOut().then((value) =>
+                      Navigator.of(context).pushReplacement(MaterialPageRoute(
+                          builder: (context) => const LoginView())));
+                }
+              },
+            )
+          ],
+        ),
+        SliverToBoxAdapter(
+          child: Padding(
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 children: [
                   Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
-                      ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).brightness == Brightness.light
+                          ? Colors.grey[100]
+                          : Colors.grey[900],
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Row(
                         children: [
-                          Icon(Icons.dns_outlined, color: (() {
-                            switch (_serverStatus) {
-                              case ServerStatus.connected:
-                                return Colors.green;
-                              case ServerStatus.connecting:
-                                return Colors.orange;
-                              case ServerStatus.disconnected:
-                                return Colors.red;
-                            }
-                          }())),
+                          Icon(Icons.dns_outlined,
+                              color: (() {
+                                switch (_serverStatus) {
+                                  case ServerStatus.connected:
+                                    return Colors.green;
+                                  case ServerStatus.connecting:
+                                    return Colors.orange;
+                                  case ServerStatus.disconnected:
+                                    return Colors.red;
+                                }
+                              }())),
                           const SizedBox(width: 8),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              const Text("Connected to", style: TextStyle(color: Colors.grey)),
-                              Text(globals.serverManager.getServerUrl(), style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                              const Text("Connected to",
+                                  style: TextStyle(color: Colors.grey)),
+                              Text(globals.serverManager.getServerUrl(),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16)),
                               Row(
                                 children: [
-                                  const Text("API Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
-                                  Text(globals.serverManager.getApiVersion(), style: const TextStyle(color: Colors.grey)),
+                                  const Text("API Version: ",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w600)),
+                                  Text(globals.serverManager.getApiVersion(),
+                                      style:
+                                          const TextStyle(color: Colors.grey)),
                                   const SizedBox(width: 16),
-                                  const Text("Server Version: ", style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w600)),
-                                  Text(_serverVersion, style: const TextStyle(color: Colors.grey))
+                                  const Text("Server Version: ",
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w600)),
+                                  Text(_serverVersion,
+                                      style:
+                                          const TextStyle(color: Colors.grey))
                                 ],
                               ),
                             ],
@@ -140,17 +158,20 @@ class _SettingsViewState extends State<SettingsView> {
                   const SizedBox(height: 8),
                   GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const OpenSourceLicensesView())
-                      );
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              const OpenSourceLicensesView()));
                     },
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[100]
+                            : Colors.grey[900],
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+                        padding: EdgeInsets.only(
+                            left: 12, right: 12, top: 20, bottom: 20),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -158,50 +179,21 @@ class _SettingsViewState extends State<SettingsView> {
                                 children: [
                                   Icon(Icons.policy_outlined),
                                   SizedBox(width: 8),
-                                  Text("Open Source Licenses", style: TextStyle(fontWeight: FontWeight.w500)),
+                                  Text("Open Source Licenses",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500)),
                                 ],
                               ),
                               Icon(Icons.chevron_right)
-                            ]
-                        ),
+                            ]),
                       ),
                     ),
                   ),
                   const SizedBox(height: 16),
                   GestureDetector(
                     onTap: () async {
-                      var url = Uri.parse("https://github.com/rainloreley/shlink-mobile-app");
-                      if (await canLaunchUrl(url)) {
-                      launchUrl(url, mode: LaunchMode.externalApplication);
-                      }
-                    },
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
-                      ),
-                      child: const Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.code),
-                                  SizedBox(width: 8),
-                                  Text("GitHub", style: TextStyle(fontWeight: FontWeight.w500)),
-                                ],
-                              ),
-                              Icon(Icons.chevron_right)
-                            ]
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  GestureDetector(
-                    onTap: () async {
-                      var url = Uri.parse("https://abmgrt.dev/shlink-manager/privacy");
+                      var url = Uri.parse(
+                          "https://github.com/rainloreley/shlink-mobile-app");
                       if (await canLaunchUrl(url)) {
                         launchUrl(url, mode: LaunchMode.externalApplication);
                       }
@@ -209,10 +201,49 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light ? Colors.grey[100] : Colors.grey[900],
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[100]
+                            : Colors.grey[900],
                       ),
                       child: const Padding(
-                        padding: EdgeInsets.only(left: 12, right: 12, top: 20, bottom: 20),
+                        padding: EdgeInsets.only(
+                            left: 12, right: 12, top: 20, bottom: 20),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.code),
+                                  SizedBox(width: 8),
+                                  Text("GitHub",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500)),
+                                ],
+                              ),
+                              Icon(Icons.chevron_right)
+                            ]),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  GestureDetector(
+                    onTap: () async {
+                      var url = Uri.parse(
+                          "https://abmgrt.dev/shlink-manager/privacy");
+                      if (await canLaunchUrl(url)) {
+                        launchUrl(url, mode: LaunchMode.externalApplication);
+                      }
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[100]
+                            : Colors.grey[900],
+                      ),
+                      child: const Padding(
+                        padding: EdgeInsets.only(
+                            left: 12, right: 12, top: 20, bottom: 20),
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -220,12 +251,13 @@ class _SettingsViewState extends State<SettingsView> {
                                 children: [
                                   Icon(Icons.lock),
                                   SizedBox(width: 8),
-                                  Text("Privacy Policy", style: TextStyle(fontWeight: FontWeight.w500)),
+                                  Text("Privacy Policy",
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500)),
                                 ],
                               ),
                               Icon(Icons.chevron_right)
-                            ]
-                        ),
+                            ]),
                       ),
                     ),
                   ),
@@ -234,14 +266,16 @@ class _SettingsViewState extends State<SettingsView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text("${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})", style: const TextStyle(color: Colors.grey),),],
+                        Text(
+                          "${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})",
+                          style: const TextStyle(color: Colors.grey),
+                        ),
+                      ],
                     )
                 ],
-              )
-            ),
-          )
-        ],
-      )
-    );
+              )),
+        )
+      ],
+    ));
   }
 }

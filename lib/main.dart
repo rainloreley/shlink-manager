@@ -11,11 +11,11 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const _defaultLightColorScheme =
-  ColorScheme.light();//.fromSwatch(primarySwatch: Colors.blue, backgroundColor: Colors.white);
+  static const _defaultLightColorScheme = ColorScheme
+      .light(); //.fromSwatch(primarySwatch: Colors.blue, backgroundColor: Colors.white);
 
-  static final _defaultDarkColorScheme = ColorScheme.fromSwatch(
-      primarySwatch: Colors.blue, brightness: Brightness.dark);
+  static final _defaultDarkColorScheme =
+      ColorScheme.fromSwatch(brightness: Brightness.dark);
 
   // This widget is the root of your application.
   @override
@@ -25,24 +25,22 @@ class MyApp extends StatelessWidget {
           title: 'Shlink',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
-            appBarTheme: const AppBarTheme(
-              backgroundColor: Color(0xfffafafa),
-            ),
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Color(0xfffafafa),
+              ),
               colorScheme: lightColorScheme ?? _defaultLightColorScheme,
-              useMaterial3: true
-          ),
+              useMaterial3: true),
           darkTheme: ThemeData(
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xff0d0d0d),
               foregroundColor: Colors.white,
               elevation: 0,
             ),
-            colorScheme: darkColorScheme?.copyWith(background: Colors.black) ?? _defaultDarkColorScheme,
+            colorScheme: darkColorScheme?.copyWith(background: Colors.black) ??
+                _defaultDarkColorScheme,
             useMaterial3: true,
           ),
-          themeMode: ThemeMode.system,
-          home: const InitialPage()
-      );
+          home: const InitialPage());
     });
   }
 }
@@ -55,7 +53,6 @@ class InitialPage extends StatefulWidget {
 }
 
 class _InitialPageState extends State<InitialPage> {
-
   @override
   void initState() {
     super.initState();
@@ -63,26 +60,20 @@ class _InitialPageState extends State<InitialPage> {
   }
 
   void checkLogin() async {
-
     bool result = await globals.serverManager.checkLogin();
     if (result) {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const NavigationBarView())
-      );
-    }
-    else {
+          MaterialPageRoute(builder: (context) => const NavigationBarView()));
+    } else {
       Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginView())
-      );
+          MaterialPageRoute(builder: (context) => const LoginView()));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      body: Center(
-        child: Text("")
-      ),
+      body: Center(child: Text("")),
     );
   }
 }

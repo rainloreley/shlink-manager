@@ -2,8 +2,10 @@
 class ShlinkStatsVisits {
   /// Count of URL visits
   int total;
+
   /// Count of URL visits from humans
   int nonBots;
+
   /// Count of URL visits from bots/crawlers
   int bots;
 
