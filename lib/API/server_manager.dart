@@ -32,7 +32,8 @@ class ServerManager {
     return apiVersion;
   }
 
-  /// Checks whether the user provided information about the server (url and apikey)
+  /// Checks whether the user provided information about the server
+  /// (url and apikey)
   Future<bool> checkLogin() async {
     await _loadCredentials();
     return (serverUrl != null);

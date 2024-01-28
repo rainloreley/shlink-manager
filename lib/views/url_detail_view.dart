@@ -1,8 +1,8 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:intl/intl.dart';
 import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import '../globals.dart' as globals;
 
 class URLDetailView extends StatefulWidget {
@@ -100,30 +100,7 @@ class _URLDetailViewState extends State<URLDetailView> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: Wrap(
-                  children: widget.shortURL.tags.map((tag) {
-                var randomColor = ([...Colors.primaries]..shuffle())
-                    .first
-                    .harmonizeWith(Theme.of(context).colorScheme.primary);
-                return Padding(
-                  padding: const EdgeInsets.only(right: 4, top: 4),
-                  child: Container(
-                    padding: const EdgeInsets.only(
-                        top: 4, bottom: 4, left: 12, right: 12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(4),
-                      color: randomColor,
-                    ),
-                    child: Text(
-                      tag,
-                      style: TextStyle(
-                          color: randomColor.computeLuminance() < 0.5
-                              ? Colors.white
-                              : Colors.black),
-                    ),
-                  ),
-                );
-              }).toList()),
+              child: UrlTagsListWidget(tags: widget.shortURL.tags)
             ),
           ),
           _ListCell(title: "Short Code", content: widget.shortURL.shortCode),

@@ -23,7 +23,7 @@ class ShortURL {
   VisitsSummary visitsSummary;
 
   /// List of tags assigned to this short URL
-  List<dynamic> tags;
+  List<String> tags;
 
   /// Metadata
   ShortURLMeta meta;
@@ -58,7 +58,7 @@ class ShortURL {
         deviceLongUrls = DeviceLongUrls.fromJson(json["deviceLongUrls"]),
         dateCreated = DateTime.parse(json["dateCreated"]),
         visitsSummary = VisitsSummary.fromJson(json["visitsSummary"]),
-        tags = json["tags"],
+        tags = (json["tags"] as List<dynamic>).map((e) => e.toString()).toList(),
         meta = ShortURLMeta.fromJson(json["meta"]),
         domain = json["domain"],
         title = json["title"],

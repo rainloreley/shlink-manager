@@ -26,6 +26,7 @@ linter:
     - curly_braces_in_flow_control_structures
     # doc comments
     - slash_for_doc_comments
+    - package_api_docs
   # The lint rules applied to this project can be customized in the
   # section below to disable rules from the `package:flutter_lints/flutter.yaml`
   # included above or to enable additional rules. A list of all available lints
