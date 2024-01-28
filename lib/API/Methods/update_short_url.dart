@@ -6,16 +6,22 @@ import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
 import '../server_manager.dart';
 
-/// Submits a short URL to a server for it to be added
-FutureOr<Either<ShortURL, Failure>> apiSubmitShortUrl(ShortURLSubmission shortUrl,
-    String? apiKey, String? serverUrl, String apiVersion) async {
+/// Updates an existing short URL
+FutureOr<Either<ShortURL, Failure>> apiUpdateShortUrl(ShortURLSubmission shortUrl, String? apiKey, String? serverUrl, String apiVersion) async {
+  String shortCode = shortUrl.customSlug ?? "";
+  if (shortCode == "") {
+    return right(RequestFailure(0, "Missing short code"));
+  }
+  Map<String, dynamic> shortUrlData = shortUrl.toJson();
+  shortUrlData.remove("shortCode");
+  shortUrlData.remove("shortUrl");
   try {
-    final response =
-        await http.post(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"),
-            headers: {
-              "X-Api-Key": apiKey ?? "",
-            },
-            body: jsonEncode(shortUrl.toJson()));
+    final response = await http.patch(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls/$shortCode"),
+    headers: {
+      "X-Api-Key": apiKey ?? "",
+    },
+    body: jsonEncode(shortUrlData));
+
     if (response.statusCode == 200) {
       // get returned short url
       var jsonBody = jsonDecode(response.body);

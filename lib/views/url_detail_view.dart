@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:intl/intl.dart';
 import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import '../globals.dart' as globals;
 
@@ -15,6 +16,16 @@ class URLDetailView extends StatefulWidget {
 }
 
 class _URLDetailViewState extends State<URLDetailView> {
+
+  ShortURL shortURL = ShortURL.empty();
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      shortURL = widget.shortURL;
+    });
+  }
+
   Future showDeletionConfirmation() {
     return showDialog(
         context: context,
@@ -27,7 +38,7 @@ class _URLDetailViewState extends State<URLDetailView> {
                   const Text("You're about to delete"),
                   const SizedBox(height: 4),
                   Text(
-                    widget.shortURL.title ?? widget.shortURL.shortCode,
+                    shortURL.title ?? shortURL.shortCode,
                     style: const TextStyle(fontStyle: FontStyle.italic),
                   ),
                   const SizedBox(height: 4),
@@ -42,11 +53,11 @@ class _URLDetailViewState extends State<URLDetailView> {
               TextButton(
                 onPressed: () async {
                   var response = await globals.serverManager
-                      .deleteShortUrl(widget.shortURL.shortCode);
+                      .deleteShortUrl(shortURL.shortCode);
 
                   response.fold((l) {
                     Navigator.pop(context);
-                    Navigator.pop(context, "reload");
+                    Navigator.pop(context);
 
                     final snackBar = SnackBar(
                         content: const Text("Short URL deleted!"),
@@ -84,9 +95,21 @@ class _URLDetailViewState extends State<URLDetailView> {
       body: CustomScrollView(
         slivers: [
           SliverAppBar.medium(
-            title: Text(widget.shortURL.title ?? widget.shortURL.shortCode,
+            title: Text(shortURL.title ?? shortURL.shortCode,
                 style: const TextStyle(fontWeight: FontWeight.bold)),
             actions: [
+              IconButton(
+                onPressed: () async {
+                  ShortURL updatedUrl = await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ShortURLEditView(shortUrl: shortURL)));
+                  setState(() {
+                    shortURL = updatedUrl;
+                  });
+                },
+                icon: const Icon(
+                  Icons.edit
+                )
+              ),
               IconButton(
                   onPressed: () {
                     showDeletionConfirmation();
@@ -100,56 +123,56 @@ class _URLDetailViewState extends State<URLDetailView> {
           SliverToBoxAdapter(
             child: Padding(
               padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-              child: UrlTagsListWidget(tags: widget.shortURL.tags)
+              child: UrlTagsListWidget(tags: shortURL.tags)
             ),
           ),
-          _ListCell(title: "Short Code", content: widget.shortURL.shortCode),
-          _ListCell(title: "Short URL", content: widget.shortURL.shortUrl),
-          _ListCell(title: "Long URL", content: widget.shortURL.longUrl),
+          _ListCell(title: "Short Code", content: shortURL.shortCode),
+          _ListCell(title: "Short URL", content: shortURL.shortUrl),
+          _ListCell(title: "Long URL", content: shortURL.longUrl),
           _ListCell(
               title: "iOS",
-              content: widget.shortURL.deviceLongUrls.ios,
+              content: shortURL.deviceLongUrls.ios,
               sub: true),
           _ListCell(
               title: "Android",
-              content: widget.shortURL.deviceLongUrls.android,
+              content: shortURL.deviceLongUrls.android,
               sub: true),
           _ListCell(
               title: "Desktop",
-              content: widget.shortURL.deviceLongUrls.desktop,
+              content: shortURL.deviceLongUrls.desktop,
               sub: true),
           _ListCell(
-              title: "Creation Date", content: widget.shortURL.dateCreated),
+              title: "Creation Date", content: shortURL.dateCreated),
           const _ListCell(title: "Visits", content: ""),
           _ListCell(
               title: "Total",
-              content: widget.shortURL.visitsSummary.total,
+              content: shortURL.visitsSummary.total,
               sub: true),
           _ListCell(
               title: "Non-Bots",
-              content: widget.shortURL.visitsSummary.nonBots,
+              content: shortURL.visitsSummary.nonBots,
               sub: true),
           _ListCell(
               title: "Bots",
-              content: widget.shortURL.visitsSummary.bots,
+              content: shortURL.visitsSummary.bots,
               sub: true),
           const _ListCell(title: "Meta", content: ""),
           _ListCell(
               title: "Valid Since",
-              content: widget.shortURL.meta.validSince,
+              content: shortURL.meta.validSince,
               sub: true),
           _ListCell(
               title: "Valid Until",
-              content: widget.shortURL.meta.validUntil,
+              content: shortURL.meta.validUntil,
               sub: true),
           _ListCell(
               title: "Max Visits",
-              content: widget.shortURL.meta.maxVisits,
+              content: shortURL.meta.maxVisits,
               sub: true),
-          _ListCell(title: "Domain", content: widget.shortURL.domain),
+          _ListCell(title: "Domain", content: shortURL.domain),
           _ListCell(
               title: "Crawlable",
-              content: widget.shortURL.crawlable,
+              content: shortURL.crawlable,
               last: true)
         ],
       ),

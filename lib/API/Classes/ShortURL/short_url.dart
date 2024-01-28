@@ -63,4 +63,16 @@ class ShortURL {
         domain = json["domain"],
         title = json["title"],
         crawlable = json["crawlable"];
+  ShortURL.empty()
+    : shortCode = "",
+      shortUrl = "",
+      longUrl = "",
+      deviceLongUrls = DeviceLongUrls("", "", ""),
+      dateCreated = DateTime.now(),
+      visitsSummary = VisitsSummary(0, 0, 0),
+      tags = [],
+      meta = ShortURLMeta(DateTime.now(), DateTime.now(), 0),
+      domain = "",
+      title = "",
+      crawlable = false;
 }

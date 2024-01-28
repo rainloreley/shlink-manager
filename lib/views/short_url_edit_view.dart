@@ -1,11 +1,15 @@
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
 import 'package:shlink_app/API/server_manager.dart';
 import '../globals.dart' as globals;
 
 class ShortURLEditView extends StatefulWidget {
-  const ShortURLEditView({super.key});
+  const ShortURLEditView({super.key, this.shortUrl});
+
+  final ShortURL? shortUrl;
 
   @override
   State<ShortURLEditView> createState() => _ShortURLEditViewState();
@@ -23,6 +27,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   bool forwardQuery = true;
   bool copyToClipboard = true;
 
+  bool disableSlugEditor = false;
+
   String longUrlError = "";
   String randomSlugLengthError = "";
 
@@ -36,6 +42,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+    loadExistingUrl();
     super.initState();
   }
 
@@ -46,6 +53,19 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
     titleController.dispose();
     randomSlugLengthController.dispose();
     super.dispose();
+  }
+
+  void loadExistingUrl() {
+    if (widget.shortUrl != null) {
+      longUrlController.text = widget.shortUrl!.longUrl;
+      isCrawlable = widget.shortUrl!.crawlable;
+      // for some reason this attribute is not returned by the api
+      forwardQuery = true;
+      titleController.text = widget.shortUrl!.title ?? "";
+      customSlugController.text = widget.shortUrl!.shortCode;
+      disableSlugEditor = true;
+      randomSlug = false;
+    }
   }
 
   void _submitShortUrl() async {
@@ -62,7 +82,12 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
             : null,
         shortCodeLength:
             randomSlug ? int.parse(randomSlugLengthController.text) : null);
-    var response = await globals.serverManager.submitShortUrl(newSubmission);
+    dartz.Either<ShortURL, Failure> response;
+    if (widget.shortUrl != null) {
+      response = await globals.serverManager.updateShortUrl(newSubmission);
+    } else {
+      response = await globals.serverManager.submitShortUrl(newSubmission);
+    }
 
     response.fold((l) async {
       setState(() {
@@ -70,7 +95,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       });
 
       if (copyToClipboard) {
-        await Clipboard.setData(ClipboardData(text: l));
+        await Clipboard.setData(ClipboardData(text: l.shortUrl));
         final snackBar = SnackBar(
             content: const Text("Copied to clipboard!"),
             backgroundColor: Colors.green[400],
@@ -83,7 +108,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
             behavior: SnackBarBehavior.floating);
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
-      Navigator.pop(context);
+      Navigator.pop(context, l);
 
       return true;
     }, (r) {
@@ -143,6 +168,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                   children: [
                     Expanded(
                       child: TextField(
+                        enabled: !disableSlugEditor,
                         controller: customSlugController,
                         style: TextStyle(
                             color: randomSlug
@@ -182,7 +208,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               parent: _customSlugDiceAnimationController,
                               curve: Curves.easeInOutExpo)),
                       child: IconButton(
-                          onPressed: () {
+                          onPressed: disableSlugEditor ? null : () {
                             if (randomSlug) {
                               _customSlugDiceAnimationController.reverse(
                                   from: 1);

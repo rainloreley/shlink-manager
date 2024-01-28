@@ -10,6 +10,7 @@ import 'package:shlink_app/API/Methods/get_recent_short_urls.dart';
 import 'package:shlink_app/API/Methods/get_server_health.dart';
 import 'package:shlink_app/API/Methods/get_shlink_stats.dart';
 import 'package:shlink_app/API/Methods/get_short_urls.dart';
+import 'package:shlink_app/API/Methods/update_short_url.dart';
 
 import 'Methods/delete_short_url.dart';
 import 'Methods/submit_short_url.dart';
@@ -100,9 +101,14 @@ class ServerManager {
   }
 
   /// Saves a new short URL to the server
-  FutureOr<Either<String, Failure>> submitShortUrl(
+  FutureOr<Either<ShortURL, Failure>> submitShortUrl(
       ShortURLSubmission shortUrl) async {
     return apiSubmitShortUrl(shortUrl, apiKey, serverUrl, apiVersion);
+  }
+
+  FutureOr<Either<ShortURL, Failure>> updateShortUrl(
+      ShortURLSubmission shortUrl) async {
+    return apiUpdateShortUrl(shortUrl, apiKey, serverUrl, apiVersion);
   }
 
   /// Deletes a short URL from the server, identified by its slug
