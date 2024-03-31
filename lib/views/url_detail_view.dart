@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/widgets/url_tags_list_widget.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../globals.dart' as globals;
 
 class URLDetailView extends StatefulWidget {
@@ -127,8 +128,8 @@ class _URLDetailViewState extends State<URLDetailView> {
             ),
           ),
           _ListCell(title: "Short Code", content: shortURL.shortCode),
-          _ListCell(title: "Short URL", content: shortURL.shortUrl),
-          _ListCell(title: "Long URL", content: shortURL.longUrl),
+          _ListCell(title: "Short URL", content: shortURL.shortUrl, isUrl: true),
+          _ListCell(title: "Long URL", content: shortURL.longUrl, isUrl: true),
           _ListCell(
               title: "Creation Date", content: shortURL.dateCreated),
           const _ListCell(title: "Visits", content: ""),
@@ -173,12 +174,14 @@ class _ListCell extends StatefulWidget {
       {required this.title,
       required this.content,
       this.sub = false,
-      this.last = false});
+      this.last = false,
+      this.isUrl = false});
 
   final String title;
   final dynamic content;
   final bool sub;
   final bool last;
+  final bool isUrl;
 
   @override
   State<_ListCell> createState() => _ListCellState();
@@ -190,64 +193,74 @@ class _ListCellState extends State<_ListCell> {
     return SliverToBoxAdapter(
         child: Padding(
       padding: EdgeInsets.only(top: 16, bottom: widget.last ? 30 : 0),
-      child: Container(
-        padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
-        decoration: BoxDecoration(
-          border: Border(
-              top: BorderSide(
-                  color: MediaQuery.of(context).platformBrightness ==
-                          Brightness.dark
-                      ? Colors.grey[800]!
-                      : Colors.grey[300]!)),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                if (widget.sub)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 4),
-                    child: SizedBox(
-                      width: 20,
-                      height: 6,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          color: Theme.of(context).brightness == Brightness.dark
-                              ? Colors.grey[700]
-                              : Colors.grey[300],
+      child: GestureDetector(
+        onTap: () async {
+          Uri? parsedUrl = Uri.tryParse(widget.content);
+          if (widget.isUrl
+              && parsedUrl != null
+              && await canLaunchUrl(parsedUrl)) {
+            launchUrl(parsedUrl);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
+          decoration: BoxDecoration(
+            border: Border(
+                top: BorderSide(
+                    color: MediaQuery.of(context).platformBrightness ==
+                        Brightness.dark
+                        ? Colors.grey[800]!
+                        : Colors.grey[300]!)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  if (widget.sub)
+                    Padding(
+                      padding: const EdgeInsets.only(right: 4),
+                      child: SizedBox(
+                        width: 20,
+                        height: 6,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? Colors.grey[700]
+                                : Colors.grey[300],
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                Text(
-                  widget.title,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                )
-              ],
-            ),
-            if (widget.content is bool)
-              Icon(widget.content ? Icons.check : Icons.close,
-                  color: widget.content ? Colors.green : Colors.red)
-            else if (widget.content is int)
-              Text(widget.content.toString())
-            else if (widget.content is String)
-              Expanded(
-                child: Text(
-                  widget.content,
-                  textAlign: TextAlign.end,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                ),
-              )
-            else if (widget.content is DateTime)
-              Text(DateFormat('yyyy-MM-dd - HH:mm').format(widget.content))
-            else
-              const Text("N/A")
-          ],
+                  Text(
+                    widget.title,
+                    style: const TextStyle(fontWeight: FontWeight.bold),
+                  )
+                ],
+              ),
+              if (widget.content is bool)
+                Icon(widget.content ? Icons.check : Icons.close,
+                    color: widget.content ? Colors.green : Colors.red)
+              else if (widget.content is int)
+                Text(widget.content.toString())
+              else if (widget.content is String)
+                  Expanded(
+                    child: Text(
+                      widget.content,
+                      textAlign: TextAlign.end,
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 1,
+                    ),
+                  )
+                else if (widget.content is DateTime)
+                    Text(DateFormat('yyyy-MM-dd - HH:mm').format(widget.content))
+                  else
+                    const Text("N/A")
+            ],
+          ),
         ),
-      ),
+      )
     ));
   }
 }
