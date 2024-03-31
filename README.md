@@ -6,9 +6,6 @@
 
 </div>
 
-> [!WARNING]
-> Due to an API change, the app currently doesn't work (see https://github.com/rainloreley/shlink-manager/issues/2)
-
 Shlink Manager is an app for Android to see and manage all shortened URLs created with [Shlink](https://shlink.io/)
 
 <a href="https://play.google.com/store/apps/details?id=dev.abmgrt.shlink_app" target="_blank">
