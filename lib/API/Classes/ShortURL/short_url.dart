@@ -57,6 +57,8 @@ class ShortURL {
         domain = json["domain"],
         title = json["title"],
         crawlable = json["crawlable"];
+
+  /// Returns an empty class of [ShortURL]
   ShortURL.empty()
     : shortCode = "",
       shortUrl = "",

@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.1.1+7
 
 environment:
-  sdk: ^2.19.0
+  sdk: ^3.0.0
 dependencies:
   flutter:
     sdk: flutter
@@ -31,22 +31,23 @@ dependencies:
   #
 
   cupertino_icons: ^1.0.5
-  http: ^0.13.6
+  http: ^1.1.0
   flutter_process_text: ^1.1.2
-  flutter_secure_storage: ^8.0.0
+  flutter_secure_storage: ^9.0.0
   dartz: ^0.10.1
   qr_flutter: ^4.1.0
   tuple: ^2.0.2
-  intl: ^0.18.1
+  intl: ^0.19.0
   dynamic_color: ^1.6.6
-  url_launcher: 6.1.9
+  url_launcher: ^6.2.4
   package_info_plus: ^4.0.2
   shared_preferences: ^2.2.2
+  flutter_sharing_intent: ^1.1.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  license_generator: ^1.0.5
+  license_generator: ^2.0.0
   flutter_launcher_icons: ^0.13.1
 
   flutter_lints: ^3.0.1

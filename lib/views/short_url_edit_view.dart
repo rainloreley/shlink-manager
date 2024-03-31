@@ -7,9 +7,10 @@ import 'package:shlink_app/API/server_manager.dart';
 import '../globals.dart' as globals;
 
 class ShortURLEditView extends StatefulWidget {
-  const ShortURLEditView({super.key, this.shortUrl});
+  const ShortURLEditView({super.key, this.shortUrl, this.longUrl});
 
   final ShortURL? shortUrl;
+  final String? longUrl;
 
   @override
   State<ShortURLEditView> createState() => _ShortURLEditViewState();
@@ -43,6 +44,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       duration: const Duration(milliseconds: 500),
     );
     loadExistingUrl();
+    if (widget.longUrl != null) {
+      longUrlController.text = widget.longUrl!;
+    }
     super.initState();
   }
 

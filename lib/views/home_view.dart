@@ -1,9 +1,14 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
+import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
 import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/views/url_list_view.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import '../API/Classes/ShortURL/short_url.dart';
 import '../globals.dart' as globals;
 
@@ -22,13 +27,31 @@ class _HomeViewState extends State<HomeView> {
   bool _qrCodeShown = false;
   String _qrUrl = "";
 
+  late StreamSubscription _intentDataStreamSubscription;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    initializeActionProcessText();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadAllData();
     });
+  }
+
+  Future<void> initializeActionProcessText() async {
+    _intentDataStreamSubscription = FlutterSharingIntent.instance
+        .getMediaStream().listen(_handleIntentUrl);
+
+    FlutterSharingIntent.instance.getInitialSharing().then(_handleIntentUrl);
+  }
+
+  Future<void> _handleIntentUrl(List<SharedFile> value) async {
+    String inputUrlText = value.firstOrNull?.value ?? "";
+    if (await canLaunchUrlString(inputUrlText)) {
+      await Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => ShortURLEditView(longUrl: inputUrlText)));
+      await loadAllData();
+    }
   }
 
   Future<void> loadAllData() async {
