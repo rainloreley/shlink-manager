@@ -31,7 +31,7 @@ class _SettingsViewState extends State<SettingsView> {
   void getServerHealth() async {
     var packageInfo = await PackageInfo.fromPlatform();
     setState(() {
-      packageInfo = packageInfo;
+      this.packageInfo = packageInfo;
     });
     final response = await globals.serverManager.getServerHealth();
     response.fold((l) {
@@ -77,7 +77,7 @@ class _SettingsViewState extends State<SettingsView> {
                   const PopupMenuItem(
                     value: 0,
                     child:
-                        Text("Log out...", style: TextStyle(color: Colors.red)),
+                        Text("Log out", style: TextStyle(color: Colors.red)),
                   )
                 ];
               },
@@ -266,10 +266,24 @@ class _SettingsViewState extends State<SettingsView> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                        Text(
-                          "${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})",
-                          style: const TextStyle(color: Colors.grey),
-                        ),
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 8,
+                            right: 8,
+                            top: 4,
+                            bottom: 4
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8),
+                            color: Theme.of(context).brightness == Brightness.light
+                                ? Colors.grey[100]
+                                : Colors.grey[900],
+                          ),
+                          child: Text(
+                            "${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})",
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                        )
                       ],
                     )
                 ],
