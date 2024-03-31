@@ -130,18 +130,6 @@ class _URLDetailViewState extends State<URLDetailView> {
           _ListCell(title: "Short URL", content: shortURL.shortUrl),
           _ListCell(title: "Long URL", content: shortURL.longUrl),
           _ListCell(
-              title: "iOS",
-              content: shortURL.deviceLongUrls.ios,
-              sub: true),
-          _ListCell(
-              title: "Android",
-              content: shortURL.deviceLongUrls.android,
-              sub: true),
-          _ListCell(
-              title: "Desktop",
-              content: shortURL.deviceLongUrls.desktop,
-              sub: true),
-          _ListCell(
               title: "Creation Date", content: shortURL.dateCreated),
           const _ListCell(title: "Visits", content: ""),
           _ListCell(

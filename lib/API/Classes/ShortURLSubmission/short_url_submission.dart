@@ -1,12 +1,7 @@
-import '../ShortURL/device_long_urls.dart';
-
 /// Data for a short URL which can be submitted to the server
 class ShortURLSubmission {
   /// Long URL to redirect to
   String longUrl;
-
-  /// Device-specific long URLs
-  DeviceLongUrls? deviceLongUrls;
 
   /// Date since when this short URL is valid in ISO8601 format
   String? validSince;
@@ -43,7 +38,6 @@ class ShortURLSubmission {
 
   ShortURLSubmission(
       {required this.longUrl,
-      required this.deviceLongUrls,
       this.validSince,
       this.validUntil,
       this.maxVisits,
@@ -60,7 +54,6 @@ class ShortURLSubmission {
   Map<String, dynamic> toJson() {
     return {
       "longUrl": longUrl,
-      "deviceLongUrls": deviceLongUrls?.toJson(),
       "validSince": validSince,
       "validUntil": validUntil,
       "maxVisits": maxVisits,

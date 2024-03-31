@@ -71,7 +71,6 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   void _submitShortUrl() async {
     var newSubmission = ShortURLSubmission(
         longUrl: longUrlController.text,
-        deviceLongUrls: null,
         tags: [],
         crawlable: isCrawlable,
         forwardQuery: forwardQuery,
