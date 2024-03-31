@@ -9,11 +9,11 @@ import '../server_manager.dart';
 /// Gets statistics about the Shlink server
 FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(
     String? apiKey, String? serverUrl, String apiVersion) async {
-  var nonOrphanVisits;
-  var orphanVisits;
-  var shortUrlsCount;
-  var tagsCount;
-  var failure;
+  VisitsSummary? nonOrphanVisits;
+  VisitsSummary? orphanVisits;
+  int shortUrlsCount = 0;
+  int tagsCount = 0;
+  Failure? failure;
 
   var visitStatsResponse = await _getVisitStats(apiKey, serverUrl, apiVersion);
   visitStatsResponse.fold((l) {
@@ -46,10 +46,10 @@ FutureOr<Either<ShlinkStats, Failure>> apiGetShlinkStats(
   }
 
   if (failure != null) {
-    return right(failure);
+    return right(failure!);
   }
   return left(
-      ShlinkStats(nonOrphanVisits, orphanVisits, shortUrlsCount, tagsCount));
+      ShlinkStats(nonOrphanVisits!, orphanVisits!, shortUrlsCount, tagsCount));
 }
 
 class _ShlinkVisitStats {
