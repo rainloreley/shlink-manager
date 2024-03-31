@@ -47,10 +47,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   license_generator: ^1.0.5
-  flutter_launcher_icons:
-    git:
-        url: https://github.com/OutdatedGuy/flutter_launcher_icons.git
-        ref: feat/monochrome-icons-support
+  flutter_launcher_icons: ^0.13.1
 
   flutter_lints: ^3.0.1
 
