@@ -1,0 +1,31 @@
+name: Fix formatting and license file
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dart-lang/setup-dart@v1
+
+      - name: Install dependencies
+        run: dart pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Update license file
+        run: flutter packages pub run license_generator generat
+  
+      - name: Commit and push
+        run: |
+          git config --global user.name 'Github Actions'
+          git config --global user.email 'adrian@abmgrt.dev'
+          git commit -am "Auto-corrected formatting and license file"
+          git push
