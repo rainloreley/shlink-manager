@@ -53,14 +53,13 @@ class ServerManager {
     final prefs = await SharedPreferences.getInstance();
 
     if (prefs.getBool('first_run') ?? true) {
-      FlutterSecureStorage storage = const FlutterSecureStorage();
-
       await storage.deleteAll();
 
       prefs.setBool('first_run', false);
+    } else {
+      serverUrl = await storage.read(key: "shlink_url");
+      apiKey = await storage.read(key: "shlink_apikey");
     }
-    serverUrl = await storage.read(key: "shlink_url");
-    apiKey = await storage.read(key: "shlink_apikey");
   }
 
   /// Saves the provided server credentials to [FlutterSecureStorage]
