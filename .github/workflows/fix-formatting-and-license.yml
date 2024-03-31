@@ -41,5 +41,8 @@ jobs:
         run: |
           git config --global user.name 'Github Actions'
           git config --global user.email 'adrian@abmgrt.dev'
-          git commit -am "Auto-corrected formatting and license file"
-          git push
+          git add -A
+          if ! git diff-index --quiet HEAD; then
+            git commit -m "Auto-corrected formatting and license file"
+            git push
+          fi
