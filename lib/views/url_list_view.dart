@@ -194,11 +194,11 @@ class _ShortURLCellState extends State<ShortURLCell> {
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () async {
-          await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => URLDetailView(shortURL: widget.shortURL)))
-              .then((a) => {
-                  widget.reload()
-             });
+          await Navigator.of(context)
+              .push(MaterialPageRoute(
+                  builder: (context) =>
+                      URLDetailView(shortURL: widget.shortURL)))
+              .then((a) => {widget.reload()});
         },
         child: Padding(
           padding: EdgeInsets.only(

@@ -76,8 +76,7 @@ class _SettingsViewState extends State<SettingsView> {
                 return [
                   const PopupMenuItem(
                     value: 0,
-                    child:
-                        Text("Log out", style: TextStyle(color: Colors.red)),
+                    child: Text("Log out", style: TextStyle(color: Colors.red)),
                   )
                 ];
               },
@@ -268,16 +267,13 @@ class _SettingsViewState extends State<SettingsView> {
                       children: [
                         Container(
                           padding: const EdgeInsets.only(
-                            left: 8,
-                            right: 8,
-                            top: 4,
-                            bottom: 4
-                          ),
+                              left: 8, right: 8, top: 4, bottom: 4),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
-                            color: Theme.of(context).brightness == Brightness.light
-                                ? Colors.grey[100]
-                                : Colors.grey[900],
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Colors.grey[100]
+                                    : Colors.grey[900],
                           ),
                           child: Text(
                             "${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})",

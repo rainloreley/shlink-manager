@@ -7,8 +7,11 @@ import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.d
 import '../server_manager.dart';
 
 /// Submits a short URL to a server for it to be added
-FutureOr<Either<ShortURL, Failure>> apiSubmitShortUrl(ShortURLSubmission shortUrl,
-    String? apiKey, String? serverUrl, String apiVersion) async {
+FutureOr<Either<ShortURL, Failure>> apiSubmitShortUrl(
+    ShortURLSubmission shortUrl,
+    String? apiKey,
+    String? serverUrl,
+    String apiVersion) async {
   try {
     final response =
         await http.post(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls"),

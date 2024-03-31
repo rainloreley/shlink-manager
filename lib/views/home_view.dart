@@ -39,8 +39,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> initializeActionProcessText() async {
-    _intentDataStreamSubscription = FlutterSharingIntent.instance
-        .getMediaStream().listen(_handleIntentUrl);
+    _intentDataStreamSubscription =
+        FlutterSharingIntent.instance.getMediaStream().listen(_handleIntentUrl);
 
     FlutterSharingIntent.instance.getInitialSharing().then(_handleIntentUrl);
   }

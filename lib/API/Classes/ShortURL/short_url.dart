@@ -52,7 +52,8 @@ class ShortURL {
         longUrl = json["longUrl"],
         dateCreated = DateTime.parse(json["dateCreated"]),
         visitsSummary = VisitsSummary.fromJson(json["visitsSummary"]),
-        tags = (json["tags"] as List<dynamic>).map((e) => e.toString()).toList(),
+        tags =
+            (json["tags"] as List<dynamic>).map((e) => e.toString()).toList(),
         meta = ShortURLMeta.fromJson(json["meta"]),
         domain = json["domain"],
         title = json["title"],
@@ -60,14 +61,14 @@ class ShortURL {
 
   /// Returns an empty class of [ShortURL]
   ShortURL.empty()
-    : shortCode = "",
-      shortUrl = "",
-      longUrl = "",
-      dateCreated = DateTime.now(),
-      visitsSummary = VisitsSummary(0, 0, 0),
-      tags = [],
-      meta = ShortURLMeta(DateTime.now(), DateTime.now(), 0),
-      domain = "",
-      title = "",
-      crawlable = false;
+      : shortCode = "",
+        shortUrl = "",
+        longUrl = "",
+        dateCreated = DateTime.now(),
+        visitsSummary = VisitsSummary(0, 0, 0),
+        tags = [],
+        meta = ShortURLMeta(DateTime.now(), DateTime.now(), 0),
+        domain = "",
+        title = "",
+        crawlable = false;
 }

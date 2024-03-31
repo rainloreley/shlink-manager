@@ -211,18 +211,20 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               parent: _customSlugDiceAnimationController,
                               curve: Curves.easeInOutExpo)),
                       child: IconButton(
-                          onPressed: disableSlugEditor ? null : () {
-                            if (randomSlug) {
-                              _customSlugDiceAnimationController.reverse(
-                                  from: 1);
-                            } else {
-                              _customSlugDiceAnimationController.forward(
-                                  from: 0);
-                            }
-                            setState(() {
-                              randomSlug = !randomSlug;
-                            });
-                          },
+                          onPressed: disableSlugEditor
+                              ? null
+                              : () {
+                                  if (randomSlug) {
+                                    _customSlugDiceAnimationController.reverse(
+                                        from: 1);
+                                  } else {
+                                    _customSlugDiceAnimationController.forward(
+                                        from: 0);
+                                  }
+                                  setState(() {
+                                    randomSlug = !randomSlug;
+                                  });
+                                },
                           icon: Icon(
                               randomSlug ? Icons.casino : Icons.casino_outlined,
                               color: randomSlug ? Colors.green : Colors.grey)),
