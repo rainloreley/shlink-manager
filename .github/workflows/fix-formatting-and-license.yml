@@ -3,8 +3,6 @@ name: Fix formatting and license file
 on:
   push:
     branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
 
 jobs:
   build:
@@ -35,14 +33,7 @@ jobs:
         run: dart format --output=none .
 
       - name: Update license file
-        run: flutter packages pub run license_generator generat
+        run: flutter packages pub run license_generator generate
   
       - name: Commit and push
-        run: |
-          git config --global user.name 'Github Actions'
-          git config --global user.email 'adrian@abmgrt.dev'
-          git add -A
-          if ! git diff-index --quiet HEAD; then
-            git commit -m "Auto-corrected formatting and license file"
-            git push
-          fi
+        uses: stefanzweifel/git-auto-commit-action@v5
