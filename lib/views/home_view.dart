@@ -4,6 +4,7 @@ import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
 import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/views/url_list_view.dart';
+import 'package:shlink_app/widgets/shlink_stats_card_widget.dart';
 import '../API/Classes/ShortURL/short_url.dart';
 import '../globals.dart' as globals;
 
@@ -24,7 +25,6 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       loadAllData();
@@ -113,22 +113,22 @@ class _HomeViewState extends State<HomeView> {
                       child: Wrap(
                         alignment: WrapAlignment.spaceEvenly,
                         children: [
-                          _ShlinkStatsCardWidget(
+                          ShlinkStatsCardWidget(
                               icon: Icons.link,
                               text:
                                   "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
                               borderColor: Colors.blue),
-                          _ShlinkStatsCardWidget(
+                          ShlinkStatsCardWidget(
                               icon: Icons.remove_red_eye,
                               text:
                                   "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
                               borderColor: Colors.green),
-                          _ShlinkStatsCardWidget(
+                          ShlinkStatsCardWidget(
                               icon: Icons.warning,
                               text:
                                   "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
                               borderColor: Colors.red),
-                          _ShlinkStatsCardWidget(
+                          ShlinkStatsCardWidget(
                               icon: Icons.sell,
                               text:
                                   "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
@@ -243,45 +243,5 @@ class _HomeViewState extends State<HomeView> {
           },
           child: const Icon(Icons.add),
         ));
-  }
-}
-
-// stats card widget
-class _ShlinkStatsCardWidget extends StatefulWidget {
-  const _ShlinkStatsCardWidget(
-      {required this.text, required this.icon, this.borderColor});
-
-  final IconData icon;
-  final Color? borderColor;
-  final String text;
-
-  @override
-  State<_ShlinkStatsCardWidget> createState() => _ShlinkStatsCardWidgetState();
-}
-
-class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
-  @override
-  Widget build(BuildContext context) {
-    var randomColor = ([...Colors.primaries]..shuffle()).first;
-    return Padding(
-      padding: const EdgeInsets.all(4),
-      child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-              border: Border.all(color: widget.borderColor ?? randomColor),
-              borderRadius: BorderRadius.circular(8)),
-          child: SizedBox(
-            child: Wrap(
-              children: [
-                Icon(widget.icon),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(widget.text,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
-          )),
-    );
   }
 }

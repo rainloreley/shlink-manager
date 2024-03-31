@@ -37,11 +37,13 @@ dependencies:
   dartz: ^0.10.1
   qr_flutter: ^4.1.0
   tuple: ^2.0.2
-  intl: ^0.18.1
+  intl: any
   dynamic_color: ^1.6.6
   url_launcher: 6.1.9
   package_info_plus: ^4.0.2
   shared_preferences: ^2.2.2
+  flutter_localizations:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:
@@ -53,6 +55,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  generate: true
 
 # flutter pub run flutter_launcher_icons
 flutter_launcher_icons:

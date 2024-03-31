@@ -3,6 +3,7 @@ import 'package:shlink_app/views/login_view.dart';
 import 'package:shlink_app/views/navigationbar_view.dart';
 import 'globals.dart' as globals;
 import 'package:dynamic_color/dynamic_color.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,6 +41,18 @@ class MyApp extends StatelessWidget {
                 _defaultDarkColorScheme,
             useMaterial3: true,
           ),
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          localeListResolutionCallback: (locales, supportedLocales) {
+            for (Locale locale in locales!) {
+              if (supportedLocales.contains(locale) ||
+                  supportedLocales.where((element) =>
+                  element.languageCode == locale.languageCode).isNotEmpty) {
+                return locale;
+              }
+            }
+            return const Locale('en');
+          },
           home: const InitialPage());
     });
   }
