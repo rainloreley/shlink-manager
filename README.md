@@ -12,6 +12,8 @@ Shlink Manager is an app for Android to see and manage all shortened URLs create
 <img src="https://raw.githubusercontent.com/steverichey/google-play-badge-svg/master/img/en_get.svg" alt="Play Store download" width="30%"/>
 </a>
 
+[![Codemagic build status](https://api.codemagic.io/apps/66096ec96d57699debb805f8/66096ec96d57699debb805f7/status_badge.svg)](https://codemagic.io/apps/66096ec96d57699debb805f8/66096ec96d57699debb805f7/latest_build)
+
 ## 📱 Current Features
 
 ✅ List all short URLs<br/>
