@@ -3,6 +3,9 @@ name: Fix formatting and license file
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - '**.dart'
+      - 'pubspec.yaml'
 
 jobs:
   build:
