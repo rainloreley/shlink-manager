@@ -64,11 +64,13 @@ class _InitialPageState extends State<InitialPage> {
   void checkLogin() async {
     bool result = await globals.serverManager.checkLogin();
     if (result) {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const NavigationBarView()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const NavigationBarView()),
+              (Route<dynamic> route) => false);
     } else {
-      Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const LoginView()));
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const LoginView()),
+              (Route<dynamic> route) => false);
     }
   }
 

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,10 +45,39 @@ class ServerManager {
   }
 
   /// Logs out the user and removes data about the Shlink server
-  Future<void> logOut() async {
+  Future<void> logOut(String url) async {
     const storage = FlutterSecureStorage();
-    await storage.delete(key: "shlink_url");
-    await storage.delete(key: "shlink_apikey");
+    final prefs = await SharedPreferences.getInstance();
+
+    String? serverMapSerialized = await storage.read(key: "server_map");
+
+    if (serverMapSerialized != null) {
+      Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+      serverMap.remove(url);
+      if (serverMap.isEmpty) {
+        storage.delete(key: "server_map");
+      } else {
+        storage.write(key: "server_map", value: jsonEncode(serverMap));
+      }
+      if (serverUrl == url) {
+        serverUrl = null;
+        apiKey = null;
+        prefs.remove("lastusedserver");
+      }
+    }
+  }
+
+  /// Returns all servers saved in the app
+  Future<List<String>> getAvailableServers() async {
+    const storage = FlutterSecureStorage();
+    String? serverMapSerialized = await storage.read(key: "server_map");
+
+    if (serverMapSerialized != null) {
+      Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+      return serverMap.keys.toList();
+    } else {
+      return [];
+    }
   }
 
   /// Loads the server credentials from [FlutterSecureStorage]
@@ -60,16 +90,69 @@ class ServerManager {
 
       prefs.setBool('first_run', false);
     } else {
-      serverUrl = await storage.read(key: "shlink_url");
-      apiKey = await storage.read(key: "shlink_apikey");
+
+      if (await _replaceDeprecatedStorageMethod()) {
+        _loadCredentials();
+        return;
+      }
+
+      String? serverMapSerialized = await storage.read(key: "server_map");
+      String? lastUsedServer = prefs.getString("lastusedserver");
+
+      if (serverMapSerialized != null) {
+        Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+        if (lastUsedServer != null) {
+          serverUrl = lastUsedServer;
+          apiKey = serverMap[lastUsedServer]!;
+        } else {
+          List<String> availableServers = serverMap.keys.toList();
+          if (!availableServers.isEmpty) {
+            serverUrl = availableServers.first;
+            apiKey = serverMap[serverUrl];
+            prefs.setString("lastusedserver", serverUrl!);
+          }
+        }
+      }
+    }
+  }
+
+  Future<bool> _replaceDeprecatedStorageMethod() async {
+    const storage = FlutterSecureStorage();
+    // deprecated data storage method, replaced because of multi-server support
+    var v1_data_serverUrl = await storage.read(key: "shlink_url");
+    var v1_data_apiKey = await storage.read(key: "shlink_apikey");
+
+    if (v1_data_serverUrl != null && v1_data_apiKey != null) {
+
+      // conversion to new data storage method
+      Map<String, String> serverMap = {};
+      serverMap[v1_data_serverUrl] = v1_data_apiKey;
+
+      storage.write(key: "server_map", value: jsonEncode(serverMap));
+
+      storage.delete(key: "shlink_url");
+      storage.delete(key: "shlink_apikey");
+
+      return true;
+    } else {
+      return false;
     }
   }
 
   /// Saves the provided server credentials to [FlutterSecureStorage]
   void _saveCredentials(String url, String apiKey) async {
     const storage = FlutterSecureStorage();
-    storage.write(key: "shlink_url", value: url);
-    storage.write(key: "shlink_apikey", value: apiKey);
+    final prefs = await SharedPreferences.getInstance();
+    String? serverMapSerialized = await storage.read(key: "server_map");
+    Map<String, String> serverMap;
+    if (serverMapSerialized != null) {
+      serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+    } else {
+      serverMap = {};
+    }
+    serverMap[url] = apiKey;
+    storage.write(key: "server_map", value: jsonEncode(serverMap));
+    prefs.setString("lastusedserver", url);
   }
 
   /// Saves provided server credentials and tries to establish a connection
@@ -81,7 +164,7 @@ class ServerManager {
     _saveCredentials(url, apiKey);
     final result = await connect();
     result.fold((l) => null, (r) {
-      logOut();
+      logOut(url);
     });
     return result;
   }

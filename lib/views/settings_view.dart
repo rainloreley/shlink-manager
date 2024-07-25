@@ -70,25 +70,6 @@ class _SettingsViewState extends State<SettingsView> {
             "Settings",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-          actions: [
-            PopupMenuButton(
-              itemBuilder: (context) {
-                return [
-                  const PopupMenuItem(
-                    value: 0,
-                    child: Text("Log out", style: TextStyle(color: Colors.red)),
-                  )
-                ];
-              },
-              onSelected: (value) {
-                if (value == 0) {
-                  globals.serverManager.logOut().then((value) =>
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const LoginView())));
-                }
-              },
-            )
-          ],
         ),
         SliverToBoxAdapter(
           child: Padding(

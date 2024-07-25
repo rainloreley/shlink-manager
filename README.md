@@ -17,16 +17,14 @@ Shlink Manager is an app for Android to see and manage all shortened URLs create
 ## 📱 Current Features
 
 ✅ List all short URLs<br/>
-✅ Create new short URLs<br/>
-✅ Delete short URLs<br/>
+✅ Create, edit and delete short URLs<br/>
 ✅ See overall statistics<br/>
 ✅ Detailed statistics for each short URL<br/>
-✅ Display tags<br/>
-✅ Display QR code<br/>
+✅ Display tags & QR code<br/>
 ✅ Dark mode support<br/>
-✅ Edit existing short URLs<br/>
 ✅ Quickly create Short URL via Share Sheet<br/>
 ✅ View rule-based redirects (no editing yet)<br/>
+✅ Use multiple Shlink instances<br/>
 
 ## 🔨 To Do
 - [ ] Add support for iOS (maybe in the future)
