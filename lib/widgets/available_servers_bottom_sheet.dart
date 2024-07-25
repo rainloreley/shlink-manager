@@ -23,10 +23,10 @@ class _AvailableServerBottomSheetState
   }
 
   Future<void> _loadServers() async {
-    List<String> availableServers =
+    List<String> savedServers =
         await globals.serverManager.getAvailableServers();
     setState(() {
-      availableServers = availableServers;
+      availableServers = savedServers;
     });
   }
 
