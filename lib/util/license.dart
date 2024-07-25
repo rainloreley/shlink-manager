@@ -50,8 +50,7 @@ IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.''',
         version: r'^1.0.5',
         homepage: null,
-        repository:
-            r'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
+        repository: r'https://github.com/flutter/packages/tree/main/third_party/packages/cupertino_icons',
       ),
       const License(
         name: r'dartz',
@@ -287,8 +286,7 @@ SOFTWARE.
 ''',
         version: r'^1.6.6',
         homepage: null,
-        repository:
-            r'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
+        repository: r'https://github.com/material-foundation/flutter-packages/tree/main/packages/dynamic_color',
       ),
       const License(
         name: r'flutter',
@@ -348,8 +346,7 @@ SOFTWARE.
 ''',
         version: r'^0.13.1',
         homepage: r'https://github.com/fluttercommunity/flutter_launcher_icons',
-        repository:
-            r'https://github.com/fluttercommunity/flutter_launcher_icons/',
+        repository: r'https://github.com/fluttercommunity/flutter_launcher_icons/',
       ),
       const License(
         name: r'flutter_lints',
@@ -381,8 +378,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^3.0.1',
         homepage: null,
-        repository:
-            r'https://github.com/flutter/packages/tree/main/packages/flutter_lints',
+        repository: r'https://github.com/flutter/packages/tree/main/packages/flutter_lints',
       ),
       const License(
         name: r'flutter_process_text',
@@ -450,8 +446,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
         version: r'^9.0.0',
         homepage: null,
-        repository:
-            r'https://github.com/mogol/flutter_secure_storage/tree/develop/flutter_secure_storage',
+        repository: r'https://github.com/mogol/flutter_secure_storage/tree/develop/flutter_secure_storage',
       ),
       const License(
         name: r'flutter_sharing_intent',
@@ -657,8 +652,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.''',
    See the License for the specific language governing permissions and
    limitations under the License.''',
         version: r'^1.1.1',
-        homepage:
-            r'https://github.com/bhagat-techind/flutter_sharing_intent.git',
+        homepage: r'https://github.com/bhagat-techind/flutter_sharing_intent.git',
         repository: null,
       ),
       const License(
@@ -821,8 +815,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^4.0.2',
         homepage: r'https://plus.fluttercommunity.dev/',
-        repository:
-            r'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/package_info_plus/package_info_plus',
+        repository: r'https://github.com/fluttercommunity/plus_plugins/tree/main/packages/package_info_plus/package_info_plus',
       ),
       const License(
         name: r'qr_flutter',
@@ -890,8 +883,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^2.2.2',
         homepage: null,
-        repository:
-            r'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
+        repository: r'https://github.com/flutter/packages/tree/main/packages/shared_preferences/shared_preferences',
       ),
       const License(
         name: r'tuple',
@@ -951,8 +943,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ''',
         version: r'^6.2.4',
         homepage: null,
-        repository:
-            r'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher',
+        repository: r'https://github.com/flutter/packages/tree/main/packages/url_launcher/url_launcher',
       ),
     ];
   }
