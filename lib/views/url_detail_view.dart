@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:intl/intl.dart';
 import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/views/redirect_rules_detail_view.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -129,6 +130,8 @@ class _URLDetailViewState extends State<URLDetailView> {
               title: "Short URL", content: shortURL.shortUrl, isUrl: true),
           _ListCell(title: "Long URL", content: shortURL.longUrl, isUrl: true),
           _ListCell(title: "Creation Date", content: shortURL.dateCreated),
+          _ListCell(title: "Redirect Rules", content: null,
+              clickableDetailView: RedirectRulesDetailView(shortURL: shortURL)),
           const _ListCell(title: "Visits", content: ""),
           _ListCell(
               title: "Total", content: shortURL.visitsSummary.total, sub: true),
@@ -163,13 +166,15 @@ class _ListCell extends StatefulWidget {
       required this.content,
       this.sub = false,
       this.last = false,
-      this.isUrl = false});
+      this.isUrl = false,
+      this.clickableDetailView = null});
 
   final String title;
   final dynamic content;
   final bool sub;
   final bool last;
   final bool isUrl;
+  final Widget? clickableDetailView;
 
   @override
   State<_ListCell> createState() => _ListCellState();
@@ -183,11 +188,18 @@ class _ListCellState extends State<_ListCell> {
             padding: EdgeInsets.only(top: 16, bottom: widget.last ? 30 : 0),
             child: GestureDetector(
               onTap: () async {
-                Uri? parsedUrl = Uri.tryParse(widget.content);
-                if (widget.isUrl &&
-                    parsedUrl != null &&
-                    await canLaunchUrl(parsedUrl)) {
-                  launchUrl(parsedUrl);
+                if (widget.clickableDetailView != null) {
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(
+                      builder: (context) =>
+                      widget.clickableDetailView!));
+                } else if (widget.content is String) {
+                  Uri? parsedUrl = Uri.tryParse(widget.content);
+                  if (widget.isUrl &&
+                      parsedUrl != null &&
+                      await canLaunchUrl(parsedUrl)) {
+                    launchUrl(parsedUrl);
+                  }
                 }
               },
               child: Container(
@@ -245,6 +257,8 @@ class _ListCellState extends State<_ListCell> {
                     else if (widget.content is DateTime)
                       Text(DateFormat('yyyy-MM-dd - HH:mm')
                           .format(widget.content))
+                    else if (widget.clickableDetailView != null)
+                        const Icon(Icons.chevron_right)
                     else
                       const Text("N/A")
                   ],

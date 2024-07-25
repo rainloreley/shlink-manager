@@ -3,13 +3,16 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
+import 'package:shlink_app/API/Classes/ShortURL/RedirectRule/redirect_rule.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
 import 'package:shlink_app/API/Methods/connect.dart';
 import 'package:shlink_app/API/Methods/get_recent_short_urls.dart';
+import 'package:shlink_app/API/Methods/get_redirect_rules.dart';
 import 'package:shlink_app/API/Methods/get_server_health.dart';
 import 'package:shlink_app/API/Methods/get_shlink_stats.dart';
 import 'package:shlink_app/API/Methods/get_short_urls.dart';
+import 'package:shlink_app/API/Methods/set_redirect_rules.dart';
 import 'package:shlink_app/API/Methods/update_short_url.dart';
 
 import 'Methods/delete_short_url.dart';
@@ -123,6 +126,17 @@ class ServerManager {
   /// Gets recently created/used short URLs from the server
   FutureOr<Either<List<ShortURL>, Failure>> getRecentShortUrls() async {
     return apiGetRecentShortUrls(apiKey, serverUrl, apiVersion);
+  }
+  /// Gets redirect rules for a given short URL (code)
+  FutureOr<Either<List<RedirectRule>, Failure>> getRedirectRules(
+      String shortCode) async {
+    return apiGetRedirectRules(shortCode, apiKey, serverUrl, apiVersion);
+  }
+
+  /// Sets redirect rules for a given short URL (code)
+  FutureOr<Either<bool, Failure>> setRedirectRules(
+      String shortCode, List<RedirectRule> redirectRules) async {
+    return apiSetRedirectRules(shortCode, redirectRules, apiKey, serverUrl, apiVersion);
   }
 }
 

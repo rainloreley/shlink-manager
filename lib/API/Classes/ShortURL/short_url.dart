@@ -1,6 +1,8 @@
 import 'package:shlink_app/API/Classes/ShortURL/short_url_meta.dart';
 import 'package:shlink_app/API/Classes/ShortURL/visits_summary.dart';
 
+import 'RedirectRule/redirect_rule.dart';
+
 /// Data about a short URL
 class ShortURL {
   /// Slug of the short URL used in the URL
@@ -32,6 +34,8 @@ class ShortURL {
 
   /// Whether the short URL is crawlable by a web crawler
   bool crawlable;
+
+  List<RedirectRule>? redirectRules;
 
   ShortURL(
       this.shortCode,
