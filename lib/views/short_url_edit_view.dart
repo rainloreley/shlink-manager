@@ -144,9 +144,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
     return Scaffold(
       body: CustomScrollView(
         slivers: [
-          const SliverAppBar.medium(
-            title: Text("New Short URL",
-                style: TextStyle(fontWeight: FontWeight.bold)),
+          SliverAppBar.medium(
+            title: Text("${disableSlugEditor ? "Edit" : "New"} Short URL",
+                style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           SliverToBoxAdapter(
               child: Padding(
