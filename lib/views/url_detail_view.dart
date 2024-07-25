@@ -130,7 +130,9 @@ class _URLDetailViewState extends State<URLDetailView> {
               title: "Short URL", content: shortURL.shortUrl, isUrl: true),
           _ListCell(title: "Long URL", content: shortURL.longUrl, isUrl: true),
           _ListCell(title: "Creation Date", content: shortURL.dateCreated),
-          _ListCell(title: "Redirect Rules", content: null,
+          _ListCell(
+              title: "Redirect Rules",
+              content: null,
               clickableDetailView: RedirectRulesDetailView(shortURL: shortURL)),
           const _ListCell(title: "Visits", content: ""),
           _ListCell(
@@ -189,10 +191,8 @@ class _ListCellState extends State<_ListCell> {
             child: GestureDetector(
               onTap: () async {
                 if (widget.clickableDetailView != null) {
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(
-                      builder: (context) =>
-                      widget.clickableDetailView!));
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => widget.clickableDetailView!));
                 } else if (widget.content is String) {
                   Uri? parsedUrl = Uri.tryParse(widget.content);
                   if (widget.isUrl &&
@@ -258,7 +258,7 @@ class _ListCellState extends State<_ListCell> {
                       Text(DateFormat('yyyy-MM-dd - HH:mm')
                           .format(widget.content))
                     else if (widget.clickableDetailView != null)
-                        const Icon(Icons.chevron_right)
+                      const Icon(Icons.chevron_right)
                     else
                       const Text("N/A")
                   ],

@@ -14,11 +14,9 @@ enum RedirectRuleConditionType {
     }
     throw ArgumentError("Invalid type $api");
   }
-
 }
 
 extension ConditionTypeExtension on RedirectRuleConditionType {
-
   String get api {
     switch (this) {
       case RedirectRuleConditionType.DEVICE:
@@ -29,6 +27,7 @@ extension ConditionTypeExtension on RedirectRuleConditionType {
         return "query-param";
     }
   }
+
   String get humanReadable {
     switch (this) {
       case RedirectRuleConditionType.DEVICE:

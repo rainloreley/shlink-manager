@@ -9,10 +9,11 @@ class RedirectRule {
   RedirectRule(this.longUrl, this.priority, this.conditions);
 
   RedirectRule.fromJson(Map<String, dynamic> json)
-    : longUrl = json["longUrl"],
-      priority = json["priority"],
-      conditions = (json["conditions"] as List<dynamic>).map((e)
-      => RedirectRuleCondition.fromJson(e)).toList();
+      : longUrl = json["longUrl"],
+        priority = json["priority"],
+        conditions = (json["conditions"] as List<dynamic>)
+            .map((e) => RedirectRuleCondition.fromJson(e))
+            .toList();
 
   Map<String, dynamic> toJson() {
     return {

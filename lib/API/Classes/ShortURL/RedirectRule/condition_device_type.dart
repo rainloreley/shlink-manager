@@ -14,11 +14,9 @@ enum ConditionDeviceType {
     }
     throw ArgumentError("Invalid type $api");
   }
-
 }
 
 extension ConditionTypeExtension on ConditionDeviceType {
-
   String get api {
     switch (this) {
       case ConditionDeviceType.IOS:
@@ -29,6 +27,7 @@ extension ConditionTypeExtension on ConditionDeviceType {
         return "desktop";
     }
   }
+
   String get humanReadable {
     switch (this) {
       case ConditionDeviceType.IOS:

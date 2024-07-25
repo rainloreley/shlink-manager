@@ -5,19 +5,15 @@ class RedirectRuleCondition {
   String matchValue;
   String? matchKey;
 
-  RedirectRuleCondition(String type, this.matchValue, this.matchKey) :
-    type = RedirectRuleConditionType.fromApi(type);
+  RedirectRuleCondition(String type, this.matchValue, this.matchKey)
+      : type = RedirectRuleConditionType.fromApi(type);
 
   RedirectRuleCondition.fromJson(Map<String, dynamic> json)
-    : type = RedirectRuleConditionType.fromApi(json["type"]),
-      matchValue = json["matchValue"],
-      matchKey = json["matchKey"];
+      : type = RedirectRuleConditionType.fromApi(json["type"]),
+        matchValue = json["matchValue"],
+        matchKey = json["matchKey"];
 
   Map<String, dynamic> toJson() {
-    return {
-      "type": type.api,
-      "matchValue": matchValue,
-      "matchKey": matchKey
-    };
+    return {"type": type.api, "matchValue": matchValue, "matchKey": matchKey};
   }
 }

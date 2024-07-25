@@ -12,8 +12,9 @@ FutureOr<Either<List<RedirectRule>, Failure>> apiGetRedirectRules(
     String? serverUrl,
     String apiVersion) async {
   try {
-    final response =
-    await http.get(Uri.parse("$serverUrl/rest/v$apiVersion/short-urls/$shortCode/redirect-rules"),
+    final response = await http.get(
+        Uri.parse(
+            "$serverUrl/rest/v$apiVersion/short-urls/$shortCode/redirect-rules"),
         headers: {
           "X-Api-Key": apiKey ?? "",
         });
@@ -22,9 +23,10 @@ FutureOr<Either<List<RedirectRule>, Failure>> apiGetRedirectRules(
       var jsonBody = jsonDecode(response.body) as Map<String, dynamic>;
 
       // convert json array to object array
-      List<RedirectRule> redirectRules = (jsonBody["redirectRules"]
-      as List<dynamic>).map((e)
-      => RedirectRule.fromJson(e)).toList();
+      List<RedirectRule> redirectRules =
+          (jsonBody["redirectRules"] as List<dynamic>)
+              .map((e) => RedirectRule.fromJson(e))
+              .toList();
 
       return left(redirectRules);
     } else {

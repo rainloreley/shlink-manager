@@ -127,6 +127,7 @@ class ServerManager {
   FutureOr<Either<List<ShortURL>, Failure>> getRecentShortUrls() async {
     return apiGetRecentShortUrls(apiKey, serverUrl, apiVersion);
   }
+
   /// Gets redirect rules for a given short URL (code)
   FutureOr<Either<List<RedirectRule>, Failure>> getRedirectRules(
       String shortCode) async {
@@ -136,7 +137,8 @@ class ServerManager {
   /// Sets redirect rules for a given short URL (code)
   FutureOr<Either<bool, Failure>> setRedirectRules(
       String shortCode, List<RedirectRule> redirectRules) async {
-    return apiSetRedirectRules(shortCode, redirectRules, apiKey, serverUrl, apiVersion);
+    return apiSetRedirectRules(
+        shortCode, redirectRules, apiKey, serverUrl, apiVersion);
   }
 }
 
