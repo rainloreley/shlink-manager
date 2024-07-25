@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
               foregroundColor: Colors.white,
               elevation: 0,
             ),
-            colorScheme: darkColorScheme?.copyWith(background: Colors.black) ??
+            colorScheme: darkColorScheme?.copyWith(surface: Colors.black) ??
                 _defaultDarkColorScheme,
             useMaterial3: true,
           ),
@@ -66,11 +66,11 @@ class _InitialPageState extends State<InitialPage> {
     if (result) {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const NavigationBarView()),
-              (Route<dynamic> route) => false);
+          (Route<dynamic> route) => false);
     } else {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const LoginView()),
-              (Route<dynamic> route) => false);
+          (Route<dynamic> route) => false);
     }
   }
 

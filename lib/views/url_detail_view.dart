@@ -169,7 +169,7 @@ class _ListCell extends StatefulWidget {
       this.sub = false,
       this.last = false,
       this.isUrl = false,
-      this.clickableDetailView = null});
+      this.clickableDetailView});
 
   final String title;
   final dynamic content;

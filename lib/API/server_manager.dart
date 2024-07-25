@@ -52,7 +52,8 @@ class ServerManager {
     String? serverMapSerialized = await storage.read(key: "server_map");
 
     if (serverMapSerialized != null) {
-      Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+      Map<String, String> serverMap =
+          Map.castFrom(jsonDecode(serverMapSerialized));
       serverMap.remove(url);
       if (serverMap.isEmpty) {
         storage.delete(key: "server_map");
@@ -73,7 +74,8 @@ class ServerManager {
     String? serverMapSerialized = await storage.read(key: "server_map");
 
     if (serverMapSerialized != null) {
-      Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+      Map<String, String> serverMap =
+          Map.castFrom(jsonDecode(serverMapSerialized));
       return serverMap.keys.toList();
     } else {
       return [];
@@ -90,7 +92,6 @@ class ServerManager {
 
       prefs.setBool('first_run', false);
     } else {
-
       if (await _replaceDeprecatedStorageMethod()) {
         _loadCredentials();
         return;
@@ -100,13 +101,14 @@ class ServerManager {
       String? lastUsedServer = prefs.getString("lastusedserver");
 
       if (serverMapSerialized != null) {
-        Map<String, String> serverMap = Map.castFrom(jsonDecode(serverMapSerialized));
+        Map<String, String> serverMap =
+            Map.castFrom(jsonDecode(serverMapSerialized));
         if (lastUsedServer != null) {
           serverUrl = lastUsedServer;
           apiKey = serverMap[lastUsedServer]!;
         } else {
           List<String> availableServers = serverMap.keys.toList();
-          if (!availableServers.isEmpty) {
+          if (availableServers.isNotEmpty) {
             serverUrl = availableServers.first;
             apiKey = serverMap[serverUrl];
             prefs.setString("lastusedserver", serverUrl!);
@@ -119,14 +121,13 @@ class ServerManager {
   Future<bool> _replaceDeprecatedStorageMethod() async {
     const storage = FlutterSecureStorage();
     // deprecated data storage method, replaced because of multi-server support
-    var v1_data_serverUrl = await storage.read(key: "shlink_url");
-    var v1_data_apiKey = await storage.read(key: "shlink_apikey");
+    var v1DataServerurl = await storage.read(key: "shlink_url");
+    var v1DataApikey = await storage.read(key: "shlink_apikey");
 
-    if (v1_data_serverUrl != null && v1_data_apiKey != null) {
-
+    if (v1DataServerurl != null && v1DataApikey != null) {
       // conversion to new data storage method
       Map<String, String> serverMap = {};
-      serverMap[v1_data_serverUrl] = v1_data_apiKey;
+      serverMap[v1DataServerurl] = v1DataApikey;
 
       storage.write(key: "server_map", value: jsonEncode(serverMap));
 

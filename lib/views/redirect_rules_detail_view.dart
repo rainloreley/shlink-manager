@@ -186,8 +186,7 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
 
 class _ListCell extends StatefulWidget {
   const _ListCell(
-      {super.key,
-      required this.redirectRule,
+      {required this.redirectRule,
       required this.moveUp,
       required this.moveDown,
       required this.delete});
@@ -216,9 +215,9 @@ class _ListCellState extends State<_ListCell> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(left: 8, right: 8),
+        padding: const EdgeInsets.only(left: 8, right: 8),
         child: Container(
-            padding: EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
             decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(
@@ -237,7 +236,7 @@ class _ListCellState extends State<_ListCell> {
                     Text(widget.redirectRule.longUrl)
                   ],
                 ),
-                Text("Conditions:",
+                const Text("Conditions:",
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 Row(
                   children: [
@@ -275,7 +274,7 @@ class _ListCellState extends State<_ListCell> {
                               ? Colors.grey[700]
                               : Colors.grey[400],
                       onPressed: widget.moveUp,
-                      icon: Icon(Icons.arrow_upward),
+                      icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
                       disabledColor:
@@ -284,11 +283,11 @@ class _ListCellState extends State<_ListCell> {
                               ? Colors.grey[700]
                               : Colors.grey[400],
                       onPressed: widget.moveDown,
-                      icon: Icon(Icons.arrow_downward),
+                      icon: const Icon(Icons.arrow_downward),
                     ),
                     IconButton(
                       onPressed: widget.delete,
-                      icon: Icon(Icons.delete, color: Colors.red),
+                      icon: const Icon(Icons.delete, color: Colors.red),
                     )
                   ],
                 )

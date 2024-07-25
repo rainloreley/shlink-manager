@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shlink_app/API/server_manager.dart';
-import 'package:shlink_app/views/login_view.dart';
 import 'package:shlink_app/views/opensource_licenses_view.dart';
+import 'package:shlink_app/widgets/available_servers_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../globals.dart' as globals;
 
@@ -64,9 +64,9 @@ class _SettingsViewState extends State<SettingsView> {
     return Scaffold(
         body: CustomScrollView(
       slivers: [
-        SliverAppBar.medium(
+        const SliverAppBar.medium(
           expandedHeight: 120,
-          title: const Text(
+          title: Text(
             "Settings",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
@@ -76,60 +76,69 @@ class _SettingsViewState extends State<SettingsView> {
               padding: const EdgeInsets.all(12.0),
               child: Column(
                 children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey[100]
-                          : Colors.grey[900],
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Row(
-                        children: [
-                          Icon(Icons.dns_outlined,
-                              color: (() {
-                                switch (_serverStatus) {
-                                  case ServerStatus.connected:
-                                    return Colors.green;
-                                  case ServerStatus.connecting:
-                                    return Colors.orange;
-                                  case ServerStatus.disconnected:
-                                    return Colors.red;
-                                }
-                              }())),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text("Connected to",
-                                  style: TextStyle(color: Colors.grey)),
-                              Text(globals.serverManager.getServerUrl(),
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16)),
-                              Row(
-                                children: [
-                                  const Text("API Version: ",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w600)),
-                                  Text(globals.serverManager.getApiVersion(),
-                                      style:
-                                          const TextStyle(color: Colors.grey)),
-                                  const SizedBox(width: 16),
-                                  const Text("Server Version: ",
-                                      style: TextStyle(
-                                          color: Colors.grey,
-                                          fontWeight: FontWeight.w600)),
-                                  Text(_serverVersion,
-                                      style:
-                                          const TextStyle(color: Colors.grey))
-                                ],
-                              ),
-                            ],
-                          )
-                        ],
+                  GestureDetector(
+                    onTap: () {
+                      showModalBottomSheet(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return const AvailableServerBottomSheet();
+                          });
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Colors.grey[100]
+                            : Colors.grey[900],
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(
+                          children: [
+                            Icon(Icons.dns_outlined,
+                                color: (() {
+                                  switch (_serverStatus) {
+                                    case ServerStatus.connected:
+                                      return Colors.green;
+                                    case ServerStatus.connecting:
+                                      return Colors.orange;
+                                    case ServerStatus.disconnected:
+                                      return Colors.red;
+                                  }
+                                }())),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text("Connected to",
+                                    style: TextStyle(color: Colors.grey)),
+                                Text(globals.serverManager.getServerUrl(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16)),
+                                Row(
+                                  children: [
+                                    const Text("API Version: ",
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w600)),
+                                    Text(globals.serverManager.getApiVersion(),
+                                        style: const TextStyle(
+                                            color: Colors.grey)),
+                                    const SizedBox(width: 16),
+                                    const Text("Server Version: ",
+                                        style: TextStyle(
+                                            color: Colors.grey,
+                                            fontWeight: FontWeight.w600)),
+                                    Text(_serverVersion,
+                                        style:
+                                            const TextStyle(color: Colors.grey))
+                                  ],
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
