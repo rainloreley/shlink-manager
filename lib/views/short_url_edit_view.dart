@@ -1,10 +1,14 @@
 import 'package:dartz/dartz.dart' as dartz;
+import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
 import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/util/build_api_error_snackbar.dart';
+import 'package:shlink_app/util/string_to_color.dart';
+import 'package:shlink_app/views/tag_selector_view.dart';
+import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import '../globals.dart' as globals;
 
 class ShortURLEditView extends StatefulWidget {
@@ -23,6 +27,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   final customSlugController = TextEditingController();
   final titleController = TextEditingController();
   final randomSlugLengthController = TextEditingController(text: "5");
+  List<String> tags = [];
 
   bool randomSlug = true;
   bool isCrawlable = true;
@@ -64,6 +69,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
     if (widget.shortUrl != null) {
       longUrlController.text = widget.shortUrl!.longUrl;
       isCrawlable = widget.shortUrl!.crawlable;
+      tags = widget.shortUrl!.tags;
       // for some reason this attribute is not returned by the api
       forwardQuery = true;
       titleController.text = widget.shortUrl!.title ?? "";
@@ -104,7 +110,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   void _submitShortUrl() async {
     var newSubmission = ShortURLSubmission(
         longUrl: longUrlController.text,
-        tags: [],
+        tags: tags,
         crawlable: isCrawlable,
         forwardQuery: forwardQuery,
         findIfExists: true,
@@ -280,6 +286,57 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                           ],
                         )),
                   ),
+                  GestureDetector(
+                    onTap: () async {
+                      List<String>? selectedTags = await Navigator.of(context).
+                      push(MaterialPageRoute(
+                              builder: (context) =>
+                                  TagSelectorView(alreadySelectedTags: tags)));
+                      if (selectedTags != null) {
+                        setState(() {
+                          tags = selectedTags;
+                        });
+                      }
+                    },
+                    child: InputDecorator(
+                        isEmpty: tags.isEmpty,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            label: Row(
+                              children: [
+                                Icon(Icons.label_outline),
+                                SizedBox(width: 8),
+                                Text("Tags")
+                              ],
+                            )),
+                        child: Wrap(
+                          runSpacing: 8,
+                          spacing: 8,
+                          children: tags.map((tag) {
+                            var boxColor = stringToColor(tag)
+                                .harmonizeWith(Theme.of(context).colorScheme.
+                                    primary);
+                            var textColor = boxColor.computeLuminance() < 0.5
+                                ? Colors.white
+                                : Colors.black;
+                            return InputChip(
+                              label: Text(tag, style: TextStyle(
+                                color: textColor
+                              )),
+                              backgroundColor: boxColor,
+                              deleteIcon: Icon(Icons.close,
+                                  size: 18,
+                                  color: textColor),
+                              onDeleted: () {
+                                setState(() {
+                                  tags.remove(tag);
+                                });
+                              },
+                            );
+                          }).toList(),
+                        )
+                    ),
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -335,7 +392,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           child: isSaving
               ? const Padding(
                   padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(strokeWidth: 3))
+                  child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white))
               : const Icon(Icons.save)),
     );
   }

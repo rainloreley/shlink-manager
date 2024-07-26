@@ -7,12 +7,14 @@ import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
 import 'package:shlink_app/API/Classes/ShortURL/RedirectRule/redirect_rule.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:shlink_app/API/Classes/ShortURLSubmission/short_url_submission.dart';
+import 'package:shlink_app/API/Classes/Tag/tag_with_stats.dart';
 import 'package:shlink_app/API/Methods/connect.dart';
 import 'package:shlink_app/API/Methods/get_recent_short_urls.dart';
 import 'package:shlink_app/API/Methods/get_redirect_rules.dart';
 import 'package:shlink_app/API/Methods/get_server_health.dart';
 import 'package:shlink_app/API/Methods/get_shlink_stats.dart';
 import 'package:shlink_app/API/Methods/get_short_urls.dart';
+import 'package:shlink_app/API/Methods/get_tags_with_stats.dart';
 import 'package:shlink_app/API/Methods/set_redirect_rules.dart';
 import 'package:shlink_app/API/Methods/update_short_url.dart';
 
@@ -181,6 +183,11 @@ class ServerManager {
     return apiGetShortUrls(apiKey, serverUrl, apiVersion);
   }
 
+  /// Gets all tags from the server
+  FutureOr<Either<List<TagWithStats>, Failure>> getTags() async {
+    return apiGetTagsWithStats(apiKey, serverUrl, apiVersion);
+  }
+
   /// Gets statistics about the Shlink instance
   FutureOr<Either<ShlinkStats, Failure>> getShlinkStats() async {
     return apiGetShlinkStats(apiKey, serverUrl, apiVersion);
@@ -232,6 +239,14 @@ class ShortURLPageResponse {
   int totalPages;
 
   ShortURLPageResponse(this.urls, this.totalPages);
+}
+
+/// Server response data type about a page of tags from the server
+class TagsWithStatsPageResponse {
+  List<TagWithStats> tags;
+  int totalPages;
+
+  TagsWithStatsPageResponse(this.tags, this.totalPages);
 }
 
 /// Server response data type about the health status of the server

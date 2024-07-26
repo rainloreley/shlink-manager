@@ -93,7 +93,7 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
               child: isSaving
                   ? const Padding(
                       padding: EdgeInsets.all(16),
-                      child: CircularProgressIndicator(strokeWidth: 3))
+                      child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white))
                   : const Icon(Icons.save))
         ],
       ),
