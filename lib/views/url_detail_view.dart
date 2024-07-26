@@ -75,8 +75,8 @@ class _URLDetailViewState extends State<URLDetailView> {
                     }
 
                     final snackBar = SnackBar(
-                        content: Text(text),
-                        backgroundColor: Colors.red[400],
+                        content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+                        backgroundColor: Theme.of(context).colorScheme.error,
                         behavior: SnackBarBehavior.floating);
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return false;
@@ -207,10 +207,7 @@ class _ListCellState extends State<_ListCell> {
                 decoration: BoxDecoration(
                   border: Border(
                       top: BorderSide(
-                          color: MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark
-                              ? Colors.grey[800]!
-                              : Colors.grey[300]!)),
+                          color: Theme.of(context).dividerColor)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -226,10 +223,7 @@ class _ListCellState extends State<_ListCell> {
                               child: Container(
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(8),
-                                  color: Theme.of(context).brightness ==
-                                          Brightness.dark
-                                      ? Colors.grey[700]
-                                      : Colors.grey[300],
+                                  color: Theme.of(context).colorScheme.outline,
                                 ),
                               ),
                             ),

@@ -52,8 +52,8 @@ class _SettingsViewState extends State<SettingsView> {
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
@@ -87,9 +87,7 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.grey[100]
-                            : Colors.grey[900],
+                        color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
@@ -110,29 +108,29 @@ class _SettingsViewState extends State<SettingsView> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text("Connected to",
-                                    style: TextStyle(color: Colors.grey)),
+                                Text("Connected to",
+                                    style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
                                 Text(globals.serverManager.getServerUrl(),
                                     style: const TextStyle(
                                         fontWeight: FontWeight.bold,
                                         fontSize: 16)),
                                 Row(
                                   children: [
-                                    const Text("API Version: ",
+                                    Text("API Version: ",
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: Theme.of(context).colorScheme.onTertiary,
                                             fontWeight: FontWeight.w600)),
                                     Text(globals.serverManager.getApiVersion(),
-                                        style: const TextStyle(
-                                            color: Colors.grey)),
-                                    const SizedBox(width: 16),
-                                    const Text("Server Version: ",
                                         style: TextStyle(
-                                            color: Colors.grey,
+                                            color: Theme.of(context).colorScheme.onTertiary)),
+                                    const SizedBox(width: 16),
+                                    Text("Server Version: ",
+                                        style: TextStyle(
+                                            color: Theme.of(context).colorScheme.onTertiary,
                                             fontWeight: FontWeight.w600)),
                                     Text(_serverVersion,
                                         style:
-                                            const TextStyle(color: Colors.grey))
+                                        TextStyle(color: Theme.of(context).colorScheme.onTertiary))
                                   ],
                                 ),
                               ],
@@ -143,7 +141,7 @@ class _SettingsViewState extends State<SettingsView> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  const Divider(),
+                  Divider(color: Theme.of(context).dividerColor),
                   const SizedBox(height: 8),
                   GestureDetector(
                     onTap: () {
@@ -154,9 +152,7 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.grey[100]
-                            : Colors.grey[900],
+                        color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       child: const Padding(
                         padding: EdgeInsets.only(
@@ -190,9 +186,7 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.grey[100]
-                            : Colors.grey[900],
+                        color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       child: const Padding(
                         padding: EdgeInsets.only(
@@ -226,9 +220,7 @@ class _SettingsViewState extends State<SettingsView> {
                     child: Container(
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(8),
-                        color: Theme.of(context).brightness == Brightness.light
-                            ? Colors.grey[100]
-                            : Colors.grey[900],
+                        color: Theme.of(context).colorScheme.surfaceContainer
                       ),
                       child: const Padding(
                         padding: EdgeInsets.only(
@@ -261,13 +253,11 @@ class _SettingsViewState extends State<SettingsView> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(8),
                             color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Colors.grey[100]
-                                    : Colors.grey[900],
+                            Theme.of(context).colorScheme.surfaceContainer
                           ),
                           child: Text(
                             "${packageInfo.appName}, v${packageInfo.version} (${packageInfo.buildNumber})",
-                            style: const TextStyle(color: Colors.grey),
+                            style: TextStyle(color: Theme.of(context).colorScheme.onSecondary),
                           ),
                         )
                       ],

@@ -40,9 +40,7 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).brightness == Brightness.light
-                          ? Colors.grey[100]
-                          : Colors.grey[900],
+                      color: Theme.of(context).colorScheme.surfaceContainer,
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -54,13 +52,13 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18)),
                           Text("Version: ${currentLicense.version ?? "N/A"}",
-                              style: const TextStyle(color: Colors.grey)),
+                              style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
                           const SizedBox(height: 8),
-                          const Divider(),
+                          Divider(color: Theme.of(context).dividerColor),
                           const SizedBox(height: 8),
                           Text(currentLicense.license,
                               textAlign: TextAlign.justify,
-                              style: const TextStyle(color: Colors.grey)),
+                              style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
                         ],
                       ),
                     ),
@@ -69,12 +67,12 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
               );
             }, childCount: LicenseUtil.getLicenses().length),
           ),
-          const SliverToBoxAdapter(
+          SliverToBoxAdapter(
               child: Padding(
             padding: EdgeInsets.only(top: 8, bottom: 20),
             child: Text(
               "Thank you to all maintainers of these repositories 💝",
-              style: TextStyle(color: Colors.grey),
+              style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
               textAlign: TextAlign.center,
             ),
           ))

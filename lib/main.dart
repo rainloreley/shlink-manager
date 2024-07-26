@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shlink_app/global_theme.dart';
 import 'package:shlink_app/views/login_view.dart';
 import 'package:shlink_app/views/navigationbar_view.dart';
 import 'globals.dart' as globals;
@@ -26,7 +27,9 @@ class MyApp extends StatelessWidget {
       return MaterialApp(
           title: 'Shlink',
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
+          theme: GlobalTheme.lightThemeData(lightColorScheme),
+          darkTheme: GlobalTheme.darkThemeData(darkColorScheme),
+          /*theme: ThemeData(
               appBarTheme: const AppBarTheme(
                 backgroundColor: Color(0xfffafafa),
               ),
@@ -41,7 +44,7 @@ class MyApp extends StatelessWidget {
             colorScheme: darkColorScheme?.copyWith(surface: Colors.black) ??
                 _defaultDarkColorScheme,
             useMaterial3: true,
-          ),
+          ),*/
           home: const InitialPage());
     });
   }

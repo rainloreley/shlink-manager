@@ -131,8 +131,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
@@ -175,11 +175,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                         controller: customSlugController,
                         style: TextStyle(
                             color: randomSlug
-                                ? Colors.grey
-                                : Theme.of(context).brightness ==
-                                        Brightness.light
-                                    ? Colors.black
-                                    : Colors.white),
+                                ? Theme.of(context).colorScheme.onTertiary
+                                : Theme.of(context).colorScheme.onPrimary),
                         onChanged: (_) {
                           if (randomSlug) {
                             setState(() {

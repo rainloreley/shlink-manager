@@ -49,8 +49,8 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
@@ -71,8 +71,8 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
       return false;
@@ -141,7 +141,7 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
                               child: Text(
                                 'Adding redirect rules will be supported soon!',
                                 style: TextStyle(
-                                    fontSize: 16, color: Colors.grey[600]),
+                                    fontSize: 16, color: Theme.of(context).colorScheme.onSecondary),
                               ),
                             )
                           ],
@@ -221,10 +221,7 @@ class _ListCellState extends State<_ListCell> {
             decoration: BoxDecoration(
               border: Border(
                   bottom: BorderSide(
-                      color: MediaQuery.of(context).platformBrightness ==
-                              Brightness.dark
-                          ? Colors.grey[800]!
-                          : Colors.grey[300]!)),
+                      color: Theme.of(context).dividerColor)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -252,10 +249,7 @@ class _ListCellState extends State<_ListCell> {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
                                 color:
-                                    MediaQuery.of(context).platformBrightness ==
-                                            Brightness.dark
-                                        ? Colors.grey[900]
-                                        : Colors.grey[300],
+                                    Theme.of(context).colorScheme.tertiary,
                               ),
                               child: Text(_conditionToTagString(condition)),
                             ),
@@ -269,19 +263,13 @@ class _ListCellState extends State<_ListCell> {
                   children: [
                     IconButton(
                       disabledColor:
-                          MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark
-                              ? Colors.grey[700]
-                              : Colors.grey[400],
+                          Theme.of(context).disabledColor,
                       onPressed: widget.moveUp,
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
                       disabledColor:
-                          MediaQuery.of(context).platformBrightness ==
-                                  Brightness.dark
-                              ? Colors.grey[700]
-                              : Colors.grey[400],
+                      Theme.of(context).disabledColor,
                       onPressed: widget.moveDown,
                       icon: const Icon(Icons.arrow_downward),
                     ),

@@ -135,7 +135,7 @@ class _LoginViewState extends State<LoginView> {
                       children: [
                         Flexible(
                             child: Text(_errorMessage,
-                                style: const TextStyle(color: Colors.red),
+                                style: TextStyle(color: Theme.of(context).colorScheme.onError),
                                 textAlign: TextAlign.center))
                       ],
                     ),

@@ -76,8 +76,8 @@ class _HomeViewState extends State<HomeView> {
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
@@ -99,8 +99,8 @@ class _HomeViewState extends State<HomeView> {
       }
 
       final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
+          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+          backgroundColor: Theme.of(context).colorScheme.error,
           behavior: SnackBarBehavior.floating);
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     });
@@ -139,7 +139,7 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: Text(globals.serverManager.getServerUrl(),
                                   style: TextStyle(
-                                      fontSize: 16, color: Colors.grey[600])),
+                                      fontSize: 16, color: Theme.of(context).colorScheme.onTertiary)),
                             )
                           ],
                         )),
@@ -189,7 +189,7 @@ class _HomeViewState extends State<HomeView> {
                                           'Create one by tapping the "+" button below',
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: Colors.grey[600]),
+                                              color: Theme.of(context).colorScheme.onSecondary),
                                         ),
                                       )
                                     ],
@@ -251,18 +251,12 @@ class _HomeViewState extends State<HomeView> {
                             eyeStyle: QrEyeStyle(
                               eyeShape: QrEyeShape.square,
                               color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                                  Theme.of(context).colorScheme.onPrimary
                             ),
                             dataModuleStyle: QrDataModuleStyle(
                               dataModuleShape: QrDataModuleShape.square,
                               color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                              Theme.of(context).colorScheme.onPrimary
                             ),
                           ))),
                 ),

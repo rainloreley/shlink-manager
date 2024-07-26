@@ -99,7 +99,7 @@ class _URLListViewState extends State<URLListView> {
                                           'Create one by tapping the "+" button below',
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: Colors.grey[600]),
+                                              color: Theme.of(context).colorScheme.onSecondary),
                                         ),
                                       )
                                     ],
@@ -151,18 +151,11 @@ class _URLListViewState extends State<URLListView> {
                             eyeStyle: QrEyeStyle(
                               eyeShape: QrEyeShape.square,
                               color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                                  Theme.of(context).colorScheme.onPrimary,
                             ),
                             dataModuleStyle: QrDataModuleStyle(
                               dataModuleShape: QrDataModuleShape.square,
-                              color:
-                                  MediaQuery.of(context).platformBrightness ==
-                                          Brightness.dark
-                                      ? Colors.white
-                                      : Colors.black,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                           ))),
                 ),
@@ -209,10 +202,7 @@ class _ShortURLCellState extends State<ShortURLCell> {
               decoration: BoxDecoration(
                 border: Border(
                     bottom: BorderSide(
-                        color: MediaQuery.of(context).platformBrightness ==
-                                Brightness.dark
-                            ? Colors.grey[800]!
-                            : Colors.grey[300]!)),
+                        color: Theme.of(context).dividerColor)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,7 +221,7 @@ class _ShortURLCellState extends State<ShortURLCell> {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           textScaleFactor: 0.9,
-                          style: TextStyle(color: Colors.grey[600]),
+                          style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
                         ),
                         // List tags in a row
                         UrlTagsListWidget(tags: widget.shortURL.tags)
