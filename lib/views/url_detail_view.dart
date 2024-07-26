@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
 import 'package:intl/intl.dart';
-import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/views/redirect_rules_detail_view.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/widgets/url_tags_list_widget.dart';
@@ -67,18 +67,9 @@ class _URLDetailViewState extends State<URLDetailView> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return true;
                   }, (r) {
-                    var text = "";
-                    if (r is RequestFailure) {
-                      text = r.description;
-                    } else {
-                      text = (r as ApiFailure).detail;
-                    }
-
-                    final snackBar = SnackBar(
-                        content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-                        backgroundColor: Theme.of(context).colorScheme.error,
-                        behavior: SnackBarBehavior.floating);
-                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      buildApiErrorSnackbar(r, context)
+                    );
                     return false;
                   });
                 },

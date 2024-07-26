@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
-import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/views/url_detail_view.dart';
 import 'package:shlink_app/widgets/url_tags_list_widget.dart';
@@ -38,18 +38,9 @@ class _URLListViewState extends State<URLListView> {
       });
       return true;
     }, (r) {
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text),
-          backgroundColor: Colors.red[400],
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }

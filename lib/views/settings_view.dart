@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/views/opensource_licenses_view.dart';
 import 'package:shlink_app/widgets/available_servers_bottom_sheet.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -43,19 +43,9 @@ class _SettingsViewState extends State<SettingsView> {
       setState(() {
         _serverStatus = ServerStatus.disconnected;
       });
-
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
     });
   }
 

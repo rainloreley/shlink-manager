@@ -33,7 +33,7 @@ class GlobalTheme {
     return ColorScheme(
       primary: Color(0xff747ab5),
       onPrimary: Colors.white,
-      secondary: Color(0x445d63a6),// Color(0xFFDDE0E0),
+      secondary: Color(0x335d63a6),// Color(0xFFDDE0E0),
       onSecondary: Color(0xFF322942),
       tertiary: Colors.grey[300],
       onTertiary: Colors.grey[700],
@@ -44,7 +44,7 @@ class GlobalTheme {
       surface: Color(0xFFFAFBFB),
       onSurface: Color(0xFF241E30),
       brightness: Brightness.light,
-    ).harmonized();
+    );
   }
 
   static ColorScheme get darkColorScheme {

@@ -3,7 +3,7 @@ import 'package:shlink_app/API/Classes/ShortURL/RedirectRule/condition_device_ty
 import 'package:shlink_app/API/Classes/ShortURL/RedirectRule/redirect_rule_condition.dart';
 import 'package:shlink_app/API/Classes/ShortURL/RedirectRule/redirect_rule_condition_type.dart';
 import 'package:shlink_app/API/Classes/ShortURL/short_url.dart';
-import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import '../globals.dart' as globals;
 import '../API/Classes/ShortURL/RedirectRule/redirect_rule.dart';
 
@@ -41,18 +41,9 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
       _sortListByPriority();
       return true;
     }, (r) {
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }
@@ -63,18 +54,9 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
     response.fold((l) {
       Navigator.pop(context);
     }, (r) {
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }

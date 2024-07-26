@@ -5,7 +5,7 @@ import 'package:flutter_sharing_intent/flutter_sharing_intent.dart';
 import 'package:flutter_sharing_intent/model/sharing_file.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:shlink_app/API/Classes/ShlinkStats/shlink_stats.dart';
-import 'package:shlink_app/API/server_manager.dart';
+import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/views/short_url_edit_view.dart';
 import 'package:shlink_app/views/url_list_view.dart';
 import 'package:shlink_app/widgets/available_servers_bottom_sheet.dart';
@@ -68,18 +68,9 @@ class _HomeViewState extends State<HomeView> {
         shlinkStats = l;
       });
     }, (r) {
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
     });
   }
 
@@ -91,18 +82,9 @@ class _HomeViewState extends State<HomeView> {
         shortUrlsLoaded = true;
       });
     }, (r) {
-      var text = "";
-      if (r is RequestFailure) {
-        text = r.description;
-      } else {
-        text = (r as ApiFailure).detail;
-      }
-
-      final snackBar = SnackBar(
-          content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating);
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
     });
   }
 
