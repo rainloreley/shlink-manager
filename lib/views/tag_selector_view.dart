@@ -1,5 +1,6 @@
 import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
+import 'package:shlink_app/API/Classes/ShortURL/visits_summary.dart';
 import 'package:shlink_app/API/Classes/Tag/tag_with_stats.dart';
 import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/util/string_to_color.dart';
@@ -49,7 +50,10 @@ class _TagSelectorViewState extends State<TagSelectorView> {
 
       List<TagWithStats> mappedAlreadySelectedTags =
         widget.alreadySelectedTags.map((e) {
-          return l.firstWhere((t) => t.tag == e);
+          return l.firstWhere((t) => t.tag == e, orElse: () {
+            // account for newly created tags
+            return TagWithStats(e, 0, VisitsSummary(0,0,0));
+          });
         }).toList();
 
       setState(() {
@@ -71,8 +75,8 @@ class _TagSelectorViewState extends State<TagSelectorView> {
 
   void _sortLists() {
     setState(() {
-      availableTags.sort();
-      filteredTags.sort();
+      availableTags.sort((a, b) => a.tag.compareTo(b.tag));
+      filteredTags.sort((a, b) => a.tag.compareTo(b.tag));
     });
   }
 
@@ -91,11 +95,12 @@ class _TagSelectorViewState extends State<TagSelectorView> {
   }
 
   void _addNewTag(String tag) {
-    if (tag != "" && !availableTags.contains(tag)) {
-      TagWithStats _tagWithStats = availableTags.firstWhere((e) => e.tag == tag);
+    bool tagExists = availableTags.where((t) => t.tag == tag).toList().isNotEmpty;
+    if (tag != "" && !tagExists) {
+      TagWithStats tagWithStats = TagWithStats(tag, 0, VisitsSummary(0, 0, 0));
       setState(() {
-        availableTags.add(_tagWithStats);
-        selectedTags.add(_tagWithStats);
+        availableTags.add(tagWithStats);
+        selectedTags.add(tagWithStats);
         _searchTextChanged(tag);
       });
       _sortLists();
