@@ -172,7 +172,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           ),
           SliverToBoxAdapter(
             child: Padding(
-              padding: EdgeInsets.only(top: 16, left: 8, right: 8),
+              padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
               child: Wrap(
                 runSpacing: 16,
                 children: [
@@ -223,34 +223,38 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               )),
                         ),
                       ),
-                      const SizedBox(width: 8),
-                      RotationTransition(
-                        turns: Tween(begin: 0.0, end: 3.0).animate(
-                            CurvedAnimation(
-                                parent: _customSlugDiceAnimationController,
-                                curve: Curves.easeInOutExpo)),
-                        child: IconButton(
-                            onPressed: disableSlugEditor
-                                ? null
-                                : () {
-                              if (randomSlug) {
-                                _customSlugDiceAnimationController.reverse(
-                                    from: 1);
-                              } else {
-                                _customSlugDiceAnimationController.forward(
-                                    from: 0);
-                              }
-                              setState(() {
-                                randomSlug = !randomSlug;
-                              });
-                            },
-                            icon: Icon(
-                                randomSlug ? Icons.casino : Icons.casino_outlined,
-                                color: randomSlug ? Colors.green : Colors.grey)),
-                      )
+
+                      if (widget.shortUrl == null)
+                        Container(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: RotationTransition(
+                            turns: Tween(begin: 0.0, end: 3.0).animate(
+                                CurvedAnimation(
+                                    parent: _customSlugDiceAnimationController,
+                                    curve: Curves.easeInOutExpo)),
+                            child: IconButton(
+                                onPressed: disableSlugEditor
+                                    ? null
+                                    : () {
+                                  if (randomSlug) {
+                                    _customSlugDiceAnimationController.reverse(
+                                        from: 1);
+                                  } else {
+                                    _customSlugDiceAnimationController.forward(
+                                        from: 0);
+                                  }
+                                  setState(() {
+                                    randomSlug = !randomSlug;
+                                  });
+                                },
+                                icon: Icon(
+                                    randomSlug ? Icons.casino : Icons.casino_outlined,
+                                    color: randomSlug ? Colors.green : Colors.grey)),
+                          ),
+                        )
                     ],
                   ),
-                  if (randomSlug)
+                  if (randomSlug && widget.shortUrl == null)
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -379,6 +383,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                       )
                     ],
                   ),
+                  const SizedBox(height: 150)
                 ],
               ),
             )
