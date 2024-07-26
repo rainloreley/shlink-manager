@@ -314,6 +314,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               ],
                             )),
                         child: Wrap(
+                          runSpacing: 8,
                           spacing: 8,
                           children: tags.map((tag) {
                             var boxColor = stringToColor(tag)
