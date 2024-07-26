@@ -314,7 +314,6 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               ],
                             )),
                         child: Wrap(
-                          runSpacing: 8,
                           spacing: 8,
                           children: tags.map((tag) {
                             var boxColor = stringToColor(tag)
@@ -397,7 +396,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           child: isSaving
               ? const Padding(
                   padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white))
+                  child: CircularProgressIndicator(strokeWidth: 3,
+                                                    color: Colors.white))
               : const Icon(Icons.save)),
     );
   }
