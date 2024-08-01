@@ -28,7 +28,6 @@ Shlink Manager is an app for Android to see and manage all shortened URLs create
 
 ## 🔨 To Do
 - [ ] Add support for iOS (maybe in the future)
-- [ ] add tags
 - [ ] improve app icon
 - [ ] Refactor code
 - [ ] ...and more
