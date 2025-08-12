@@ -299,7 +299,7 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
             children: [
               Icon(widget.icon),
               Padding(
-                padding: const EdgeInsets.only(left: 4),
+                padding: const EdgeInsets.only(left: 8),
                 child: Text(
                   widget.text,
                   textAlign: TextAlign.center,
