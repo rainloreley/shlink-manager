@@ -282,6 +282,7 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
               borderRadius: BorderRadius.circular(8)),
           child: SizedBox(
             child: Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
               children: [
                 Icon(widget.icon),
                 Padding(
