@@ -126,32 +126,45 @@ class _HomeViewState extends State<HomeView> {
                           ],
                         )),
                     SliverToBoxAdapter(
-                      child: Wrap(
-                        alignment: WrapAlignment.spaceEvenly,
-                        children: [
-                          _ShlinkStatsCardWidget(
-                              icon: Icons.link,
-                              text:
-                                  "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
-                              borderColor: Colors.blue),
-                          _ShlinkStatsCardWidget(
-                              icon: Icons.remove_red_eye,
-                              text:
-                                  "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
-                              borderColor: Colors.green),
-                          _ShlinkStatsCardWidget(
-                              icon: Icons.warning,
-                              text:
-                                  "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
-                              borderColor: Colors.red),
-                          _ShlinkStatsCardWidget(
-                              icon: Icons.sell,
-                              text:
-                                  "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
-                              borderColor: Colors.purple),
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Column(
+                          spacing: 4,
+                          children: [
+                            Row(
+                              spacing: 4,
+                              children: [
+                                _ShlinkStatsCardWidget(
+                                  icon: Icons.link,
+                                  text: "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
+                                  borderColor: Colors.blue
+                                ),
+                                _ShlinkStatsCardWidget(
+                                  icon: Icons.remove_red_eye,
+                                  text: "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
+                                  borderColor: Colors.green
+                                ),
+                              ],
+                            ),
+                            Row(
+                              spacing: 4,
+                              children: [
+                                _ShlinkStatsCardWidget(
+                                  icon: Icons.warning,
+                                  text: "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
+                                  borderColor: Colors.red
+                                ),
+                                _ShlinkStatsCardWidget(
+                                  icon: Icons.sell,
+                                  text: "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
+                                  borderColor: Colors.purple
+                                ),
+                              ],
+                            ),
+                          ],
+                          ),
+                        ),
                       ),
-                    ),
                     if (shortUrlsLoaded && shortUrls.isEmpty)
                       SliverToBoxAdapter(
                           child: Center(
@@ -273,26 +286,30 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
   @override
   Widget build(BuildContext context) {
     var randomColor = ([...Colors.primaries]..shuffle()).first;
-    return Padding(
-      padding: const EdgeInsets.all(4),
+    return Expanded(
       child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-              border: Border.all(color: widget.borderColor ?? randomColor),
-              borderRadius: BorderRadius.circular(8)),
-          child: SizedBox(
-            child: Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-                Icon(widget.icon),
-                Padding(
-                  padding: const EdgeInsets.only(left: 4),
-                  child: Text(widget.text,
-                      style: const TextStyle(fontWeight: FontWeight.bold)),
-                )
-              ],
-            ),
-          )),
+        decoration: BoxDecoration(
+          border: Border.all(color: widget.borderColor ?? randomColor),
+          borderRadius: BorderRadius.circular(8)
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(widget.icon),
+              Padding(
+                padding: const EdgeInsets.only(left: 4),
+                child: Text(
+                  widget.text,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontWeight: FontWeight.bold)
+                ),
+              ),
+            ],
+          ),
+        )
+      ),
     );
   }
 }
