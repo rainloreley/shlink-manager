@@ -196,9 +196,10 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                           enabled: !disableSlugEditor,
                           controller: customSlugController,
                           style: TextStyle(
-                              color: randomSlug
-                                  ? Theme.of(context).colorScheme.onTertiary
-                                  : Theme.of(context).colorScheme.onPrimary),
+                            color: randomSlug
+                                ? Theme.of(context).colorScheme.onTertiary
+                                : Theme.of(context).colorScheme.onSurface
+                          ),
                           onChanged: (_) {
                             if (randomSlug) {
                               setState(() {
