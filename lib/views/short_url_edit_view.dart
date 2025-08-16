@@ -9,6 +9,7 @@ import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/util/string_to_color.dart';
 import 'package:shlink_app/views/tag_selector_view.dart';
 import '../globals.dart' as globals;
+import '../widgets/datetime_selector_widget.dart';
 
 class ShortURLEditView extends StatefulWidget {
   const ShortURLEditView({super.key, this.shortUrl, this.longUrl});
@@ -26,12 +27,19 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   final customSlugController = TextEditingController();
   final titleController = TextEditingController();
   final randomSlugLengthController = TextEditingController(text: "5");
+
+  final validSinceController = DateTimeSelectorController();
+  final validUntilController = DateTimeSelectorController();
+
   List<String> tags = [];
 
   bool randomSlug = true;
   bool isCrawlable = true;
   bool forwardQuery = true;
   bool copyToClipboard = true;
+
+  DateTime? validSince;
+  DateTime? validUntil;
 
   bool disableSlugEditor = false;
 
@@ -48,7 +56,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+
     loadExistingUrl();
+
     if (widget.longUrl != null) {
       longUrlController.text = widget.longUrl!;
     }
@@ -75,6 +85,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       customSlugController.text = widget.shortUrl!.shortCode;
       disableSlugEditor = true;
       randomSlug = false;
+
+      validSince = widget.shortUrl!.meta.validSince;
+      validUntil = widget.shortUrl!.meta.validUntil;
     }
   }
 
@@ -112,12 +125,14 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
         crawlable: isCrawlable,
         forwardQuery: forwardQuery,
         findIfExists: true,
+        validSince: validSinceController.dateTimeString,
+        validUntil: validUntilController.dateTimeString,
         title: titleController.text != "" ? titleController.text : null,
         customSlug: customSlugController.text != "" && !randomSlug
             ? customSlugController.text
             : null,
         shortCodeLength:
-            randomSlug ? int.parse(randomSlugLengthController.text) : null);
+        randomSlug ? int.parse(randomSlugLengthController.text) : null);
     dartz.Either<ShortURL, Failure> response;
     if (widget.shortUrl != null) {
       response = await globals.serverManager.updateShortUrl(newSubmission);
@@ -160,6 +175,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
 
   @override
   Widget build(BuildContext context) {
+    debugPrint(validUntil?.toIso8601String());
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
@@ -169,219 +186,229 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           ),
           SliverToBoxAdapter(
               child: Padding(
-            padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
-            child: Wrap(
-              runSpacing: 16,
-              children: [
-                TextField(
-                  controller: longUrlController,
-                  decoration: InputDecoration(
-                      errorText: longUrlError != "" ? longUrlError : null,
-                      border: const OutlineInputBorder(),
-                      label: const Row(
-                        children: [
-                          Icon(Icons.public),
-                          SizedBox(width: 8),
-                          Text("Long URL")
-                        ],
-                      )),
-                ),
-                Row(
+                padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
+                child: Wrap(
+                  runSpacing: 16,
                   children: [
-                    Expanded(
-                      child: TextField(
-                        enabled: !disableSlugEditor,
-                        controller: customSlugController,
-                        style: TextStyle(
-                            color: randomSlug
-                                ? Theme.of(context).colorScheme.onTertiary
-                                : Theme.of(context).colorScheme.onSurface),
-                        onChanged: (_) {
-                          if (randomSlug) {
-                            setState(() {
-                              randomSlug = false;
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
-                            label: Row(
-                              children: [
-                                const Icon(Icons.link),
-                                const SizedBox(width: 8),
-                                Text(
-                                  "${randomSlug ? "Random" : "Custom"} slug",
-                                  style: TextStyle(
-                                      fontStyle: randomSlug
-                                          ? FontStyle.italic
-                                          : FontStyle.normal),
-                                )
-                              ],
-                            )),
-                      ),
+                    TextField(
+                      controller: longUrlController,
+                      decoration: InputDecoration(
+                          errorText: longUrlError != "" ? longUrlError : null,
+                          border: const OutlineInputBorder(),
+                          label: const Row(
+                            children: [
+                              Icon(Icons.public),
+                              SizedBox(width: 8),
+                              Text("Long URL")
+                            ],
+                          )),
                     ),
-                    if (widget.shortUrl == null)
-                      Container(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: RotationTransition(
-                          turns: Tween(begin: 0.0, end: 3.0).animate(
-                              CurvedAnimation(
-                                  parent: _customSlugDiceAnimationController,
-                                  curve: Curves.easeInOutExpo)),
-                          child: IconButton(
-                              onPressed: disableSlugEditor
-                                  ? null
-                                  : () {
-                                      if (randomSlug) {
-                                        _customSlugDiceAnimationController
-                                            .reverse(from: 1);
-                                      } else {
-                                        _customSlugDiceAnimationController
-                                            .forward(from: 0);
-                                      }
-                                      setState(() {
-                                        randomSlug = !randomSlug;
-                                      });
-                                    },
-                              icon: Icon(
-                                  randomSlug
-                                      ? Icons.casino
-                                      : Icons.casino_outlined,
-                                  color:
-                                      randomSlug ? Colors.green : Colors.grey)),
-                        ),
-                      )
-                  ],
-                ),
-                if (randomSlug && widget.shortUrl == null)
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text("Random slug length"),
-                      SizedBox(
-                          width: 100,
+                    Row(
+                      children: [
+                        Expanded(
                           child: TextField(
-                            controller: randomSlugLengthController,
-                            keyboardType: TextInputType.number,
+                            enabled: !disableSlugEditor,
+                            controller: customSlugController,
+                            style: TextStyle(
+                                color: randomSlug
+                                    ? Theme.of(context).colorScheme.onTertiary
+                                    : Theme.of(context).colorScheme.onSurface),
+                            onChanged: (_) {
+                              if (randomSlug) {
+                                setState(() {
+                                  randomSlug = false;
+                                });
+                              }
+                            },
                             decoration: InputDecoration(
-                                errorText:
-                                    randomSlugLengthError != "" ? "" : null,
                                 border: const OutlineInputBorder(),
-                                label: const Row(
+                                label: Row(
                                   children: [
-                                    Icon(Icons.tag),
-                                    SizedBox(width: 8),
-                                    Text("Length")
+                                    const Icon(Icons.link),
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "${randomSlug ? "Random" : "Custom"} slug",
+                                      style: TextStyle(
+                                          fontStyle: randomSlug
+                                              ? FontStyle.italic
+                                              : FontStyle.normal),
+                                    )
                                   ],
                                 )),
-                          ))
-                    ],
-                  ),
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Row(
+                          ),
+                        ),
+                        if (widget.shortUrl == null)
+                          Container(
+                            padding: const EdgeInsets.only(left: 8),
+                            child: RotationTransition(
+                              turns: Tween(begin: 0.0, end: 3.0).animate(
+                                  CurvedAnimation(
+                                      parent: _customSlugDiceAnimationController,
+                                      curve: Curves.easeInOutExpo)),
+                              child: IconButton(
+                                  onPressed: disableSlugEditor
+                                      ? null
+                                      : () {
+                                    if (randomSlug) {
+                                      _customSlugDiceAnimationController
+                                          .reverse(from: 1);
+                                    } else {
+                                      _customSlugDiceAnimationController
+                                          .forward(from: 0);
+                                    }
+                                    setState(() {
+                                      randomSlug = !randomSlug;
+                                    });
+                                  },
+                                  icon: Icon(
+                                      randomSlug
+                                          ? Icons.casino
+                                          : Icons.casino_outlined,
+                                      color:
+                                      randomSlug ? Colors.green : Colors.grey)),
+                            ),
+                          )
+                      ],
+                    ),
+                    if (randomSlug && widget.shortUrl == null)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Icon(Icons.badge),
-                          SizedBox(width: 8),
-                          Text("Title")
+                          const Text("Random slug length"),
+                          SizedBox(
+                              width: 100,
+                              child: TextField(
+                                controller: randomSlugLengthController,
+                                keyboardType: TextInputType.number,
+                                decoration: InputDecoration(
+                                    errorText:
+                                    randomSlugLengthError != "" ? "" : null,
+                                    border: const OutlineInputBorder(),
+                                    label: const Row(
+                                      children: [
+                                        Icon(Icons.tag),
+                                        SizedBox(width: 8),
+                                        Text("Length")
+                                      ],
+                                    )),
+                              ))
                         ],
-                      )),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    List<String>? selectedTags = await Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) =>
-                                TagSelectorView(alreadySelectedTags: tags)));
-                    if (selectedTags != null) {
-                      setState(() {
-                        tags = selectedTags;
-                      });
-                    }
-                  },
-                  child: InputDecorator(
-                      isEmpty: tags.isEmpty,
+                      ),
+                    DateTimeSelector(
+                      dateTimeSelectorController: validSinceController,
+                      displayName: "Valid since",
+                      date: validSince,
+                    ),
+                    DateTimeSelector(
+                      dateTimeSelectorController: validUntilController,
+                      displayName: "Valid until",
+                      date: validUntil,
+                    ),
+                    TextField(
+                      controller: titleController,
                       decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                           label: Row(
                             children: [
-                              Icon(Icons.label_outline),
+                              Icon(Icons.badge),
                               SizedBox(width: 8),
-                              Text("Tags")
+                              Text("Title")
                             ],
                           )),
-                      child: Wrap(
-                        runSpacing: 8,
-                        spacing: 8,
-                        children: tags.map((tag) {
-                          var boxColor = stringToColor(tag).harmonizeWith(
-                              Theme.of(context).colorScheme.primary);
-                          var textColor = boxColor.computeLuminance() < 0.5
-                              ? Colors.white
-                              : Colors.black;
-                          return InputChip(
-                            label:
+                    ),
+                    GestureDetector(
+                      onTap: () async {
+                        List<String>? selectedTags = await Navigator.of(context)
+                            .push(MaterialPageRoute(
+                            builder: (context) =>
+                                TagSelectorView(alreadySelectedTags: tags)));
+                        if (selectedTags != null) {
+                          setState(() {
+                            tags = selectedTags;
+                          });
+                        }
+                      },
+                      child: InputDecorator(
+                          isEmpty: tags.isEmpty,
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              label: Row(
+                                children: [
+                                  Icon(Icons.label_outline),
+                                  SizedBox(width: 8),
+                                  Text("Tags")
+                                ],
+                              )),
+                          child: Wrap(
+                            runSpacing: 8,
+                            spacing: 8,
+                            children: tags.map((tag) {
+                              var boxColor = stringToColor(tag).harmonizeWith(
+                                  Theme.of(context).colorScheme.primary);
+                              var textColor = boxColor.computeLuminance() < 0.5
+                                  ? Colors.white
+                                  : Colors.black;
+                              return InputChip(
+                                label:
                                 Text(tag, style: TextStyle(color: textColor)),
-                            backgroundColor: boxColor,
-                            deleteIcon:
+                                backgroundColor: boxColor,
+                                deleteIcon:
                                 Icon(Icons.close, size: 18, color: textColor),
-                            onDeleted: () {
-                              setState(() {
-                                tags.remove(tag);
-                              });
-                            },
-                          );
-                        }).toList(),
-                      )),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Crawlable"),
-                    Switch(
-                      value: isCrawlable,
-                      onChanged: (_) {
-                        setState(() {
-                          isCrawlable = !isCrawlable;
-                        });
-                      },
-                    )
+                                onDeleted: () {
+                                  setState(() {
+                                    tags.remove(tag);
+                                  });
+                                },
+                              );
+                            }).toList(),
+                          )),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Crawlable"),
+                        Switch(
+                          value: isCrawlable,
+                          onChanged: (_) {
+                            setState(() {
+                              isCrawlable = !isCrawlable;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Forward query params"),
+                        Switch(
+                          value: forwardQuery,
+                          onChanged: (_) {
+                            setState(() {
+                              forwardQuery = !forwardQuery;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Copy to clipboard"),
+                        Switch(
+                          value: copyToClipboard,
+                          onChanged: (_) {
+                            setState(() {
+                              copyToClipboard = !copyToClipboard;
+                            });
+                          },
+                        )
+                      ],
+                    ),
+                    const SizedBox(height: 150)
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Forward query params"),
-                    Switch(
-                      value: forwardQuery,
-                      onChanged: (_) {
-                        setState(() {
-                          forwardQuery = !forwardQuery;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Copy to clipboard"),
-                    Switch(
-                      value: copyToClipboard,
-                      onChanged: (_) {
-                        setState(() {
-                          copyToClipboard = !copyToClipboard;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                const SizedBox(height: 150)
-              ],
-            ),
-          ))
+              ))
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -390,9 +417,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           },
           child: isSaving
               ? const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(
-                      strokeWidth: 3, color: Colors.white))
+              padding: EdgeInsets.all(16),
+              child: CircularProgressIndicator(
+                  strokeWidth: 3, color: Colors.white))
               : const Icon(Icons.save)),
     );
   }
