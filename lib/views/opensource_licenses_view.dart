@@ -52,13 +52,19 @@ class _OpenSourceLicensesViewState extends State<OpenSourceLicensesView> {
                               style: const TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 18)),
                           Text("Version: ${currentLicense.version ?? "N/A"}",
-                              style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiary)),
                           const SizedBox(height: 8),
                           Divider(color: Theme.of(context).dividerColor),
                           const SizedBox(height: 8),
                           Text(currentLicense.license,
                               textAlign: TextAlign.justify,
-                              style: TextStyle(color: Theme.of(context).colorScheme.onTertiary)),
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .onTertiary)),
                         ],
                       ),
                     ),
