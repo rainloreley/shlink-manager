@@ -41,8 +41,9 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
       _sortListByPriority();
       return true;
     }, (r) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(buildApiErrorSnackbar(r, context));
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }
@@ -53,8 +54,9 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
     response.fold((l) {
       Navigator.pop(context);
     }, (r) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(buildApiErrorSnackbar(r, context));
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }
@@ -91,8 +93,7 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
               child: isSaving
                   ? const Padding(
                       padding: EdgeInsets.all(16),
-                      child: CircularProgressIndicator(
-                          strokeWidth: 3, color: Colors.white))
+                      child: CircularProgressIndicator(strokeWidth: 3, color: Colors.white))
                   : const Icon(Icons.save))
         ],
       ),
@@ -122,10 +123,7 @@ class _RedirectRulesDetailViewState extends State<RedirectRulesDetailView> {
                               child: Text(
                                 'Adding redirect rules will be supported soon!',
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .onSecondary),
+                                    fontSize: 16, color: Theme.of(context).colorScheme.onSecondary),
                               ),
                             )
                           ],
@@ -201,11 +199,11 @@ class _ListCellState extends State<_ListCell> {
     return Padding(
         padding: const EdgeInsets.only(left: 8, right: 8),
         child: Container(
-            padding:
-                const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
+            padding: const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
             decoration: BoxDecoration(
               border: Border(
-                  bottom: BorderSide(color: Theme.of(context).dividerColor)),
+                  bottom: BorderSide(
+                      color: Theme.of(context).dividerColor)),
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -232,7 +230,8 @@ class _ListCellState extends State<_ListCell> {
                                   top: 4, bottom: 4, left: 12, right: 12),
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(4),
-                                color: Theme.of(context).colorScheme.tertiary,
+                                color:
+                                    Theme.of(context).colorScheme.tertiary,
                               ),
                               child: Text(_conditionToTagString(condition)),
                             ),
@@ -245,12 +244,14 @@ class _ListCellState extends State<_ListCell> {
                 Wrap(
                   children: [
                     IconButton(
-                      disabledColor: Theme.of(context).disabledColor,
+                      disabledColor:
+                          Theme.of(context).disabledColor,
                       onPressed: widget.moveUp,
                       icon: const Icon(Icons.arrow_upward),
                     ),
                     IconButton(
-                      disabledColor: Theme.of(context).disabledColor,
+                      disabledColor:
+                      Theme.of(context).disabledColor,
                       onPressed: widget.moveDown,
                       icon: const Icon(Icons.arrow_downward),
                     ),

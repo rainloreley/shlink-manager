@@ -91,7 +91,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           isSaving = false;
         });
         return;
-      } else if (int.tryParse(randomSlugLengthController.text) == null ||
+      } else if (int.tryParse(randomSlugLengthController.text) ==
+          null ||
           int.tryParse(randomSlugLengthController.text)! < 1 ||
           int.tryParse(randomSlugLengthController.text)! > 50) {
         setState(() {
@@ -152,8 +153,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
         isSaving = false;
       });
 
-      ScaffoldMessenger.of(context)
-          .showSnackBar(buildApiErrorSnackbar(r, context));
+      ScaffoldMessenger.of(context).showSnackBar(
+        buildApiErrorSnackbar(r, context)
+      );
       return false;
     });
   }
@@ -168,220 +170,224 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                 style: const TextStyle(fontWeight: FontWeight.bold)),
           ),
           SliverToBoxAdapter(
-              child: Padding(
-            padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
-            child: Wrap(
-              runSpacing: 16,
-              children: [
-                TextField(
-                  controller: longUrlController,
-                  decoration: InputDecoration(
-                      errorText: longUrlError != "" ? longUrlError : null,
-                      border: const OutlineInputBorder(),
-                      label: const Row(
-                        children: [
-                          Icon(Icons.public),
-                          SizedBox(width: 8),
-                          Text("Long URL")
-                        ],
-                      )),
-                ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        enabled: !disableSlugEditor,
-                        controller: customSlugController,
-                        style: TextStyle(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
+              child: Wrap(
+                runSpacing: 16,
+                children: [
+                  TextField(
+                    controller: longUrlController,
+                    decoration: InputDecoration(
+                        errorText: longUrlError != "" ? longUrlError : null,
+                        border: const OutlineInputBorder(),
+                        label: const Row(
+                          children: [
+                            Icon(Icons.public),
+                            SizedBox(width: 8),
+                            Text("Long URL")
+                          ],
+                        )),
+                  ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          enabled: !disableSlugEditor,
+                          controller: customSlugController,
+                          style: TextStyle(
                             color: randomSlug
                                 ? Theme.of(context).colorScheme.onTertiary
-                                : Theme.of(context).colorScheme.onSurface),
-                        onChanged: (_) {
-                          if (randomSlug) {
-                            setState(() {
-                              randomSlug = false;
-                            });
-                          }
-                        },
-                        decoration: InputDecoration(
-                            border: const OutlineInputBorder(),
+                                : Theme.of(context).colorScheme.onSurface
+                          ),
+                          onChanged: (_) {
+                            if (randomSlug) {
+                              setState(() {
+                                randomSlug = false;
+                              });
+                            }
+                          },
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              label: Row(
+                                children: [
+                                  const Icon(Icons.link),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "${randomSlug ? "Random" : "Custom"} slug",
+                                    style: TextStyle(
+                                        fontStyle: randomSlug
+                                            ? FontStyle.italic
+                                            : FontStyle.normal),
+                                  )
+                                ],
+                              )),
+                        ),
+                      ),
+
+                      if (widget.shortUrl == null)
+                        Container(
+                          padding: const EdgeInsets.only(left: 8),
+                          child: RotationTransition(
+                            turns: Tween(begin: 0.0, end: 3.0).animate(
+                                CurvedAnimation(
+                                    parent: _customSlugDiceAnimationController,
+                                    curve: Curves.easeInOutExpo)),
+                            child: IconButton(
+                                onPressed: disableSlugEditor
+                                    ? null
+                                    : () {
+                                  if (randomSlug) {
+                                    _customSlugDiceAnimationController.reverse(
+                                        from: 1);
+                                  } else {
+                                    _customSlugDiceAnimationController.forward(
+                                        from: 0);
+                                  }
+                                  setState(() {
+                                    randomSlug = !randomSlug;
+                                  });
+                                },
+                                icon: Icon(
+                                    randomSlug ? Icons.casino : Icons.casino_outlined,
+                                    color: randomSlug ? Colors.green : Colors.grey)),
+                          ),
+                        )
+                    ],
+                  ),
+                  if (randomSlug && widget.shortUrl == null)
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text("Random slug length"),
+                        SizedBox(
+                            width: 100,
+                            child: TextField(
+                              controller: randomSlugLengthController,
+                              keyboardType: TextInputType.number,
+                              decoration: InputDecoration(
+                                  errorText:
+                                  randomSlugLengthError != "" ? "" : null,
+                                  border: const OutlineInputBorder(),
+                                  label: const Row(
+                                    children: [
+                                      Icon(Icons.tag),
+                                      SizedBox(width: 8),
+                                      Text("Length")
+                                    ],
+                                  )),
+                            ))
+                      ],
+                    ),
+                  TextField(
+                    controller: titleController,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Row(
+                          children: [
+                            Icon(Icons.badge),
+                            SizedBox(width: 8),
+                            Text("Title")
+                          ],
+                        )),
+                  ),
+                  GestureDetector(
+                    onTap: () async {
+                      List<String>? selectedTags = await Navigator.of(context).
+                      push(MaterialPageRoute(
+                              builder: (context) =>
+                                  TagSelectorView(alreadySelectedTags: tags)));
+                      if (selectedTags != null) {
+                        setState(() {
+                          tags = selectedTags;
+                        });
+                      }
+                    },
+                    child: InputDecorator(
+                        isEmpty: tags.isEmpty,
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
                             label: Row(
                               children: [
-                                const Icon(Icons.link),
-                                const SizedBox(width: 8),
-                                Text(
-                                  "${randomSlug ? "Random" : "Custom"} slug",
-                                  style: TextStyle(
-                                      fontStyle: randomSlug
-                                          ? FontStyle.italic
-                                          : FontStyle.normal),
-                                )
+                                Icon(Icons.label_outline),
+                                SizedBox(width: 8),
+                                Text("Tags")
                               ],
                             )),
-                      ),
+                        child: Wrap(
+                          runSpacing: 8,
+                          spacing: 8,
+                          children: tags.map((tag) {
+                            var boxColor = stringToColor(tag)
+                                .harmonizeWith(Theme.of(context).colorScheme.
+                                    primary);
+                            var textColor = boxColor.computeLuminance() < 0.5
+                                ? Colors.white
+                                : Colors.black;
+                            return InputChip(
+                              label: Text(tag, style: TextStyle(
+                                color: textColor
+                              )),
+                              backgroundColor: boxColor,
+                              deleteIcon: Icon(Icons.close,
+                                  size: 18,
+                                  color: textColor),
+                              onDeleted: () {
+                                setState(() {
+                                  tags.remove(tag);
+                                });
+                              },
+                            );
+                          }).toList(),
+                        )
                     ),
-                    if (widget.shortUrl == null)
-                      Container(
-                        padding: const EdgeInsets.only(left: 8),
-                        child: RotationTransition(
-                          turns: Tween(begin: 0.0, end: 3.0).animate(
-                              CurvedAnimation(
-                                  parent: _customSlugDiceAnimationController,
-                                  curve: Curves.easeInOutExpo)),
-                          child: IconButton(
-                              onPressed: disableSlugEditor
-                                  ? null
-                                  : () {
-                                      if (randomSlug) {
-                                        _customSlugDiceAnimationController
-                                            .reverse(from: 1);
-                                      } else {
-                                        _customSlugDiceAnimationController
-                                            .forward(from: 0);
-                                      }
-                                      setState(() {
-                                        randomSlug = !randomSlug;
-                                      });
-                                    },
-                              icon: Icon(
-                                  randomSlug
-                                      ? Icons.casino
-                                      : Icons.casino_outlined,
-                                  color:
-                                      randomSlug ? Colors.green : Colors.grey)),
-                        ),
-                      )
-                  ],
-                ),
-                if (randomSlug && widget.shortUrl == null)
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text("Random slug length"),
-                      SizedBox(
-                          width: 100,
-                          child: TextField(
-                            controller: randomSlugLengthController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                                errorText:
-                                    randomSlugLengthError != "" ? "" : null,
-                                border: const OutlineInputBorder(),
-                                label: const Row(
-                                  children: [
-                                    Icon(Icons.tag),
-                                    SizedBox(width: 8),
-                                    Text("Length")
-                                  ],
-                                )),
-                          ))
+                      const Text("Crawlable"),
+                      Switch(
+                        value: isCrawlable,
+                        onChanged: (_) {
+                          setState(() {
+                            isCrawlable = !isCrawlable;
+                          });
+                        },
+                      )
                     ],
                   ),
-                TextField(
-                  controller: titleController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      label: Row(
-                        children: [
-                          Icon(Icons.badge),
-                          SizedBox(width: 8),
-                          Text("Title")
-                        ],
-                      )),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    List<String>? selectedTags = await Navigator.of(context)
-                        .push(MaterialPageRoute(
-                            builder: (context) =>
-                                TagSelectorView(alreadySelectedTags: tags)));
-                    if (selectedTags != null) {
-                      setState(() {
-                        tags = selectedTags;
-                      });
-                    }
-                  },
-                  child: InputDecorator(
-                      isEmpty: tags.isEmpty,
-                      decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                          label: Row(
-                            children: [
-                              Icon(Icons.label_outline),
-                              SizedBox(width: 8),
-                              Text("Tags")
-                            ],
-                          )),
-                      child: Wrap(
-                        runSpacing: 8,
-                        spacing: 8,
-                        children: tags.map((tag) {
-                          var boxColor = stringToColor(tag).harmonizeWith(
-                              Theme.of(context).colorScheme.primary);
-                          var textColor = boxColor.computeLuminance() < 0.5
-                              ? Colors.white
-                              : Colors.black;
-                          return InputChip(
-                            label:
-                                Text(tag, style: TextStyle(color: textColor)),
-                            backgroundColor: boxColor,
-                            deleteIcon:
-                                Icon(Icons.close, size: 18, color: textColor),
-                            onDeleted: () {
-                              setState(() {
-                                tags.remove(tag);
-                              });
-                            },
-                          );
-                        }).toList(),
-                      )),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Crawlable"),
-                    Switch(
-                      value: isCrawlable,
-                      onChanged: (_) {
-                        setState(() {
-                          isCrawlable = !isCrawlable;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Forward query params"),
-                    Switch(
-                      value: forwardQuery,
-                      onChanged: (_) {
-                        setState(() {
-                          forwardQuery = !forwardQuery;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text("Copy to clipboard"),
-                    Switch(
-                      value: copyToClipboard,
-                      onChanged: (_) {
-                        setState(() {
-                          copyToClipboard = !copyToClipboard;
-                        });
-                      },
-                    )
-                  ],
-                ),
-                const SizedBox(height: 150)
-              ],
-            ),
-          ))
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Forward query params"),
+                      Switch(
+                        value: forwardQuery,
+                        onChanged: (_) {
+                          setState(() {
+                            forwardQuery = !forwardQuery;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text("Copy to clipboard"),
+                      Switch(
+                        value: copyToClipboard,
+                        onChanged: (_) {
+                          setState(() {
+                            copyToClipboard = !copyToClipboard;
+                          });
+                        },
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 150)
+                ],
+              ),
+            )
+          )
         ],
       ),
       floatingActionButton: FloatingActionButton(
@@ -391,8 +397,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           child: isSaving
               ? const Padding(
                   padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(
-                      strokeWidth: 3, color: Colors.white))
+                  child: CircularProgressIndicator(strokeWidth: 3,
+                                                    color: Colors.white))
               : const Icon(Icons.save)),
     );
   }

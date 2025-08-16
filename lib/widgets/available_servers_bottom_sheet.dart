@@ -56,8 +56,8 @@ class _AvailableServerBottomSheetState
             child: Padding(
                 padding: const EdgeInsets.only(left: 8, right: 8),
                 child: Container(
-                    padding: const EdgeInsets.only(
-                        left: 8, right: 8, top: 16, bottom: 16),
+                    padding:
+                        const EdgeInsets.only(left: 8, right: 8, top: 16, bottom: 16),
                     decoration: BoxDecoration(
                       border: Border(
                           bottom: BorderSide(
@@ -120,8 +120,8 @@ class _AvailableServerBottomSheetState
           child: Center(
             child: ElevatedButton(
               onPressed: () async {
-                await Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => const LoginView()));
+                await Navigator.of(context)
+                    .push(MaterialPageRoute(builder: (context) => const LoginView()));
               },
               child: const Text("Add server..."),
             ),

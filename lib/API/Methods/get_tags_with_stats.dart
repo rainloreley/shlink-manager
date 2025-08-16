@@ -16,7 +16,7 @@ FutureOr<Either<List<TagWithStats>, Failure>> apiGetTagsWithStats(
 
   while (currentPage <= maxPages) {
     final response =
-        await _getTagsWithStatsPage(currentPage, apiKey, serverUrl, apiVersion);
+    await _getTagsWithStatsPage(currentPage, apiKey, serverUrl, apiVersion);
     response.fold((l) {
       allTags.addAll(l.tags);
       maxPages = l.totalPages;
@@ -46,9 +46,9 @@ FutureOr<Either<TagsWithStatsPageResponse, Failure>> _getTagsWithStatsPage(
       var jsonResponse = jsonDecode(response.body);
       var pagesCount = jsonResponse["tags"]["pagination"]["pagesCount"] as int;
       List<TagWithStats> tags =
-          (jsonResponse["tags"]["data"] as List<dynamic>).map((e) {
-        return TagWithStats.fromJson(e);
-      }).toList();
+        (jsonResponse["tags"]["data"] as List<dynamic>).map((e) {
+          return TagWithStats.fromJson(e);
+        }).toList();
       return left(TagsWithStatsPageResponse(tags, pagesCount));
     } else {
       try {
