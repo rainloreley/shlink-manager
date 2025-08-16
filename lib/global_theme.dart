@@ -1,9 +1,8 @@
-import 'package:dynamic_color/dynamic_color.dart';
 import 'package:flutter/material.dart';
 
 class GlobalTheme {
-  static final Color _lightFocusColor = Colors.black.withOpacity(0.12);
-  static final Color _darkFocusColor = Colors.white.withOpacity(0.12);
+  static final Color _lightFocusColor = Colors.black.withAlpha(30);
+  static final Color _darkFocusColor = Colors.white.withAlpha(30);
   static ThemeData lightThemeData(ColorScheme? dynamicColorScheme) {
     return themeData(lightColorScheme, dynamicColorScheme, _lightFocusColor);
   }

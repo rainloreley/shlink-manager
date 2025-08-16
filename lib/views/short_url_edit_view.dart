@@ -8,7 +8,6 @@ import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/util/string_to_color.dart';
 import 'package:shlink_app/views/tag_selector_view.dart';
-import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import '../globals.dart' as globals;
 
 class ShortURLEditView extends StatefulWidget {

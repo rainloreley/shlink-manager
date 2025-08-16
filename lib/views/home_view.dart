@@ -28,8 +28,6 @@ class _HomeViewState extends State<HomeView> {
   bool _qrCodeShown = false;
   String _qrUrl = "";
 
-  late StreamSubscription _intentDataStreamSubscription;
-
   @override
   void initState() {
     super.initState();
@@ -40,9 +38,6 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Future<void> initializeActionProcessText() async {
-    _intentDataStreamSubscription =
-        FlutterSharingIntent.instance.getMediaStream().listen(_handleIntentUrl);
-
     FlutterSharingIntent.instance.getInitialSharing().then(_handleIntentUrl);
   }
 
@@ -93,7 +88,7 @@ class _HomeViewState extends State<HomeView> {
           children: [
             ColorFiltered(
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(_qrCodeShown ? 0.4 : 0),
+                  Colors.black.withAlpha(_qrCodeShown ? 100 : 0),
                   BlendMode.srcOver),
               child: RefreshIndicator(
                 onRefresh: () async {
@@ -232,7 +227,7 @@ class _HomeViewState extends State<HomeView> {
                   });
                 },
                 child: Container(
-                  color: Colors.black.withOpacity(0),
+                  color: Colors.black.withAlpha(0),
                 ),
               ),
             if (_qrCodeShown)
