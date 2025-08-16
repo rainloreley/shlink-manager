@@ -7,12 +7,13 @@ class GlobalTheme {
   static ThemeData lightThemeData(ColorScheme? dynamicColorScheme) {
     return themeData(lightColorScheme, dynamicColorScheme, _lightFocusColor);
   }
+
   static ThemeData darkThemeData(ColorScheme? dynamicColorScheme) {
     return themeData(darkColorScheme, dynamicColorScheme, _darkFocusColor);
   }
 
-  static ThemeData themeData(ColorScheme colorScheme, ColorScheme? dynamic,
-      Color focusColor) {
+  static ThemeData themeData(
+      ColorScheme colorScheme, ColorScheme? dynamic, Color focusColor) {
     return ThemeData(
         colorScheme: colorScheme,
         canvasColor: colorScheme.surface,
@@ -24,16 +25,14 @@ class GlobalTheme {
         appBarTheme: AppBarTheme(
             backgroundColor: colorScheme.surface,
             foregroundColor: colorScheme.onSurface,
-            elevation: 0
-    )
-    );
+            elevation: 0));
   }
 
   static ColorScheme get lightColorScheme {
     return ColorScheme(
       primary: Color(0xff747ab5),
       onPrimary: Colors.white,
-      secondary: Color(0x335d63a6),// Color(0xFFDDE0E0),
+      secondary: Color(0x335d63a6), // Color(0xFFDDE0E0),
       onSecondary: Color(0xFF322942),
       tertiary: Colors.grey[300],
       onTertiary: Colors.grey[700],

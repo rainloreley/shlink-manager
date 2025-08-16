@@ -86,12 +86,12 @@ class _LoginViewState extends State<LoginView> {
                             const SizedBox(width: 8),
                             Expanded(
                                 child: TextField(
-                                  controller: _serverUrlController,
-                                  keyboardType: TextInputType.url,
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder(),
-                                      labelText: "https://shlink.example.com"),
-                                ))
+                              controller: _serverUrlController,
+                              keyboardType: TextInputType.url,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "https://shlink.example.com"),
+                            ))
                           ],
                         ),
                         const Padding(
@@ -105,12 +105,13 @@ class _LoginViewState extends State<LoginView> {
                             const SizedBox(width: 8),
                             Expanded(
                                 child: TextField(
-                                  controller: _apiKeyController,
-                                  keyboardType: TextInputType.text,
-                                  obscureText: true,
-                                  decoration: const InputDecoration(
-                                      border: OutlineInputBorder(), labelText: "..."),
-                                ))
+                              controller: _apiKeyController,
+                              keyboardType: TextInputType.text,
+                              obscureText: true,
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: "..."),
+                            ))
                           ],
                         ),
                         Padding(
@@ -122,13 +123,14 @@ class _LoginViewState extends State<LoginView> {
                                 onPressed: () => {_connect()},
                                 child: _isLoggingIn
                                     ? Container(
-                                  width: 34,
-                                  height: 34,
-                                  padding: const EdgeInsets.all(4),
-                                  child: const CircularProgressIndicator(),
-                                )
+                                        width: 34,
+                                        height: 34,
+                                        padding: const EdgeInsets.all(4),
+                                        child:
+                                            const CircularProgressIndicator(),
+                                      )
                                     : const Text("Connect",
-                                    style: TextStyle(fontSize: 20)),
+                                        style: TextStyle(fontSize: 20)),
                               )
                             ],
                           ),
@@ -140,7 +142,10 @@ class _LoginViewState extends State<LoginView> {
                             children: [
                               Flexible(
                                   child: Text(_errorMessage,
-                                      style: TextStyle(color: Theme.of(context).colorScheme.onError),
+                                      style: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onError),
                                       textAlign: TextAlign.center))
                             ],
                           ),
@@ -152,19 +157,24 @@ class _LoginViewState extends State<LoginView> {
                     alignment: Alignment.bottomCenter,
                     child: TextButton(
                       onPressed: () async {
-                        final Uri url = Uri.parse('https://shlink.io/documentation/api-docs/authentication/');
+                        final Uri url = Uri.parse(
+                            'https://shlink.io/documentation/api-docs/authentication/');
                         try {
                           if (!await launchUrl(url)) {
                             throw Exception();
                           }
                         } catch (e) {
                           final snackBar = SnackBar(
-                              content: Text("Unable to launch url. See Shlink docs for more information.",
-                                  style: TextStyle(color: Theme.of(context).colorScheme.onError)),
-                              backgroundColor: Theme.of(context).colorScheme.error,
+                              content: Text(
+                                  "Unable to launch url. See Shlink docs for more information.",
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onError)),
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.error,
                               behavior: SnackBarBehavior.floating);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar);
+                          ScaffoldMessenger.of(context).showSnackBar(snackBar);
                         }
                       },
                       child: Text("How to create an API Key"),

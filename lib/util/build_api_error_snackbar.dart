@@ -14,7 +14,8 @@ SnackBar buildApiErrorSnackbar(Failure r, BuildContext context) {
   }
 
   final snackBar = SnackBar(
-      content: Text(text, style: TextStyle(color: Theme.of(context).colorScheme.onError)),
+      content: Text(text,
+          style: TextStyle(color: Theme.of(context).colorScheme.onError)),
       backgroundColor: Theme.of(context).colorScheme.error,
       behavior: SnackBarBehavior.floating);
 

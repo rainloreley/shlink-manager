@@ -68,9 +68,8 @@ class _HomeViewState extends State<HomeView> {
         shlinkStats = l;
       });
     }, (r) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        buildApiErrorSnackbar(r, context)
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildApiErrorSnackbar(r, context));
     });
   }
 
@@ -82,9 +81,8 @@ class _HomeViewState extends State<HomeView> {
         shortUrlsLoaded = true;
       });
     }, (r) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        buildApiErrorSnackbar(r, context)
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildApiErrorSnackbar(r, context));
     });
   }
 
@@ -121,7 +119,10 @@ class _HomeViewState extends State<HomeView> {
                               },
                               child: Text(globals.serverManager.getServerUrl(),
                                   style: TextStyle(
-                                      fontSize: 16, color: Theme.of(context).colorScheme.onTertiary)),
+                                      fontSize: 16,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onTertiary)),
                             )
                           ],
                         )),
@@ -135,36 +136,36 @@ class _HomeViewState extends State<HomeView> {
                               spacing: 4,
                               children: [
                                 _ShlinkStatsCardWidget(
-                                  icon: Icons.link,
-                                  text: "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
-                                  borderColor: Colors.blue
-                                ),
+                                    icon: Icons.link,
+                                    text:
+                                        "${shlinkStats?.shortUrlsCount.toString() ?? "0"} Short URLs",
+                                    borderColor: Colors.blue),
                                 _ShlinkStatsCardWidget(
-                                  icon: Icons.remove_red_eye,
-                                  text: "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
-                                  borderColor: Colors.green
-                                ),
+                                    icon: Icons.remove_red_eye,
+                                    text:
+                                        "${shlinkStats?.nonOrphanVisits.total ?? "0"} Visits",
+                                    borderColor: Colors.green),
                               ],
                             ),
                             Row(
                               spacing: 4,
                               children: [
                                 _ShlinkStatsCardWidget(
-                                  icon: Icons.warning,
-                                  text: "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
-                                  borderColor: Colors.red
-                                ),
+                                    icon: Icons.warning,
+                                    text:
+                                        "${shlinkStats?.orphanVisits.total ?? "0"} Orphan Visits",
+                                    borderColor: Colors.red),
                                 _ShlinkStatsCardWidget(
-                                  icon: Icons.sell,
-                                  text: "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
-                                  borderColor: Colors.purple
-                                ),
+                                    icon: Icons.sell,
+                                    text:
+                                        "${shlinkStats?.tagsCount.toString() ?? "0"} Tags",
+                                    borderColor: Colors.purple),
                               ],
                             ),
                           ],
-                          ),
                         ),
                       ),
+                    ),
                     if (shortUrlsLoaded && shortUrls.isEmpty)
                       SliverToBoxAdapter(
                           child: Center(
@@ -184,7 +185,9 @@ class _HomeViewState extends State<HomeView> {
                                           'Create one by tapping the "+" button below',
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: Theme.of(context).colorScheme.onSecondary),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary),
                                         ),
                                       )
                                     ],
@@ -244,15 +247,11 @@ class _HomeViewState extends State<HomeView> {
                             data: _qrUrl,
                             size: 200.0,
                             eyeStyle: QrEyeStyle(
-                              eyeShape: QrEyeShape.square,
-                              color:
-                                  Theme.of(context).colorScheme.onPrimary
-                            ),
+                                eyeShape: QrEyeShape.square,
+                                color: Theme.of(context).colorScheme.onPrimary),
                             dataModuleStyle: QrDataModuleStyle(
-                              dataModuleShape: QrDataModuleShape.square,
-                              color:
-                              Theme.of(context).colorScheme.onPrimary
-                            ),
+                                dataModuleShape: QrDataModuleShape.square,
+                                color: Theme.of(context).colorScheme.onPrimary),
                           ))),
                 ),
               )
@@ -288,28 +287,24 @@ class _ShlinkStatsCardWidgetState extends State<_ShlinkStatsCardWidget> {
     var randomColor = ([...Colors.primaries]..shuffle()).first;
     return Expanded(
       child: Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: widget.borderColor ?? randomColor),
-          borderRadius: BorderRadius.circular(8)
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(widget.icon),
-              Padding(
-                padding: const EdgeInsets.only(left: 8),
-                child: Text(
-                  widget.text,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontWeight: FontWeight.bold)
+          decoration: BoxDecoration(
+              border: Border.all(color: widget.borderColor ?? randomColor),
+              borderRadius: BorderRadius.circular(8)),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(widget.icon),
+                Padding(
+                  padding: const EdgeInsets.only(left: 8),
+                  child: Text(widget.text,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontWeight: FontWeight.bold)),
                 ),
-              ),
-            ],
-          ),
-        )
-      ),
+              ],
+            ),
+          )),
     );
   }
 }

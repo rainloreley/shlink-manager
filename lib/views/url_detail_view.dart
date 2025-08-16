@@ -67,9 +67,8 @@ class _URLDetailViewState extends State<URLDetailView> {
                     ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     return true;
                   }, (r) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      buildApiErrorSnackbar(r, context)
-                    );
+                    ScaffoldMessenger.of(context)
+                        .showSnackBar(buildApiErrorSnackbar(r, context));
                     return false;
                   });
                 },
@@ -197,8 +196,7 @@ class _ListCellState extends State<_ListCell> {
                 padding: const EdgeInsets.only(top: 16, left: 8, right: 8),
                 decoration: BoxDecoration(
                   border: Border(
-                      top: BorderSide(
-                          color: Theme.of(context).dividerColor)),
+                      top: BorderSide(color: Theme.of(context).dividerColor)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

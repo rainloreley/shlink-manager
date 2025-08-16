@@ -12,9 +12,9 @@ class TagWithStats {
   VisitsSummary visitsSummary;
 
   TagWithStats(this.tag, this.shortUrlsCount, this.visitsSummary);
-  
+
   TagWithStats.fromJson(Map<String, dynamic> json)
-    : tag = json["tag"] as String,
-      shortUrlsCount = json["shortUrlsCount"] as int,
-      visitsSummary = VisitsSummary.fromJson(json["visitsSummary"]);
+      : tag = json["tag"] as String,
+        shortUrlsCount = json["shortUrlsCount"] as int,
+        visitsSummary = VisitsSummary.fromJson(json["visitsSummary"]);
 }
