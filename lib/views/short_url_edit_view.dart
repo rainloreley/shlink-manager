@@ -9,6 +9,7 @@ import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/util/string_to_color.dart';
 import 'package:shlink_app/views/tag_selector_view.dart';
 import '../globals.dart' as globals;
+import '../widgets/counter_widget.dart';
 import '../widgets/datetime_selector_widget.dart';
 
 class ShortURLEditView extends StatefulWidget {
@@ -31,6 +32,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   final validSinceController = DateTimeSelectorController();
   final validUntilController = DateTimeSelectorController();
 
+  final maxVisitsController = CounterController();
+
   List<String> tags = [];
 
   bool randomSlug = true;
@@ -40,6 +43,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
 
   DateTime? validSince;
   DateTime? validUntil;
+
+  int? maxVisits;
 
   bool disableSlugEditor = false;
 
@@ -88,6 +93,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
 
       validSince = widget.shortUrl!.meta.validSince;
       validUntil = widget.shortUrl!.meta.validUntil;
+
+      maxVisits = widget.shortUrl!.meta.maxVisits;
     }
   }
 
@@ -127,6 +134,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
         findIfExists: true,
         validSince: validSinceController.dateTimeString,
         validUntil: validUntilController.dateTimeString,
+        maxVisits: maxVisitsController.count,
         title: titleController.text != "" ? titleController.text : null,
         customSlug: customSlugController.text != "" && !randomSlug
             ? customSlugController.text
@@ -301,6 +309,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                       dateTimeSelectorController: validUntilController,
                       displayName: "Valid until",
                       date: validUntil,
+                    ),
+                    Counter(
+                      counterController: maxVisitsController,
+                      displayName: 'Max visits',
+                      displayIcon: Icons.group,
                     ),
                     TextField(
                       controller: titleController,
