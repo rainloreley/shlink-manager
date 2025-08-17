@@ -46,6 +46,8 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
 
   @override
   void initState() {
+    widget.dateTimeSelectorController._getDateTime = _getDateTime;
+
     _dateTime = widget.date;
 
     super.initState();
@@ -53,8 +55,6 @@ class _DateTimeSelectorState extends State<DateTimeSelector> {
 
   @override
   Widget build(BuildContext context) {
-    widget.dateTimeSelectorController._getDateTime = _getDateTime;
-
     isDateSet = _dateTime != null;
 
     if (isDateSet) {
