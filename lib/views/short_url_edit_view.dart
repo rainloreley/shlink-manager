@@ -325,6 +325,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                     counterController: maxVisitsController,
                     displayName: 'Max visits',
                     displayIcon: Icons.group,
+                    count: maxVisits,
                   ),
                   TextField(
                     controller: titleController,
