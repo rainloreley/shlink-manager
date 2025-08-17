@@ -175,8 +175,6 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(validUntil?.toIso8601String());
-
     return Scaffold(
       body: CustomScrollView(
         slivers: [
