@@ -212,7 +212,7 @@ class _SettingsViewState extends State<SettingsView> {
                   GestureDetector(
                     onTap: () async {
                       var url = Uri.parse(
-                          "https://wiki.abmgrt.dev/de/projects/shlink-manager/privacy");
+                          "https://github.com/rainloreley/shlink-manager/wiki/Privacy-Policy");
                       if (await canLaunchUrl(url)) {
                         launchUrl(url, mode: LaunchMode.externalApplication);
                       }
