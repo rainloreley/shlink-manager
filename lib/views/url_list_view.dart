@@ -38,9 +38,8 @@ class _URLListViewState extends State<URLListView> {
       });
       return true;
     }, (r) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        buildApiErrorSnackbar(r, context)
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildApiErrorSnackbar(r, context));
       return false;
     });
   }
@@ -60,7 +59,7 @@ class _URLListViewState extends State<URLListView> {
           children: [
             ColorFiltered(
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(_qrCodeShown ? 0.4 : 0),
+                  Colors.black.withAlpha(_qrCodeShown ? 100 : 0),
                   BlendMode.srcOver),
               child: RefreshIndicator(
                 onRefresh: () async {
@@ -90,7 +89,9 @@ class _URLListViewState extends State<URLListView> {
                                           'Create one by tapping the "+" button below',
                                           style: TextStyle(
                                               fontSize: 16,
-                                              color: Theme.of(context).colorScheme.onSecondary),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .onSecondary),
                                         ),
                                       )
                                     ],
@@ -125,7 +126,7 @@ class _URLListViewState extends State<URLListView> {
                   });
                 },
                 child: Container(
-                  color: Colors.black.withOpacity(0),
+                  color: Colors.black.withAlpha(0),
                 ),
               ),
             if (_qrCodeShown)
@@ -141,8 +142,7 @@ class _URLListViewState extends State<URLListView> {
                             size: 200.0,
                             eyeStyle: QrEyeStyle(
                               eyeShape: QrEyeShape.square,
-                              color:
-                                  Theme.of(context).colorScheme.onPrimary,
+                              color: Theme.of(context).colorScheme.onPrimary,
                             ),
                             dataModuleStyle: QrDataModuleStyle(
                               dataModuleShape: QrDataModuleShape.square,
@@ -192,8 +192,7 @@ class _ShortURLCellState extends State<ShortURLCell> {
                   const EdgeInsets.only(left: 8, right: 8, bottom: 16, top: 16),
               decoration: BoxDecoration(
                 border: Border(
-                    bottom: BorderSide(
-                        color: Theme.of(context).dividerColor)),
+                    bottom: BorderSide(color: Theme.of(context).dividerColor)),
               ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -204,15 +203,16 @@ class _ShortURLCellState extends State<ShortURLCell> {
                       children: [
                         Text(
                           widget.shortURL.title ?? widget.shortURL.shortCode,
-                          textScaleFactor: 1.4,
+                          textScaler: const TextScaler.linear(1.4),
                           style: const TextStyle(fontWeight: FontWeight.bold),
                         ),
                         Text(
                           widget.shortURL.longUrl,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          textScaleFactor: 0.9,
-                          style: TextStyle(color: Theme.of(context).colorScheme.onTertiary),
+                          textScaler: const TextScaler.linear(0.9),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.onTertiary),
                         ),
                         // List tags in a row
                         UrlTagsListWidget(tags: widget.shortURL.tags)

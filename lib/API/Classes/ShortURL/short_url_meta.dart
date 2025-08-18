@@ -14,10 +14,10 @@ class ShortURLMeta {
   /// Converts JSON data from the API to an instance of [ShortURLMeta]
   ShortURLMeta.fromJson(Map<String, dynamic> json)
       : validSince = json["validSince"] != null
-            ? DateTime.parse(json["validSince"])
+            ? DateTime.parse(json["validSince"]).toLocal()
             : null,
         validUntil = json["validUntil"] != null
-            ? DateTime.parse(json["validUntil"])
+            ? DateTime.parse(json["validUntil"]).toLocal()
             : null,
         maxVisits = json["maxVisits"];
 }

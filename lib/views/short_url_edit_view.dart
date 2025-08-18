@@ -8,8 +8,9 @@ import 'package:shlink_app/API/server_manager.dart';
 import 'package:shlink_app/util/build_api_error_snackbar.dart';
 import 'package:shlink_app/util/string_to_color.dart';
 import 'package:shlink_app/views/tag_selector_view.dart';
-import 'package:shlink_app/widgets/url_tags_list_widget.dart';
 import '../globals.dart' as globals;
+import '../widgets/counter_widget.dart';
+import '../widgets/datetime_selector_widget.dart';
 
 class ShortURLEditView extends StatefulWidget {
   const ShortURLEditView({super.key, this.shortUrl, this.longUrl});
@@ -27,12 +28,23 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
   final customSlugController = TextEditingController();
   final titleController = TextEditingController();
   final randomSlugLengthController = TextEditingController(text: "5");
+
+  final validSinceController = DateTimeSelectorController();
+  final validUntilController = DateTimeSelectorController();
+
+  final maxVisitsController = CounterController();
+
   List<String> tags = [];
 
   bool randomSlug = true;
   bool isCrawlable = true;
   bool forwardQuery = true;
   bool copyToClipboard = true;
+
+  DateTime? validSince;
+  DateTime? validUntil;
+
+  int? maxVisits;
 
   bool disableSlugEditor = false;
 
@@ -49,7 +61,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       vsync: this,
       duration: const Duration(milliseconds: 500),
     );
+
     loadExistingUrl();
+
     if (widget.longUrl != null) {
       longUrlController.text = widget.longUrl!;
     }
@@ -76,6 +90,11 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       customSlugController.text = widget.shortUrl!.shortCode;
       disableSlugEditor = true;
       randomSlug = false;
+
+      validSince = widget.shortUrl!.meta.validSince;
+      validUntil = widget.shortUrl!.meta.validUntil;
+
+      maxVisits = widget.shortUrl!.meta.maxVisits;
     }
   }
 
@@ -92,8 +111,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
           isSaving = false;
         });
         return;
-      } else if (int.tryParse(randomSlugLengthController.text) ==
-          null ||
+      } else if (int.tryParse(randomSlugLengthController.text) == null ||
           int.tryParse(randomSlugLengthController.text)! < 1 ||
           int.tryParse(randomSlugLengthController.text)! > 50) {
         setState(() {
@@ -114,6 +132,9 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
         crawlable: isCrawlable,
         forwardQuery: forwardQuery,
         findIfExists: true,
+        validSince: validSinceController.dateTimeString,
+        validUntil: validUntilController.dateTimeString,
+        maxVisits: maxVisitsController.count,
         title: titleController.text != "" ? titleController.text : null,
         customSlug: customSlugController.text != "" && !randomSlug
             ? customSlugController.text
@@ -154,9 +175,8 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
         isSaving = false;
       });
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        buildApiErrorSnackbar(r, context)
-      );
+      ScaffoldMessenger.of(context)
+          .showSnackBar(buildApiErrorSnackbar(r, context));
       return false;
     });
   }
@@ -167,8 +187,10 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
       body: CustomScrollView(
         slivers: [
           SliverAppBar.medium(
-            title: Text("${disableSlugEditor ? "Edit" : "New"} Short URL",
-                style: const TextStyle(fontWeight: FontWeight.bold)),
+            title: Text(
+              "${disableSlugEditor ? "Edit" : "New"} Short URL",
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
           ),
           SliverToBoxAdapter(
             child: Padding(
@@ -179,15 +201,16 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                   TextField(
                     controller: longUrlController,
                     decoration: InputDecoration(
-                        errorText: longUrlError != "" ? longUrlError : null,
-                        border: const OutlineInputBorder(),
-                        label: const Row(
-                          children: [
-                            Icon(Icons.public),
-                            SizedBox(width: 8),
-                            Text("Long URL")
-                          ],
-                        )),
+                      errorText: longUrlError != "" ? longUrlError : null,
+                      border: const OutlineInputBorder(),
+                      label: const Row(
+                        children: [
+                          Icon(Icons.public),
+                          SizedBox(width: 8),
+                          Text("Long URL"),
+                        ],
+                      ),
+                    ),
                   ),
                   Row(
                     children: [
@@ -198,7 +221,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                           style: TextStyle(
                             color: randomSlug
                                 ? Theme.of(context).colorScheme.onTertiary
-                                : Theme.of(context).colorScheme.onSurface
+                                : Theme.of(context).colorScheme.onSurface,
                           ),
                           onChanged: (_) {
                             if (randomSlug) {
@@ -208,51 +231,58 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                             }
                           },
                           decoration: InputDecoration(
-                              border: const OutlineInputBorder(),
-                              label: Row(
-                                children: [
-                                  const Icon(Icons.link),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    "${randomSlug ? "Random" : "Custom"} slug",
-                                    style: TextStyle(
-                                        fontStyle: randomSlug
-                                            ? FontStyle.italic
-                                            : FontStyle.normal),
-                                  )
-                                ],
-                              )),
+                            border: const OutlineInputBorder(),
+                            label: Row(
+                              children: [
+                                const Icon(Icons.link),
+                                const SizedBox(width: 8),
+                                Text(
+                                  "${randomSlug ? "Random" : "Custom"} slug",
+                                  style: TextStyle(
+                                    fontStyle: randomSlug
+                                        ? FontStyle.italic
+                                        : FontStyle.normal,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
                       ),
-
                       if (widget.shortUrl == null)
                         Container(
                           padding: const EdgeInsets.only(left: 8),
                           child: RotationTransition(
                             turns: Tween(begin: 0.0, end: 3.0).animate(
-                                CurvedAnimation(
-                                    parent: _customSlugDiceAnimationController,
-                                    curve: Curves.easeInOutExpo)),
+                              CurvedAnimation(
+                                parent: _customSlugDiceAnimationController,
+                                curve: Curves.easeInOutExpo,
+                              ),
+                            ),
                             child: IconButton(
-                                onPressed: disableSlugEditor
-                                    ? null
-                                    : () {
-                                  if (randomSlug) {
-                                    _customSlugDiceAnimationController.reverse(
-                                        from: 1);
-                                  } else {
-                                    _customSlugDiceAnimationController.forward(
-                                        from: 0);
-                                  }
-                                  setState(() {
-                                    randomSlug = !randomSlug;
-                                  });
-                                },
-                                icon: Icon(
-                                    randomSlug ? Icons.casino : Icons.casino_outlined,
-                                    color: randomSlug ? Colors.green : Colors.grey)),
+                              onPressed: disableSlugEditor
+                                  ? null
+                                  : () {
+                                      if (randomSlug) {
+                                        _customSlugDiceAnimationController
+                                            .reverse(from: 1);
+                                      } else {
+                                        _customSlugDiceAnimationController
+                                            .forward(from: 0);
+                                      }
+                                      setState(() {
+                                        randomSlug = !randomSlug;
+                                      });
+                                    },
+                              icon: Icon(
+                                randomSlug
+                                    ? Icons.casino
+                                    : Icons.casino_outlined,
+                                color: randomSlug ? Colors.green : Colors.grey,
+                              ),
+                            ),
                           ),
-                        )
+                        ),
                     ],
                   ),
                   if (randomSlug && widget.shortUrl == null)
@@ -261,42 +291,64 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                       children: [
                         const Text("Random slug length"),
                         SizedBox(
-                            width: 100,
-                            child: TextField(
-                              controller: randomSlugLengthController,
-                              keyboardType: TextInputType.number,
-                              decoration: InputDecoration(
-                                  errorText:
+                          width: 100,
+                          child: TextField(
+                            controller: randomSlugLengthController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              errorText:
                                   randomSlugLengthError != "" ? "" : null,
-                                  border: const OutlineInputBorder(),
-                                  label: const Row(
-                                    children: [
-                                      Icon(Icons.tag),
-                                      SizedBox(width: 8),
-                                      Text("Length")
-                                    ],
-                                  )),
-                            ))
+                              border: const OutlineInputBorder(),
+                              label: const Row(
+                                children: [
+                                  Icon(Icons.tag),
+                                  SizedBox(width: 8),
+                                  Text("Length"),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
+                  DateTimeSelector(
+                    dateTimeSelectorController: validSinceController,
+                    displayName: "Valid since",
+                    date: validSince,
+                  ),
+                  DateTimeSelector(
+                    dateTimeSelectorController: validUntilController,
+                    displayName: "Valid until",
+                    date: validUntil,
+                  ),
+                  Counter(
+                    counterController: maxVisitsController,
+                    displayName: 'Max visits',
+                    displayIcon: Icons.group,
+                    count: maxVisits,
+                  ),
                   TextField(
                     controller: titleController,
                     decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Row(
-                          children: [
-                            Icon(Icons.badge),
-                            SizedBox(width: 8),
-                            Text("Title")
-                          ],
-                        )),
+                      border: OutlineInputBorder(),
+                      label: Row(
+                        children: [
+                          Icon(Icons.badge),
+                          SizedBox(width: 8),
+                          Text("Title"),
+                        ],
+                      ),
+                    ),
                   ),
                   GestureDetector(
                     onTap: () async {
-                      List<String>? selectedTags = await Navigator.of(context).
-                      push(MaterialPageRoute(
-                              builder: (context) =>
-                                  TagSelectorView(alreadySelectedTags: tags)));
+                      List<String>? selectedTags =
+                          await Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              TagSelectorView(alreadySelectedTags: tags),
+                        ),
+                      );
                       if (selectedTags != null) {
                         setState(() {
                           tags = selectedTags;
@@ -306,32 +358,30 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                     child: InputDecorator(
                         isEmpty: tags.isEmpty,
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Row(
-                              children: [
-                                Icon(Icons.label_outline),
-                                SizedBox(width: 8),
-                                Text("Tags")
-                              ],
-                            )),
+                          border: OutlineInputBorder(),
+                          label: Row(
+                            children: [
+                              Icon(Icons.label_outline),
+                              SizedBox(width: 8),
+                              Text("Tags"),
+                            ],
+                          ),
+                        ),
                         child: Wrap(
                           runSpacing: 8,
                           spacing: 8,
                           children: tags.map((tag) {
-                            var boxColor = stringToColor(tag)
-                                .harmonizeWith(Theme.of(context).colorScheme.
-                                    primary);
+                            var boxColor = stringToColor(tag).harmonizeWith(
+                                Theme.of(context).colorScheme.primary);
                             var textColor = boxColor.computeLuminance() < 0.5
                                 ? Colors.white
                                 : Colors.black;
                             return InputChip(
-                              label: Text(tag, style: TextStyle(
-                                color: textColor
-                              )),
+                              label:
+                                  Text(tag, style: TextStyle(color: textColor)),
                               backgroundColor: boxColor,
-                              deleteIcon: Icon(Icons.close,
-                                  size: 18,
-                                  color: textColor),
+                              deleteIcon:
+                                  Icon(Icons.close, size: 18, color: textColor),
                               onDeleted: () {
                                 setState(() {
                                   tags.remove(tag);
@@ -339,8 +389,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                               },
                             );
                           }).toList(),
-                        )
-                    ),
+                        )),
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -353,7 +402,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                             isCrawlable = !isCrawlable;
                           });
                         },
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -367,7 +416,7 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                             forwardQuery = !forwardQuery;
                           });
                         },
-                      )
+                      ),
                     ],
                   ),
                   Row(
@@ -381,26 +430,28 @@ class _ShortURLEditViewState extends State<ShortURLEditView>
                             copyToClipboard = !copyToClipboard;
                           });
                         },
-                      )
+                      ),
                     ],
                   ),
                   const SizedBox(height: 150)
                 ],
               ),
-            )
+            ),
           )
         ],
       ),
       floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _saveButtonPressed();
-          },
-          child: isSaving
-              ? const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: CircularProgressIndicator(strokeWidth: 3,
-                                                    color: Colors.white))
-              : const Icon(Icons.save)),
+        onPressed: () {
+          _saveButtonPressed();
+        },
+        child: isSaving
+            ? const Padding(
+                padding: EdgeInsets.all(16),
+                child: CircularProgressIndicator(
+                    strokeWidth: 3, color: Colors.white),
+              )
+            : const Icon(Icons.save),
+      ),
     );
   }
 }

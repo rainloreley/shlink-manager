@@ -9,7 +9,8 @@
 # packages, and plugins designed to encourage good coding practices.
 include: package:flutter_lints/flutter.yaml
 
-
+formatter:
+  trailing_commas: preserve
 
 linter:
   rules:
